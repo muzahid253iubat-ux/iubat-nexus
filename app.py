@@ -10,71 +10,48 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- Dynamic Assets Image Reader for Slideshow ---
-assets_dir = os.path.join(os.getcwd(), "assets")
+# --- Fixed Background Image Reader (Clean & Safe) ---
+def get_fixed_background():
+    assets_dir = os.path.join(os.getcwd(), "assets")
+    
+    # Check for exact 'bg.jpg' first
+    target_path = os.path.join(assets_dir, "bg.jpg")
+    
+    # If bg.jpg doesn't exist, search for any clean image filename without weird spaces
+    if not os.path.exists(target_path) and os.path.exists(assets_dir):
+        for f in sorted(os.listdir(assets_dir)):
+            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')) and ' ' not in f:
+                target_path = os.path.join(assets_dir, f)
+                break
+                
+    # If still not found, grab the first available image
+    if not os.path.exists(target_path) and os.path.exists(assets_dir):
+        for f in sorted(os.listdir(assets_dir)):
+            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                target_path = os.path.join(assets_dir, f)
+                break
+                
+    if os.path.exists(target_path):
+        with open(target_path, "rb") as file:
+            encoded = base64.b64encode(file.read()).decode()
+            mime = "image/jpeg" if target_path.lower().endswith(('.jpg', '.jpeg')) else "image/png"
+            return f"data:{mime};base64,{encoded}"
+            
+    # Fallback default high-res campus image if nothing found
+    return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"
 
-def get_all_campus_images():
-    images = []
-    if os.path.exists(assets_dir):
-        for filename in sorted(os.listdir(assets_dir)):
-            if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
-                img_path = os.path.join(assets_dir, filename)
-                with open(img_path, "rb") as f:
-                    encoded = base64.b64encode(f.read()).decode()
-                    mime = "image/jpeg" if filename.lower().endswith(('.jpg', '.jpeg')) else "image/png"
-                    images.append(f"data:{mime};base64,{encoded}")
-    return images
+bg_image_data = get_fixed_background()
 
-campus_images = get_all_campus_images()
-
-# Fallback if no images found
-if not campus_images:
-    campus_images = ["https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"]
-
-total_images = len(campus_images)
-animation_duration = total_images * 5  # 5 seconds per image
-
-# Generate slide divs dynamically
-slides_html = ""
-for idx, img_data in enumerate(campus_images):
-    delay = idx * 5
-    slides_html += f"""
-    <div class="slide" style="background-image: linear-gradient(rgba(10, 25, 47, 0.75), rgba(10, 25, 47, 0.82)), url('{img_data}'); animation-delay: {delay}s; animation-duration: {animation_duration}s;"></div>
-    """
-
-# --- Custom CSS for Smooth Slideshow & Glassmorphism ---
+# --- Custom CSS for Fixed Background & Glassmorphism ---
 st.markdown(f"""
     <style>
-    .slideshow-container {{
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-        top: 0;
-        left: 0;
-        z-index: -999;
-        overflow: hidden;
-    }}
-    
-    .slide {{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+    .stApp {{
+        background: linear-gradient(rgba(10, 25, 47, 0.78), rgba(10, 25, 47, 0.85)), 
+                    url('{bg_image_data}');
         background-size: cover;
         background-position: center;
-        opacity: 0;
-        animation-name: fadeSlide;
-        animation-iteration-count: infinite;
-        animation-timing-function: ease-in-out;
-    }}
-    
-    @keyframes fadeSlide {{
-        0% {{ opacity: 0; }}
-        10% {{ opacity: 1; }}
-        30% {{ opacity: 1; }}
-        40% {{ opacity: 0; }}
-        100% {{ opacity: 0; }}
+        background-attachment: fixed;
+        background-repeat: no-repeat;
     }}
     
     .login-container {{
@@ -112,29 +89,8 @@ st.markdown(f"""
         font-weight: bold;
         border: none;
         padding: 12px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
-        transition: all 0.3s ease;
-    }}
-    .stButton>button:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 75, 43, 0.6);
-    }}
-    
-    .footer {{
-        position: fixed;
-        left: 0;
-        bottom: 20px;
-        width: 100%;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 12px;
     }}
     </style>
-    
-    <div class="slideshow-container">
-        {slides_html}
-    </div>
 """, unsafe_allow_html=True)
 
 # --- Main App Content ---
@@ -158,4 +114,4 @@ with st.container():
             
     st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown("<div class='footer'>Developed by Muzahid | IUBAT Nexus Beta © 2026</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center; color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 40px;'>Developed by Muzahid | IUBAT Nexus Beta © 2026</div>", unsafe_allow_html=True)

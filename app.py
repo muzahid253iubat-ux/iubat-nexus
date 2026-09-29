@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Top Banner + Bottom Clean Card Layout ---
+# --- Custom CSS for Maximum Readability ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(10, 15, 30, 0.7), rgba(10, 15, 30, 0.85)), 
+        background: linear-gradient(rgba(5, 10, 25, 0.75), rgba(5, 10, 25, 0.9)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -59,12 +59,12 @@ st.markdown(f"""
     
     /* Phone Mockup Outer Frame */
     .phone-mockup {{
-        background: #0F172A;
+        background: rgba(15, 23, 42, 0.92);
         border-radius: 40px;
-        padding: 12px 12px 20px 12px;
-        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85);
+        padding: 12px 14px 22px 14px;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
         border: 4px solid #334155;
-        overflow: hidden;
+        backdrop-filter: blur(10px);
     }}
     
     /* Phone Status Bar */
@@ -77,86 +77,84 @@ st.markdown(f"""
         padding: 5px 15px 12px 15px;
     }}
     
-    /* Top Picture Banner inside phone */
+    /* Top Banner */
     .phone-banner {{
-        background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55)), url('{bg_image_data}');
-        background-size: cover;
-        background-position: center;
+        background: rgba(15, 23, 42, 0.7);
         border-radius: 20px;
-        padding: 30px 15px;
+        padding: 25px 15px;
         text-align: center;
         color: white;
-        margin-bottom: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        margin-bottom: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }}
     
     .banner-title {{
-        font-size: 1.4rem;
+        font-size: 1.45rem;
         font-weight: 800;
         margin-top: 8px;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        color: #FFFFFF;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
     }}
     
     .banner-sub {{
         font-size: 0.75rem;
-        color: #E2E8F0;
+        color: #CBD5E1;
         margin-top: 4px;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+        font-weight: 500;
     }}
     
-    /* White Card for Form Inputs Below */
-    .login-card {{
-        background: #FFFFFF;
-        padding: 22px 18px;
-        border-radius: 24px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        color: #0F172A;
-    }}
-    
-    label {{
-        color: #334155 !important;
+    /* High Visibility Form Labels */
+    label, .stTextInput label, p {{
+        color: #FFFFFF !important;
         font-weight: 700 !important;
-        font-size: 0.85rem !important;
+        font-size: 0.9rem !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
     }}
     
     .stTextInput>div>div>input {{
-        background-color: #F8FAFC !important;
+        background-color: rgba(255, 255, 255, 0.95) !important;
         color: #0F172A !important;
         font-weight: 600;
         border-radius: 10px;
-        border: 1px solid #CBD5E1;
-        padding: 10px;
-        font-size: 0.9rem;
+        border: 1px solid #94A3B8;
+        padding: 11px;
+        font-size: 0.95rem;
     }}
     
     .stTextInput>div>div>input:focus {{
-        border-color: #1E293B;
-        box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.15);
+        border-color: #3B82F6;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }}
+    
+    .stCheckbox label span {{
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
     }}
     
     .stButton>button {{
         width: 100%;
-        background: #1E293B;
+        background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
         color: white;
         font-weight: 700;
-        font-size: 0.95rem;
+        font-size: 1rem;
         border: none;
-        padding: 11px;
+        padding: 12px;
         border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
-        margin-top: 5px;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        margin-top: 8px;
         transition: all 0.2s ease;
     }}
     
     .stButton>button:hover {{
-        background: #0F172A;
+        background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
     }}
     
     .phone-footer {{
         text-align: center;
         color: #94A3B8;
         font-size: 11px;
-        margin-top: 15px;
+        margin-top: 18px;
         font-weight: 500;
     }}
     </style>
@@ -168,7 +166,7 @@ st.markdown("<div class='phone-mockup'>", unsafe_allow_html=True)
 # Status bar
 st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
 
-# Top Picture Banner Section
+# Top Banner Section
 st.markdown("""
     <div class='phone-banner'>
         <div style='font-size: 32px;'>🎓</div>
@@ -177,9 +175,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Bottom Login Card Section
-st.markdown("<div class='login-card'>", unsafe_allow_html=True)
-
+# Input Fields
 user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
 password = st.text_input("Password *", type="password", placeholder="••••••••")
 
@@ -191,8 +187,6 @@ if st.button("Submit"):
         st.success(f"Welcome back, {user_id}!")
     else:
         st.error("❌ Please enter both ID Number and Password.")
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer inside phone mockup
 st.markdown("<div class='phone-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)

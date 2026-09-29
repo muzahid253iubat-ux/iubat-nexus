@@ -37,7 +37,7 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Clear Text & Proper Alignment ---
+# --- Custom CSS for Robust Form Card Styling ---
 st.markdown(f"""
     <style>
     .stApp {{
@@ -104,17 +104,17 @@ st.markdown(f"""
         text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
     }}
     
-    /* White Card for Form Inputs Below */
-    .login-card {{
-        background: #FFFFFF;
-        padding: 22px 18px;
-        border-radius: 24px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        color: #0F172A;
+    /* Styling Streamlit Form Container as a Solid White Card */
+    div[data-testid="stForm"] {{
+        background-color: #FFFFFF !important;
+        padding: 22px 18px !important;
+        border-radius: 24px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+        border: none !important;
     }}
     
-    /* Fix label visibility and color inside white card */
-    .stTextInput label p {{
+    /* Explicitly make label text dark and bold inside white form card */
+    div[data-testid="stForm"] label p {{
         color: #1E293B !important;
         font-weight: 700 !important;
         font-size: 0.88rem !important;
@@ -140,22 +140,22 @@ st.markdown(f"""
         font-weight: 600 !important;
     }}
     
-    .stButton>button {{
-        width: 100%;
-        background: #1E293B;
-        color: white;
-        font-weight: 700;
-        font-size: 0.95rem;
-        border: none;
-        padding: 11px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
-        margin-top: 8px;
-        transition: all 0.2s ease;
+    .stFormSubmitButton>button {{
+        width: 100% !important;
+        background: #1E293B !important;
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        border: none !important;
+        padding: 11px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3) !important;
+        margin-top: 8px !important;
+        transition: all 0.2s ease !important;
     }}
     
-    .stButton>button:hover {{
-        background: #0F172A;
+    .stFormSubmitButton>button:hover {{
+        background: #0F172A !important;
     }}
     
     .phone-footer {{
@@ -183,22 +183,19 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Bottom Login Card Section
-st.markdown("<div class='login-card'>", unsafe_allow_html=True)
+# Form Container acting as a clean solid white card
+with st.form("login_form"):
+    user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
+    password = st.text_input("Password *", type="password", placeholder="••••••••")
 
-user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
-password = st.text_input("Password *", type="password", placeholder="••••••••")
+    remember_me = st.checkbox("Remember me")
 
-remember_me = st.checkbox("Remember me")
-
-st.write("")
-if st.button("Submit"):
-    if user_id and password:
-        st.success(f"Welcome back, {user_id}!")
-    else:
-        st.error("❌ Please enter both ID Number and Password.")
-
-st.markdown("</div>", unsafe_allow_html=True)
+    submit_btn = st.form_submit_button("Submit")
+    if submit_btn:
+        if user_id and password:
+            st.success(f"Welcome back, {user_id}!")
+        else:
+            st.error("❌ Please enter both ID Number and Password.")
 
 # Footer inside phone mockup
 st.markdown("<div class='phone-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)

@@ -84,7 +84,7 @@ st.markdown(f"""
         z-index: 1;
         padding-top: 3rem !important;
         padding-bottom: 1.5rem !important;
-        max-width: 340px !important; /* Box size aro compact kora holo */
+        max-width: 350px !important;
         margin: auto !important;
     }}
     
@@ -96,7 +96,7 @@ st.markdown(f"""
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border-radius: 18px !important;
-        padding: 20px 18px 16px 18px !important;
+        padding: 20px 16px 16px 16px !important;
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
     }}
@@ -171,19 +171,25 @@ st.markdown(f"""
         box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
     }}
     
-    /* Checkbox & Links */
+    /* Checkbox & Links Fix */
+    .stCheckbox {{
+        min-height: unset !important;
+    }}
+    
     .stCheckbox label p {{
         display: block !important;
         color: #94A3B8 !important;
         font-weight: 500 !important;
-        font-size: 0.74rem !important;
+        font-size: 0.72rem !important;
+        white-space: nowrap !important;
     }}
     
     .forgot-pass {{
         color: #38BDF8;
-        font-size: 0.74rem;
+        font-size: 0.72rem;
         font-weight: 500;
         text-decoration: none;
+        white-space: nowrap !important;
         transition: color 0.2s;
     }}
     
@@ -255,11 +261,11 @@ with st.form("login_form"):
     user_id = st.text_input("ID Number", placeholder="Your ID Number *")
     password = st.text_input("Password", type="password", placeholder="Password *")
 
-    col1, col2 = st.columns([1.2, 1])
+    col1, col2 = st.columns([1.1, 1])
     with col1:
         remember_me = st.checkbox("Remember me")
     with col2:
-        st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' class='forgot-pass'>Forgot Password?</a></div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' class='forgot-pass'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
     submit_btn = st.form_submit_button("Login")
     if submit_btn:

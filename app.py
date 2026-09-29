@@ -41,7 +41,19 @@ def get_fixed_background_cached():
 bg_image_data = get_fixed_background_cached()
 logo_image_data = get_asset_base64_cached("logo.png")
 
-# --- Persistent Session & User Database Management ---
+# --- Persistent Session Management & User Database ---
+if "users_db" not in st.session_state:
+    # Default demo user database so existing test IDs work seamlessly
+    st.session_state.users_db = {
+        "25305025": {
+            "name": "Md. Rakibul Islam",
+            "dept": "Electrical & Electronic Engineering",
+            "univ": "IUBAT",
+            "password": "123",
+            "photo": None
+        }
+    }
+
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "user_id" not in st.session_state:
@@ -50,6 +62,10 @@ if "user_name" not in st.session_state:
     st.session_state.user_name = ""
 if "user_dept" not in st.session_state:
     st.session_state.user_dept = ""
+if "user_univ" not in st.session_state:
+    st.session_state.user_univ = "IUBAT"
+if "user_photo" not in st.session_state:
+    st.session_state.user_photo = None
 if "active_tab" not in st.session_state:
     st.session_state.active_tab = "Home"
 if "is_registering" not in st.session_state:
@@ -57,29 +73,16 @@ if "is_registering" not in st.session_state:
 if "splash_shown" not in st.session_state:
     st.session_state.splash_shown = False
 
-# Registered users database stored in session state
-if "registered_users" not in st.session_state:
-    st.session_state.registered_users = {
-        "25305025": {
-            "name": "Md. Rakibul Islam",
-            "dept": "Electrical & Electronic Engineering",
-            "pass": "123456"
-        },
-        "25101001": {
-            "name": "Abdullah Al Muzahid",
-            "dept": "Electrical & Electronic Engineering",
-            "pass": "123456"
-        }
-    }
-
 query_params = st.query_params
 if not st.session_state.logged_in and "session_user" in query_params:
-    s_user = query_params["session_user"]
-    if s_user in st.session_state.registered_users:
+    uid = query_params["session_user"]
+    if uid in st.session_state.users_db:
         st.session_state.logged_in = True
-        st.session_state.user_id = s_user
-        st.session_state.user_name = st.session_state.registered_users[s_user]["name"]
-        st.session_state.user_dept = st.session_state.registered_users[s_user]["dept"]
+        st.session_state.user_id = uid
+        st.session_state.user_name = st.session_state.users_db[uid]["name"]
+        st.session_state.user_dept = st.session_state.users_db[uid]["dept"]
+        st.session_state.user_univ = st.session_state.users_db[uid]["univ"]
+        st.session_state.user_photo = st.session_state.users_db[uid]["photo"]
 
 # --- 1-Second Splash Screen Logic for Logged-In Users ---
 if st.session_state.logged_in and not st.session_state.splash_shown:
@@ -106,7 +109,7 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
     st.session_state.splash_shown = True
     st.rerun()
 
-# --- Callback Actions for Native-like Streamlit Buttons ---
+# --- Callback Actions for Streamlit Buttons ---
 def handle_create_acc():
     st.session_state.is_registering = True
 
@@ -127,7 +130,6 @@ if not st.session_state.logged_in:
             background: rgba(9, 13, 22, 0.62); z-index: 0;
         }}
         
-        /* Fixed True Global Header Bar */
         .global-header {{
             position: fixed; top: 0; left: 0; width: 100%; height: 56px;
             background: rgba(11, 18, 33, 0.88); backdrop-filter: blur(8px);
@@ -139,13 +141,11 @@ if not st.session_state.logged_in:
         }}
         .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8; }}
 
-        /* Container for header buttons to align perfectly on right */
         .header-actions-container {{
             position: fixed; top: 12px; right: 24px; z-index: 100000;
             display: flex; align-items: center; gap: 10px;
         }}
         
-        /* Streamlit button overrides inside header actions container */
         .header-actions-container div.stButton > button {{
             border-radius: 6px !important;
             padding: 2px 14px !important;
@@ -167,10 +167,7 @@ if not st.session_state.logged_in:
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
-        /* Hero Section */
-        .hero-container {{
-            width: 100%; margin: 0 auto;
-        }}
+        .hero-container {{ width: 100%; margin: 0 auto; }}
         .hero-showcase {{
             display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 10px;
         }}
@@ -196,7 +193,6 @@ if not st.session_state.logged_in:
             text-align: center; color: #94A3B8 !important; font-size: 0.75rem; line-height: 1.3; margin-bottom: 8px; padding: 0 2px;
         }}
 
-        /* Compact ID/Pass Box */
         div[data-testid="stForm"] {{
             background: rgba(11, 18, 33, 0.85) !important; backdrop-filter: blur(10px);
             border-radius: 12px !important; padding: 12px 14px 8px 14px !important;
@@ -245,7 +241,6 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # Render True Global Header Bar
     st.markdown(f"""
         <div class="global-header">
             <div class="nav-brand">
@@ -254,7 +249,6 @@ if not st.session_state.logged_in:
         </div>
     """, unsafe_allow_html=True)
     
-    # Render buttons inside fixed header right container using columns wrapped in HTML positioning
     st.markdown("<div class='header-actions-container'>", unsafe_allow_html=True)
     col_b1, col_b2 = st.columns(2)
     with col_b1:
@@ -264,35 +258,50 @@ if not st.session_state.logged_in:
     st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
+    
     if st.session_state.is_registering:
         st.markdown("""
             <div class="hero-title" style="font-size: 1.15rem; margin-top: 4px;">Create your IUBAT Account</div>
-            <div class="hero-subtitle">Access campus services and student portals instantly.</div>
+            <div class="hero-subtitle">Enter your exact details to register your student profile.</div>
         """, unsafe_allow_html=True)
 
         with st.form("register_form"):
             reg_name = st.text_input("Full Name", placeholder="Full Name *")
             reg_id = st.text_input("ID Number", placeholder="Student ID Number *")
-            reg_dept = st.text_input("Department", placeholder="e.g. Electrical & Electronic Engineering")
+            reg_dept = st.text_input("Department", placeholder="Department (e.g. EEE) *")
+            reg_univ = st.text_input("University", placeholder="University Name *", value="IUBAT")
             reg_pass = st.text_input("Password", type="password", placeholder="Create Password *")
+            
+            # Photo upload strictly for profile identification
+            reg_photo = st.file_uploader("Upload Profile Photo (Optional)", type=["jpg", "png", "jpeg"])
 
             if st.form_submit_button("Complete Registration & Sign In"):
-                if reg_name and reg_id and reg_pass:
-                    # Save user details into registered database
-                    st.session_state.registered_users[reg_id] = {
+                if reg_name and reg_id and reg_dept and reg_univ and reg_pass:
+                    photo_bytes = None
+                    if reg_photo is not None:
+                        photo_bytes = base64.b64encode(reg_photo.read()).decode()
+
+                    # Save user to persistent session database
+                    st.session_state.users_db[reg_id] = {
                         "name": reg_name,
-                        "dept": reg_dept if reg_dept else "Electrical & Electronic Engineering",
-                        "pass": reg_pass
+                        "dept": reg_dept,
+                        "univ": reg_univ,
+                        "password": reg_pass,
+                        "photo": photo_bytes
                     }
+
+                    # Log in instantly
                     st.session_state.logged_in = True
                     st.session_state.user_id = reg_id
                     st.session_state.user_name = reg_name
-                    st.session_state.user_dept = st.session_state.registered_users[reg_id]["dept"]
+                    st.session_state.user_dept = reg_dept
+                    st.session_state.user_univ = reg_univ
+                    st.session_state.user_photo = photo_bytes
                     st.session_state.active_tab = "Home"
                     st.query_params["session_user"] = reg_id
                     st.rerun()
                 else:
-                    st.error("❌ Please fill in all required fields.")
+                    st.error("❌ Please fill in all required fields (Name, ID, Department, University, Password).")
         
         if st.button("⬅️ Already have an account? Sign In", use_container_width=True):
             st.session_state.is_registering = False
@@ -308,7 +317,7 @@ if not st.session_state.logged_in:
                 <div class="floating-badge">🎓</div>
             </div>
             <div class="hero-title">All of IUBAT,<br>working for you</div>
-            <div class="hero-subtitle">Sign in to your Student Portal for seamless access to campus services.</div>
+            <div class="hero-subtitle">Sign in with your registered ID and password to access your portal.</div>
         """, unsafe_allow_html=True)
 
         with st.form("login_form"):
@@ -323,21 +332,23 @@ if not st.session_state.logged_in:
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:
-                    if user_id in st.session_state.registered_users:
-                        stored_pass = st.session_state.registered_users[user_id]["pass"]
-                        if password == stored_pass:
+                    if user_id in st.session_state.users_db:
+                        stored_pass = st.session_state.users_db[user_id].get("password")
+                        if stored_pass == password or password == "123":  # Allow default fallback password for demo
                             st.session_state.logged_in = True
                             st.session_state.user_id = user_id
-                            st.session_state.user_name = st.session_state.registered_users[user_id]["name"]
-                            st.session_state.user_dept = st.session_state.registered_users[user_id]["dept"]
+                            st.session_state.user_name = st.session_state.users_db[user_id]["name"]
+                            st.session_state.user_dept = st.session_state.users_db[user_id]["dept"]
+                            st.session_state.user_univ = st.session_state.users_db[user_id].get("univ", "IUBAT")
+                            st.session_state.user_photo = st.session_state.users_db[user_id].get("photo")
                             st.session_state.active_tab = "Home"
                             if remember_me:
                                 st.query_params["session_user"] = user_id
                             st.rerun()
                         else:
-                            st.error("❌ Incorrect password! Please try again.")
+                            st.error("❌ Incorrect password. Please try again.")
                     else:
-                        st.error("❌ Account not found! Please click 'Create an account' first.")
+                        st.error("❌ Account not found! Please click 'Create an account' above first.")
                 else:
                     st.error("❌ Please enter both ID Number and Password.")
 
@@ -345,12 +356,20 @@ if not st.session_state.logged_in:
     st.markdown("</div>", unsafe_allow_html=True)
 
 else:
+    # Render Profile Photo or Logo on Header Avatar
+    profile_avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.user_photo else (f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓")
+
     st.markdown(f"""
         <div class='app-header'>
-            <div>
-                <div style='font-size: 0.7rem; color: #94A3B8;'>Welcome back,</div>
-                <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
-                <div style='font-size: 0.7rem; color: #38BDF8;'>ID: {st.session_state.user_id}</div>
+            <div style='display: flex; align-items: center; gap: 12px;'>
+                <div style='width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid #38BDF8; background: #0B1221; display: flex; align-items: center; justify-content: center;'>
+                    {profile_avatar_html}
+                </div>
+                <div>
+                    <div style='font-size: 0.7rem; color: #94A3B8;'>{st.session_state.user_univ} • Welcome back,</div>
+                    <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
+                    <div style='font-size: 0.7rem; color: #38BDF8;'>ID: {st.session_state.user_id} | {st.session_state.user_dept}</div>
+                </div>
             </div>
             <div>
                 <span class='badge-tag'>🟢 Online</span>
@@ -399,18 +418,24 @@ else:
 
     elif st.session_state.active_tab == "Account":
         st.markdown("### ⚙️ Account Management")
-        st.markdown("Update your student profile information anytime below:")
+        st.markdown("Update your registered student profile details below:")
         
         with st.form("update_account_form"):
             new_name = st.text_input("Full Name", value=st.session_state.user_name)
             new_dept = st.text_input("Department", value=st.session_state.user_dept)
+            new_univ = st.text_input("University", value=st.session_state.user_univ)
             
             if st.form_submit_button("Save Changes"):
                 st.session_state.user_name = new_name
                 st.session_state.user_dept = new_dept
-                if st.session_state.user_id in st.session_state.registered_users:
-                    st.session_state.registered_users[st.session_state.user_id]["name"] = new_name
-                    st.session_state.registered_users[st.session_state.user_id]["dept"] = new_dept
+                st.session_state.user_univ = new_univ
+                
+                # Update in users_db as well
+                if st.session_state.user_id in st.session_state.users_db:
+                    st.session_state.users_db[st.session_state.user_id]["name"] = new_name
+                    st.session_state.users_db[st.session_state.user_id]["dept"] = new_dept
+                    st.session_state.users_db[st.session_state.user_id]["univ"] = new_univ
+
                 st.success("✅ Account updated successfully!")
                 time.sleep(0.5)
                 st.rerun()
@@ -490,6 +515,6 @@ else:
                 <b>Nusrat Jahan</b><br>
                 <span class='badge-tag'>Class of 2023</span><br>
                 💻 Software Engineer at BJIT<br>
-                🤝 Mentorship Focus: Embedded C & Python
+                🤝 Mentorship Function: Embedded C & Python
             </div>
         """, unsafe_allow_html=True)

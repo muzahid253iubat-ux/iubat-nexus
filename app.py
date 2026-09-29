@@ -41,7 +41,7 @@ def get_fixed_background_cached():
 bg_image_data = get_fixed_background_cached()
 logo_image_data = get_asset_base64_cached("logo.png")
 
-# --- Persistent Session Management ---
+# --- Persistent Session & User Database Management ---
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "user_id" not in st.session_state:
@@ -49,7 +49,7 @@ if "user_id" not in st.session_state:
 if "user_name" not in st.session_state:
     st.session_state.user_name = ""
 if "user_dept" not in st.session_state:
-    st.session_state.user_dept = "Electrical & Electronic Engineering"
+    st.session_state.user_dept = ""
 if "active_tab" not in st.session_state:
     st.session_state.active_tab = "Home"
 if "is_registering" not in st.session_state:
@@ -57,11 +57,29 @@ if "is_registering" not in st.session_state:
 if "splash_shown" not in st.session_state:
     st.session_state.splash_shown = False
 
+# Registered users database stored in session state
+if "registered_users" not in st.session_state:
+    st.session_state.registered_users = {
+        "25305025": {
+            "name": "Md. Rakibul Islam",
+            "dept": "Electrical & Electronic Engineering",
+            "pass": "123456"
+        },
+        "25101001": {
+            "name": "Abdullah Al Muzahid",
+            "dept": "Electrical & Electronic Engineering",
+            "pass": "123456"
+        }
+    }
+
 query_params = st.query_params
 if not st.session_state.logged_in and "session_user" in query_params:
-    st.session_state.logged_in = True
-    st.session_state.user_id = query_params["session_user"]
-    st.session_state.user_name = f"Student ({st.session_state.user_id})"
+    s_user = query_params["session_user"]
+    if s_user in st.session_state.registered_users:
+        st.session_state.logged_in = True
+        st.session_state.user_id = s_user
+        st.session_state.user_name = st.session_state.registered_users[s_user]["name"]
+        st.session_state.user_dept = st.session_state.registered_users[s_user]["dept"]
 
 # --- 1-Second Splash Screen Logic for Logged-In Users ---
 if st.session_state.logged_in and not st.session_state.splash_shown:
@@ -260,11 +278,16 @@ if not st.session_state.logged_in:
 
             if st.form_submit_button("Complete Registration & Sign In"):
                 if reg_name and reg_id and reg_pass:
+                    # Save user details into registered database
+                    st.session_state.registered_users[reg_id] = {
+                        "name": reg_name,
+                        "dept": reg_dept if reg_dept else "Electrical & Electronic Engineering",
+                        "pass": reg_pass
+                    }
                     st.session_state.logged_in = True
                     st.session_state.user_id = reg_id
                     st.session_state.user_name = reg_name
-                    if reg_dept:
-                        st.session_state.user_dept = reg_dept
+                    st.session_state.user_dept = st.session_state.registered_users[reg_id]["dept"]
                     st.session_state.active_tab = "Home"
                     st.query_params["session_user"] = reg_id
                     st.rerun()
@@ -300,25 +323,21 @@ if not st.session_state.logged_in:
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:
-                    st.session_state.logged_in = True
-                    st.session_state.user_id = user_id
-                    
-                    # --- Dynamic User Recognition Based on ID ---
-                    if user_id == "25305025":
-                        st.session_state.user_name = "Md. Rakibul Islam"  # Tomar friend-er name ekhane dite paro
-                        st.session_state.user_dept = "Electrical & Electronic Engineering"
-                    elif user_id == "abdullah" or "muzahid" in user_id.lower():
-                        st.session_state.user_name = "Abdullah Al Muzahid"
-                        st.session_state.user_dept = "Electrical & Electronic Engineering"
+                    if user_id in st.session_state.registered_users:
+                        stored_pass = st.session_state.registered_users[user_id]["pass"]
+                        if password == stored_pass:
+                            st.session_state.logged_in = True
+                            st.session_state.user_id = user_id
+                            st.session_state.user_name = st.session_state.registered_users[user_id]["name"]
+                            st.session_state.user_dept = st.session_state.registered_users[user_id]["dept"]
+                            st.session_state.active_tab = "Home"
+                            if remember_me:
+                                st.query_params["session_user"] = user_id
+                            st.rerun()
+                        else:
+                            st.error("❌ Incorrect password! Please try again.")
                     else:
-                        # Jekono onno ID-er jonno automatic dynamic name generate korbe
-                        st.session_state.user_name = f"Student [{user_id}]"
-                        st.session_state.user_dept = "IUBAT Student"
-                    
-                    st.session_state.active_tab = "Home"
-                    if remember_me:
-                        st.query_params["session_user"] = user_id
-                    st.rerun()
+                        st.error("❌ Account not found! Please click 'Create an account' first.")
                 else:
                     st.error("❌ Please enter both ID Number and Password.")
 
@@ -389,6 +408,9 @@ else:
             if st.form_submit_button("Save Changes"):
                 st.session_state.user_name = new_name
                 st.session_state.user_dept = new_dept
+                if st.session_state.user_id in st.session_state.registered_users:
+                    st.session_state.registered_users[st.session_state.user_id]["name"] = new_name
+                    st.session_state.registered_users[st.session_state.user_id]["dept"] = new_dept
                 st.success("✅ Account updated successfully!")
                 time.sleep(0.5)
                 st.rerun()
@@ -447,7 +469,7 @@ else:
         with st.expander("🗺 Route Stoppages"):
             st.markdown("""
                 <div class='route-stop'>📍 Campus (Uttara)</div>
-                <div class='route-stop'>📍 Tongi Station Road/div>
+                <div class='route-stop'>📍 Tongi Station Road</div>
                 <div class='route-stop'>📍 Amtoly Mor</div>
                 <div class='route-stop'>📍 T & T Bazar</div>
                 <div class='route-stop'>📍 Shilmoon</div>

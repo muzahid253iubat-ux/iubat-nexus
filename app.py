@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Exact Smartphone Mockup & UI Styling ---
+# --- Custom CSS for Top Banner + Bottom Clean Card Layout ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(10, 15, 30, 0.4), rgba(10, 15, 30, 0.6)), 
+        background: linear-gradient(rgba(10, 15, 30, 0.7), rgba(10, 15, 30, 0.85)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -52,18 +52,19 @@ st.markdown(f"""
     #MainMenu, header, footer {{visibility: hidden;}}
     
     .block-container {{
-        padding-top: 2rem !important;
-        padding-bottom: 2rem !important;
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
         max-width: 420px !important;
     }}
     
     /* Phone Mockup Outer Frame */
     .phone-mockup {{
         background: #0F172A;
-        border-radius: 45px;
-        padding: 15px 15px 25px 15px;
+        border-radius: 40px;
+        padding: 12px 12px 20px 12px;
         box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85);
         border: 4px solid #334155;
+        overflow: hidden;
     }}
     
     /* Phone Status Bar */
@@ -73,63 +74,59 @@ st.markdown(f"""
         color: #FFFFFF;
         font-size: 13px;
         font-weight: 600;
-        padding: 5px 15px 10px 15px;
+        padding: 5px 15px 12px 15px;
     }}
     
-    /* Inner Card matching reference style */
+    /* Top Picture Banner inside phone */
+    .phone-banner {{
+        background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55)), url('{bg_image_data}');
+        background-size: cover;
+        background-position: center;
+        border-radius: 20px;
+        padding: 30px 15px;
+        text-align: center;
+        color: white;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }}
+    
+    .banner-title {{
+        font-size: 1.4rem;
+        font-weight: 800;
+        margin-top: 8px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }}
+    
+    .banner-sub {{
+        font-size: 0.75rem;
+        color: #E2E8F0;
+        margin-top: 4px;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+    }}
+    
+    /* White Card for Form Inputs Below */
     .login-card {{
         background: #FFFFFF;
-        padding: 28px 22px;
-        border-radius: 30px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        padding: 22px 18px;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         color: #0F172A;
-    }}
-    
-    .crest-box {{
-        text-align: center;
-        margin-bottom: 12px;
-    }}
-    
-    .crest-icon {{
-        font-size: 36px;
-        background: #F1F5F9;
-        display: inline-block;
-        padding: 10px 14px;
-        border-radius: 16px;
-        border: 1px solid #E2E8F0;
-    }}
-    
-    .portal-title {{
-        font-size: 1.45rem;
-        font-weight: 800;
-        color: #0F172A;
-        text-align: center;
-        margin-bottom: 2px;
-        letter-spacing: 0.3px;
-    }}
-    
-    .portal-subtitle {{
-        color: #64748B;
-        text-align: center;
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-bottom: 22px;
     }}
     
     label {{
         color: #334155 !important;
         font-weight: 700 !important;
-        font-size: 0.88rem !important;
+        font-size: 0.85rem !important;
     }}
     
     .stTextInput>div>div>input {{
         background-color: #F8FAFC !important;
         color: #0F172A !important;
         font-weight: 600;
-        border-radius: 12px;
+        border-radius: 10px;
         border: 1px solid #CBD5E1;
-        padding: 11px;
-        font-size: 0.92rem;
+        padding: 10px;
+        font-size: 0.9rem;
     }}
     
     .stTextInput>div>div>input:focus {{
@@ -137,37 +134,30 @@ st.markdown(f"""
         box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.15);
     }}
     
-    .stCheckbox {{
-        margin-top: -5px;
-        margin-bottom: 5px;
-    }}
-    
     .stButton>button {{
         width: 100%;
         background: #1E293B;
         color: white;
         font-weight: 700;
-        font-size: 0.98rem;
+        font-size: 0.95rem;
         border: none;
-        padding: 12px;
-        border-radius: 12px;
+        padding: 11px;
+        border-radius: 10px;
         box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
-        transition: all 0.2s ease;
         margin-top: 5px;
+        transition: all 0.2s ease;
     }}
     
     .stButton>button:hover {{
         background: #0F172A;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.4);
     }}
     
     .phone-footer {{
         text-align: center;
-        color: #64748B;
+        color: #94A3B8;
         font-size: 11px;
-        margin-top: 20px;
+        margin-top: 15px;
         font-weight: 500;
-        line-height: 1.4;
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -178,16 +168,17 @@ st.markdown("<div class='phone-mockup'>", unsafe_allow_html=True)
 # Status bar
 st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
 
-# White inner card container
-st.markdown("<div class='login-card'>", unsafe_allow_html=True)
-
+# Top Picture Banner Section
 st.markdown("""
-    <div class='crest-box'>
-        <div class='crest-icon'>🛡️</div>
-        <div class='portal-title'>IUBAT Nexus</div>
-        <div class='portal-subtitle'>Excellence in Higher Education & Research</div>
+    <div class='phone-banner'>
+        <div style='font-size: 32px;'>🎓</div>
+        <div class='banner-title'>IUBAT Nexus</div>
+        <div class='banner-sub'>Excellence in Higher Education & Research</div>
     </div>
 """, unsafe_allow_html=True)
+
+# Bottom Login Card Section
+st.markdown("<div class='login-card'>", unsafe_allow_html=True)
 
 user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
 password = st.text_input("Password *", type="password", placeholder="••••••••")
@@ -201,9 +192,9 @@ if st.button("Submit"):
     else:
         st.error("❌ Please enter both ID Number and Password.")
 
-st.markdown("</div>", unsafe_allow_html=True) # End login-card
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer inside phone mockup
 st.markdown("<div class='phone-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True) # End phone-mockup
+st.markdown("</div>", unsafe_allow_html=True)

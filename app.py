@@ -10,41 +10,71 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- Dynamic Assets Image Reader ---
-def get_local_image_as_base64(image_path):
-    if os.path.exists(image_path):
-        with open(image_path, "rb") as f:
-            data = f.read()
-            return base64.b64encode(data).decode()
-    return None
-
-# Scan assets folder dynamically
+# --- Dynamic Assets Image Reader for Slideshow ---
 assets_dir = os.path.join(os.getcwd(), "assets")
-background_css = ""
 
-if os.path.exists(assets_dir):
-    image_files = [f for f in os.listdir(assets_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp'))]
-    if image_files:
-        # Takes the first image dynamically found in the assets folder
-        latest_image_path = os.path.join(assets_dir, image_files[0])
-        encoded_img = get_local_image_as_base64(latest_image_path)
-        if encoded_img:
-            background_css = f"data:image/jpeg;base64,{encoded_img}"
+def get_all_campus_images():
+    images = []
+    if os.path.exists(assets_dir):
+        for filename in sorted(os.listdir(assets_dir)):
+            if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                img_path = os.path.join(assets_dir, filename)
+                with open(img_path, "rb") as f:
+                    encoded = base64.b64encode(f.read()).decode()
+                    mime = "image/jpeg" if filename.lower().endswith(('.jpg', '.jpeg')) else "image/png"
+                    images.append(f"data:{mime};base64,{encoded}")
+    return images
 
-# Fallback default if no image is found
-if not background_css:
-    background_css = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"
+campus_images = get_all_campus_images()
 
-# --- Custom CSS ---
+# Fallback if no images found
+if not campus_images:
+    campus_images = ["https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"]
+
+total_images = len(campus_images)
+animation_duration = total_images * 5  # 5 seconds per image
+
+# Generate slide divs dynamically
+slides_html = ""
+for idx, img_data in enumerate(campus_images):
+    delay = idx * 5
+    slides_html += f"""
+    <div class="slide" style="background-image: linear-gradient(rgba(10, 25, 47, 0.75), rgba(10, 25, 47, 0.82)), url('{img_data}'); animation-delay: {delay}s; animation-duration: {animation_duration}s;"></div>
+    """
+
+# --- Custom CSS for Smooth Slideshow & Glassmorphism ---
 st.markdown(f"""
     <style>
-    .stApp {{
-        background: linear-gradient(rgba(10, 25, 47, 0.78), rgba(10, 25, 47, 0.85)), 
-                    url('{background_css}');
+    .slideshow-container {{
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: -999;
+        overflow: hidden;
+    }}
+    
+    .slide {{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         background-size: cover;
         background-position: center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
+        opacity: 0;
+        animation-name: fadeSlide;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+    }}
+    
+    @keyframes fadeSlide {{
+        0% {{ opacity: 0; }}
+        10% {{ opacity: 1; }}
+        30% {{ opacity: 1; }}
+        40% {{ opacity: 0; }}
+        100% {{ opacity: 0; }}
     }}
     
     .login-container {{
@@ -101,6 +131,10 @@ st.markdown(f"""
         font-size: 12px;
     }}
     </style>
+    
+    <div class="slideshow-container">
+        {slides_html}
+    </div>
 """, unsafe_allow_html=True)
 
 # --- Main App Content ---

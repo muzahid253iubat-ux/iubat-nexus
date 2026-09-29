@@ -37,7 +37,7 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS Matching UU App Layout Style ---
+# --- Custom CSS Clean Design ---
 st.markdown(f"""
     <style>
     .stApp {{
@@ -67,17 +67,17 @@ st.markdown(f"""
         overflow: hidden;
     }}
     
-    /* Phone Status Bar */
+    /* Clean Phone Status Bar without extra pill */
     .status-bar {{
         display: flex;
         justify-content: space-between;
         color: #F8FAFC;
         font-size: 13px;
         font-weight: 600;
-        padding: 2px 10px 10px 10px;
+        padding: 4px 10px 10px 10px;
     }}
     
-    /* Top Large Edge-to-Edge Banner like UU app */
+    /* Top Large Edge-to-Edge Banner */
     .phone-banner {{
         background: linear-gradient(rgba(15, 23, 42, 0.15), rgba(15, 23, 42, 0.55)), url('{bg_image_data}');
         background-size: cover;
@@ -98,7 +98,7 @@ st.markdown(f"""
         text-shadow: 0 2px 6px rgba(0,0,0,0.8);
     }}
     
-    /* Overlapping Crest/Logo Box Style matching UU reference */
+    /* Overlapping Crest/Logo Box Style */
     .crest-container {{
         display: flex;
         justify-content: center;
@@ -217,7 +217,7 @@ st.markdown(f"""
 # --- UI Render ---
 st.markdown("<div class='phone-mockup'>", unsafe_allow_html=True)
 
-# Status bar
+# Status bar (Cleaned)
 st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
 
 # Top Large Picture Banner Section (Edge-to-Edge)
@@ -227,7 +227,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Overlapping Crest & University Info Box (UU Style)
+# Overlapping Crest & University Info Box
 st.markdown("""
     <div class='crest-container'>
         <div class='crest-box'>🎓</div>

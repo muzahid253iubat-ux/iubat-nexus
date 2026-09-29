@@ -114,27 +114,13 @@ if not st.session_state.logged_in:
         }}
         .nav-brand-container img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
 
-        /* Absolute right buttons container using pure CSS flex to prevent truncation */
-        .nav-right-actions {{
-            display: flex; align-items: center; gap: 8px;
-        }}
-        
         /* Custom Streamlit button overrides for top navbar */
-        .nav-right-actions div.stButton > button {{
-            background: rgba(30, 41, 59, 0.7) !important;
-            backdrop-filter: blur(10px) !important;
-            border: 1px solid rgba(56, 189, 248, 0.3) !important;
-            color: #F8FAFC !important;
+        .stButton > button {{
             border-radius: 7px !important;
             font-weight: 600 !important;
             font-size: 0.75rem !important;
-            padding: 5px 12px !important;
+            padding: 5px 10px !important;
             white-space: nowrap !important;
-            width: auto !important;
-        }}
-        .nav-right-actions div.stButton:nth-child(2) > button {{
-            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
         }}
 
         /* Hero Section - Compact Width & Perfectly Matched Background Color */
@@ -212,25 +198,26 @@ else:
 
 # --- UI Render Logic ---
 avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Logo'></div>" if logo_image_data else "<div class='central-avatar'>🎓</div>"
-logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_small else "🎓"
+logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # Top Navbar layout container
-    st.markdown(f"""
-        <div class="top-navbar">
+    col_brand, col_space, col_b1, col_b2 = st.columns([2.5, 3.2, 1.4, 1.4])
+    
+    with col_brand:
+        st.markdown(f"""
             <div class="nav-brand-container">
                 {logo_small} IUBAT Nexus
             </div>
-        </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+        
+    with col_space:
+        st.write("")
 
-    # Placing buttons right above using a container wrapper or columns injected into custom right class
-    # To keep native click handlers working perfectly, we use Streamlit columns but wrapped in CSS target
-    col_spacer, col_b1, col_b2 = st.columns([5.2, 1.4, 1.4])
     with col_b1:
         if st.button("Create an account", use_container_width=True, key="btn_create_acc"):
             st.session_state.is_registering = True
             st.rerun()
+
     with col_b2:
         if st.button("Go to Account", type="primary", use_container_width=True, key="btn_goto_acc"):
             st.session_state.is_registering = False

@@ -52,41 +52,41 @@ st.markdown(f"""
     #MainMenu, header, footer {{visibility: hidden;}}
     
     .block-container {{
-        padding-top: 1rem !important;
-        padding-bottom: 1rem !important;
-        max-width: 420px !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        max-width: 410px !important;
     }}
     
     /* Phone Mockup Outer Frame */
     .phone-mockup {{
         background: #090D16;
-        border-radius: 46px;
-        padding: 14px;
-        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        border-radius: 40px;
+        padding: 12px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
         border: 4px solid #1E293B;
         overflow: hidden;
     }}
     
-    /* Clean Phone Status Bar without extra pill */
+    /* Clean Phone Status Bar */
     .status-bar {{
         display: flex;
         justify-content: space-between;
         color: #F8FAFC;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 600;
-        padding: 4px 10px 10px 10px;
+        padding: 2px 8px 8px 8px;
     }}
     
-    /* Top Large Edge-to-Edge Banner */
+    /* Top Full Edge-to-Edge Banner */
     .phone-banner {{
-        background: linear-gradient(rgba(15, 23, 42, 0.15), rgba(15, 23, 42, 0.55)), url('{bg_image_data}');
+        background: linear-gradient(rgba(15, 23, 42, 0.1), rgba(15, 23, 42, 0.5)), url('{bg_image_data}');
         background-size: cover;
         background-position: center;
-        border-radius: 32px 32px 0 0;
-        padding: 65px 16px 85px 16px;
+        border-radius: 28px 28px 0 0;
+        padding: 55px 16px 75px 16px;
         text-align: center;
         color: white;
-        margin: -14px -14px 0 -14px;
+        margin: -12px -12px 0 -12px;
         position: relative;
     }}
     
@@ -102,29 +102,29 @@ st.markdown(f"""
     .crest-container {{
         display: flex;
         justify-content: center;
-        margin-top: -45px;
+        margin-top: -42px;
         position: relative;
         z-index: 10;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }}
     
     .crest-box {{
         background: #FFFFFF;
-        width: 72px;
-        height: 72px;
-        border-radius: 20px;
+        width: 68px;
+        height: 68px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
         border: 4px solid #FFFFFF;
-        font-size: 36px;
+        font-size: 32px;
     }}
     
     .university-heading {{
         text-align: center;
         color: #0F172A;
-        font-size: 1.45rem;
+        font-size: 1.35rem;
         font-weight: 800;
         margin-top: 4px;
         letter-spacing: 0.3px;
@@ -133,19 +133,19 @@ st.markdown(f"""
     .university-subheading {{
         text-align: center;
         color: #64748B;
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         font-weight: 600;
     }}
     
     /* Modern Solid White Form Card */
     div[data-testid="stForm"] {{
         background: #FFFFFF !important;
-        padding: 8px 16px 20px 16px !important;
-        border-radius: 0 0 32px 32px !important;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important;
+        padding: 6px 16px 18px 16px !important;
+        border-radius: 0 0 28px 28px !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2) !important;
         border: none !important;
     }}
     
@@ -153,7 +153,7 @@ st.markdown(f"""
     div[data-testid="stForm"] label p {{
         color: #0F172A !important;
         font-weight: 700 !important;
-        font-size: 0.85rem !important;
+        font-size: 0.83rem !important;
     }}
     
     /* Input Fields Modern Look */
@@ -161,10 +161,10 @@ st.markdown(f"""
         background-color: #F8FAFC !important;
         color: #0F172A !important;
         font-weight: 600;
-        border-radius: 12px;
+        border-radius: 10px;
         border: 1.5px solid #E2E8F0;
-        padding: 11px 14px;
-        font-size: 0.9rem;
+        padding: 10px 14px;
+        font-size: 0.88rem;
         transition: all 0.3s ease;
     }}
     
@@ -178,7 +178,7 @@ st.markdown(f"""
     .stCheckbox label p {{
         color: #334155 !important;
         font-weight: 600 !important;
-        font-size: 0.85rem !important;
+        font-size: 0.83rem !important;
     }}
     
     /* Unique Gradient Submit Button */
@@ -187,19 +187,19 @@ st.markdown(f"""
         background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
         color: white !important;
         font-weight: 700 !important;
-        font-size: 0.95rem !important;
+        font-size: 0.92rem !important;
         letter-spacing: 0.5px;
         border: none !important;
-        padding: 12px !important;
-        border-radius: 12px !important;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35) !important;
-        margin-top: 8px !important;
+        padding: 11px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 5px 15px rgba(15, 23, 42, 0.3) !important;
+        margin-top: 6px !important;
         transition: all 0.3s ease !important;
     }}
     
     .stFormSubmitButton>button:hover {{
         background: linear-gradient(135deg, #1E293B 0%, #0284C7 100%) !important;
-        box-shadow: 0 8px 22px rgba(2, 132, 199, 0.4) !important;
+        box-shadow: 0 7px 20px rgba(2, 132, 199, 0.4) !important;
         transform: translateY(-1px);
     }}
     
@@ -207,7 +207,7 @@ st.markdown(f"""
         text-align: center;
         color: #64748B;
         font-size: 11px;
-        margin-top: 16px;
+        margin-top: 14px;
         font-weight: 500;
         letter-spacing: 0.3px;
     }}
@@ -217,7 +217,7 @@ st.markdown(f"""
 # --- UI Render ---
 st.markdown("<div class='phone-mockup'>", unsafe_allow_html=True)
 
-# Status bar (Cleaned)
+# Status bar
 st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
 
 # Top Large Picture Banner Section (Edge-to-Edge)

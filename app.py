@@ -53,7 +53,7 @@ if not st.session_state.logged_in and "session_user" in query_params:
     st.session_state.logged_in = True
     st.session_state.user_id = query_params["session_user"]
 
-# --- Dynamic Styling for Instant Rendering ---
+# --- Google-Inspired Dynamic Styling ---
 if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
@@ -72,42 +72,84 @@ if not st.session_state.logged_in:
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 13, 22, 0.55);
+            background: rgba(9, 13, 22, 0.75);
             z-index: 0;
         }}
         .block-container {{
             position: relative;
             z-index: 1;
-            padding-top: 3rem !important;
-            max-width: 400px !important;
+            padding-top: 2rem !important;
+            max-width: 440px !important;
             margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
+        /* Google Style Floating Icons Showcase Header */
+        .hero-showcase {{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }}
+        .floating-badge {{
+            width: 42px; height: 42px;
+            background: rgba(30, 41, 59, 0.85);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.15);
+            font-size: 1.1rem;
+            animation: float 3s ease-in-out infinite;
+        }}
+        .floating-badge:nth-child(even) {{
+            animation-delay: 1.5s;
+        }}
+        @keyframes float {{
+            0%, 100% {{ transform: translateY(0); }}
+            50% {{ transform: translateY(-6px); }}
+        }}
+
+        .central-avatar {{
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+            border: 2.5px solid rgba(56, 189, 248, 0.6);
+            overflow: hidden;
+        }}
+        .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
+
+        .hero-title {{
+            text-align: center;
+            color: #F8FAFC !important;
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }}
+        .hero-subtitle {{
+            text-align: center;
+            color: #94A3B8 !important;
+            font-size: 0.82rem;
+            line-height: 1.4;
+            margin-bottom: 24px;
+            padding: 0 10px;
+        }}
+
         div[data-testid="stForm"] {{
-            background: rgba(15, 23, 42, 0.90) !important;
-            backdrop-filter: blur(14px);
+            background: rgba(15, 23, 42, 0.88) !important;
+            backdrop-filter: blur(16px);
             border-radius: 20px !important;
-            padding: 24px 18px 18px 18px !important;
+            padding: 20px 20px 16px 20px !important;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
         }}
         div[data-testid="stTextInput"] label {{
             display: none !important;
         }}
-        .card-crest {{
-            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-            width: 56px; height: 56px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 8px auto;
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            overflow: hidden;
-        }}
-        .card-crest img {{ width: 100%; height: 100%; object-fit: cover; }}
-        .card-title {{ text-align: center; color: #FFFFFF !important; font-size: 1.25rem; font-weight: 800; margin-bottom: 2px; }}
-        .card-subtitle {{ text-align: center; color: #94A3B8 !important; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 16px; }}
-        
         .stTextInput>div>div>input {{
             background-color: rgba(30, 41, 59, 0.8) !important;
             color: #F8FAFC !important; border-radius: 8px;
@@ -116,7 +158,7 @@ if not st.session_state.logged_in:
         .stFormSubmitButton>button {{
             width: 100% !important;
             background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
-            color: #FFFFFF !important; font-weight: 700; border-radius: 8px; border: none; padding: 9px;
+            color: #FFFFFF !important; font-weight: 700; border-radius: 8px; border: none; padding: 10px;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -177,12 +219,24 @@ else:
     """, unsafe_allow_html=True)
 
 
-# --- UI Views Render ---
-logo_html = f"<div class='card-crest'><img src='{logo_image_data}' alt='Logo'></div>" if logo_image_data else "<div class='card-crest'>🎓</div>"
+# --- UI Render ---
+avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Logo'></div>" if logo_image_data else "<div class='central-avatar'>🎓</div>"
 
 if not st.session_state.logged_in:
+    # Google-inspired floating banner & header
+    st.markdown(f"""
+        <div class="hero-showcase">
+            <div class="floating-badge" title="Emergency SOS">🚨</div>
+            <div class="floating-badge" title="Faculty Directory">👨‍🏫</div>
+            {avatar_html}
+            <div class="floating-badge" title="Bus Tracking">🚌</div>
+            <div class="floating-badge" title="Alumni Network">🎓</div>
+        </div>
+        <div class="hero-title">All of IUBAT,<br>working for you</div>
+        <div class="hero-subtitle">Sign in to your Student Portal for seamless access to campus services, schedules, and academic tools from anywhere.</div>
+    """, unsafe_allow_html=True)
+
     with st.form("login_form"):
-        st.markdown(f"{logo_html}<div class='card-title'>IUBAT Nexus</div><div class='card-subtitle'>Smart Portal for Innovation & Academics</div>", unsafe_allow_html=True)
         user_id = st.text_input("Your ID Number", placeholder="Your ID Number *")
         password = st.text_input("Password", type="password", placeholder="Password *")
 
@@ -192,7 +246,7 @@ if not st.session_state.logged_in:
         with col2:
             st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' style='color: #38BDF8; font-size: 0.72rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
-        if st.form_submit_button("Login"):
+        if st.form_submit_button("Sign In"):
             if user_id and password:
                 st.session_state.logged_in = True
                 st.session_state.user_id = user_id
@@ -202,7 +256,8 @@ if not st.session_state.logged_in:
                 st.rerun()
             else:
                 st.error("❌ Please enter both ID Number and Password.")
-    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top: 15px;'>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
+                
+    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top: 20px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
 
 else:
     st.markdown(f"""
@@ -300,7 +355,7 @@ else:
                 <div style='font-size: 0.8rem;'><b>Helper:</b> Ripon (01861455868)</div>
             </div>
         """, unsafe_allow_html=True)
-        with st.expander("🗺️ Route Stoppages"):
+        with st.expander("🗺️️ Route Stoppages"):
             st.markdown("""
                 <div class='route-stop'>📍 Campus (Uttara)</div>
                 <div class='route-stop'>📍 Tongi Station Road</div>

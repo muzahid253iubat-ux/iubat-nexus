@@ -37,7 +37,7 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Edge-to-Edge Banner & Bottom Spacing ---
+# --- Custom CSS Matching Reference Design ---
 st.markdown(f"""
     <style>
     .stApp {{
@@ -52,17 +52,17 @@ st.markdown(f"""
     #MainMenu, header, footer {{visibility: hidden;}}
     
     .block-container {{
-        padding-top: 1.2rem !important;
-        padding-bottom: 1.2rem !important;
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
         max-width: 420px !important;
     }}
     
     /* Phone Mockup Outer Frame */
     .phone-mockup {{
         background: #090D16;
-        border-radius: 44px;
-        padding: 14px 14px 22px 14px;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        border-radius: 46px;
+        padding: 12px 12px 20px 12px;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
         border: 4px solid #1E293B;
         overflow: hidden;
     }}
@@ -74,58 +74,78 @@ st.markdown(f"""
         color: #F8FAFC;
         font-size: 13px;
         font-weight: 600;
-        padding: 4px 16px 14px 16px;
+        padding: 4px 16px 12px 16px;
     }}
     
-    /* Expanded Edge-to-Edge Banner with Bottom Gap */
+    /* Top Edge-to-Edge Banner */
     .phone-banner {{
-        background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.75)), url('{bg_image_data}');
+        background: linear-gradient(rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.65)), url('{bg_image_data}');
         background-size: cover;
         background-position: center;
-        border-radius: 20px;
-        padding: 38px 16px;
+        border-radius: 24px 24px 0 0;
+        padding: 40px 16px 50px 16px;
         text-align: center;
         color: white;
-        margin: -4px -4px 22px -4px; /* Extends fully to the sides and adds space below */
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        margin: -4px -4px 0 -4px;
+        position: relative;
     }}
     
-    .banner-icon {{
-        font-size: 30px;
-        background: rgba(255, 255, 255, 0.15);
-        width: 52px;
-        height: 52px;
-        display: inline-flex;
+    .banner-top-title {{
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #E2E8F0;
+        letter-spacing: 0.5px;
+        margin-bottom: 25px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }}
+    
+    /* Overlapping Crest/Logo Box Style matching reference */
+    .crest-container {{
+        display: flex;
+        justify-content: center;
+        margin-top: -35px;
+        position: relative;
+        z-index: 10;
+        margin-bottom: 10px;
+    }}
+    
+    .crest-box {{
+        background: #FFFFFF;
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%;
-        margin-bottom: 8px;
-        backdrop-filter: blur(4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        border: 3px solid #FFFFFF;
+        font-size: 32px;
     }}
     
-    .banner-title {{
+    .university-heading {{
+        text-align: center;
+        color: #0F172A;
         font-size: 1.4rem;
         font-weight: 800;
-        letter-spacing: 0.5px;
-        margin-top: 2px;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        margin-top: 5px;
+        letter-spacing: 0.3px;
     }}
     
-    .banner-sub {{
-        font-size: 0.75rem;
-        color: #CBD5E1;
-        margin-top: 4px;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    .university-subheading {{
+        text-align: center;
+        color: #64748B;
+        font-size: 0.72rem;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.8px;
+        margin-bottom: 16px;
+        font-weight: 600;
     }}
     
     /* Modern Solid White Form Card */
     div[data-testid="stForm"] {{
         background: #FFFFFF !important;
-        padding: 24px 20px !important;
-        border-radius: 26px !important;
+        padding: 10px 16px 20px 16px !important;
+        border-radius: 0 0 26px 26px !important;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important;
         border: none !important;
     }}
@@ -135,12 +155,11 @@ st.markdown(f"""
         color: #0F172A !important;
         font-weight: 700 !important;
         font-size: 0.85rem !important;
-        letter-spacing: 0.2px;
     }}
     
     /* Input Fields Modern Look */
     .stTextInput>div>div>input {{
-        background-color: #F1F5F9 !important;
+        background-color: #F8FAFC !important;
         color: #0F172A !important;
         font-weight: 600;
         border-radius: 12px;
@@ -175,7 +194,7 @@ st.markdown(f"""
         padding: 12px !important;
         border-radius: 12px !important;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35) !important;
-        margin-top: 10px !important;
+        margin-top: 8px !important;
         transition: all 0.3s ease !important;
     }}
     
@@ -205,13 +224,20 @@ st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span
 # Top Picture Banner Section (Edge-to-Edge)
 st.markdown("""
     <div class='phone-banner'>
-        <div class='banner-icon'>🎓</div>
-        <div class='banner-title'>IUBAT Nexus</div>
-        <div class='banner-sub'>Excellence in Higher Education & Research</div>
+        <div class='banner-top-title'>IUBAT Nexus</div>
     </div>
 """, unsafe_allow_html=True)
 
-# Form Container acting as a clean solid white card with spacing below banner
+# Overlapping Crest & University Info Box
+st.markdown("""
+    <div class='crest-container'>
+        <div class='crest-box'>🎓</div>
+    </div>
+    <div class='university-heading'>IUBAT Nexus</div>
+    <div class='university-subheading'>Excellence in Higher Education & Research</div>
+""", unsafe_allow_html=True)
+
+# Form Container acting as a clean solid white card
 with st.form("login_form"):
     user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
     password = st.text_input("Password *", type="password", placeholder="••••••••")

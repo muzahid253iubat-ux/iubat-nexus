@@ -87,7 +87,7 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
     st.session_state.splash_shown = True
     st.rerun()
 
-# --- Google-Inspired Styling & Full-Width Navbar Setup ---
+# --- Google-Inspired Styling & True Header Setup ---
 if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
@@ -101,20 +101,30 @@ if not st.session_state.logged_in:
             background: rgba(9, 13, 22, 0.84); z-index: 0;
         }}
         
-        /* Full width header styling */
+        /* Fixed True Global Header Bar */
         .global-header {{
-            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
-            background: rgba(11, 18, 33, 0.85); backdrop-filter: blur(12px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 56px;
+            background: rgba(11, 18, 33, 0.92); backdrop-filter: blur(12px);
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 20px; z-index: 999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+            padding: 0 20px; z-index: 99999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
         }}
         .nav-brand {{
             display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; text-decoration: none; white-space: nowrap;
         }}
         .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8; }}
 
-        .nav-actions-container {{
+        .nav-right-buttons {{
             display: flex; align-items: center; gap: 10px;
+        }}
+        
+        /* Streamlit button overrides inside header */
+        .nav-right-buttons div.stButton > button {{
+            border-radius: 6px !important;
+            padding: 4px 12px !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            min-height: 32px !important;
+            height: 32px !important;
         }}
 
         .block-container {{
@@ -166,10 +176,6 @@ if not st.session_state.logged_in:
             width: 100% !important; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
             color: #FFFFFF !important; font-weight: 700; border-radius: 6px; border: none; padding: 7px; font-size: 0.8rem;
         }}
-        
-        /* Header Button overrides for exact right corner alignment */
-        header.stHeader {{ display: none; }}
-        div.row-widget.stButton {{ margin: 0 !important; }}
         </style>
     """, unsafe_allow_html=True)
 
@@ -204,31 +210,37 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # We render the top bar layout using columns seamlessly integrated inside a container/placeholder for buttons
-    col_logo, col_space, col_btn1, col_btn2 = st.columns([1.6, 4.4, 1.4, 1.4])
-    with col_logo:
+    # True unified global header bar with brand on left and action buttons on right
+    header_col1, header_col2 = st.columns([4, 2])
+    with header_col1:
         st.markdown(f"""
-            <div class="global-header" style="width: 100%;">
+            <div class="global-header">
                 <div class="nav-brand">
                     {logo_small} IUBAT Nexus
                 </div>
             </div>
         """, unsafe_allow_html=True)
     
-    with col_btn1:
-        # Invisible container spacer to anchor right-side buttons into the global header bar
-        st.markdown("<div style='position: fixed; top: 11px; right: 150px; z-index: 1000;'>", unsafe_allow_html=True)
+    # We render buttons inside a custom aligned layout matching the right corner of the header
+    st.markdown("""
+        <style>
+        .header-btn-wrapper {
+            position: fixed; top: 11px; right: 20px; z-index: 100000; display: flex; gap: 8px; align-items: center;
+        }
+        </style>
+        <div class="header-btn-wrapper" id="header-buttons"></div>
+    """, unsafe_allow_html=True)
+
+    # Use standard Streamlit buttons placed via container positioning
+    col_spacer, col_b1, col_b2 = st.columns([4.2, 1.1, 1.1])
+    with col_b1:
         if st.button("Create an account", key="btn_create_acc"):
             st.session_state.is_registering = True
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with col_btn2:
-        st.markdown("<div style='position: fixed; top: 11px; right: 16px; z-index: 1000;'>", unsafe_allow_html=True)
+    with col_b2:
         if st.button("Go to Account", type="primary", key="btn_goto_acc"):
             st.session_state.is_registering = False
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:

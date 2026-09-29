@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS Clean Design ---
+# --- Custom CSS for Clean Professional Card Layout ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.95)), 
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -52,60 +52,47 @@ st.markdown(f"""
     #MainMenu, header, footer {{visibility: hidden;}}
     
     .block-container {{
-        padding-top: 0.5rem !important;
-        padding-bottom: 0.5rem !important;
-        max-width: 410px !important;
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+        max-width: 440px !important;
     }}
     
-    /* Phone Mockup Outer Frame */
-    .phone-mockup {{
-        background: #090D16;
-        border-radius: 40px;
-        padding: 12px;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
-        border: 4px solid #1E293B;
+    /* Main Portal Card Container */
+    .portal-card {{
+        background: #FFFFFF;
+        border-radius: 24px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
         overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }}
     
-    /* Clean Phone Status Bar */
-    .status-bar {{
-        display: flex;
-        justify-content: space-between;
-        color: #F8FAFC;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 2px 8px 8px 8px;
-    }}
-    
-    /* Top Full Edge-to-Edge Banner */
-    .phone-banner {{
-        background: linear-gradient(rgba(15, 23, 42, 0.1), rgba(15, 23, 42, 0.5)), url('{bg_image_data}');
+    /* Banner Header */
+    .portal-banner {{
+        background: linear-gradient(rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.6)), url('{bg_image_data}');
         background-size: cover;
         background-position: center;
-        border-radius: 28px 28px 0 0;
-        padding: 55px 16px 75px 16px;
+        padding: 45px 20px 55px 20px;
         text-align: center;
         color: white;
-        margin: -12px -12px 0 -12px;
         position: relative;
     }}
     
-    .banner-top-title {{
-        font-size: 1.05rem;
+    .banner-title {{
+        font-size: 1.2rem;
         font-weight: 700;
         color: #FFFFFF;
         letter-spacing: 0.5px;
-        text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+        text-shadow: 0 2px 4px rgba(0,0,0,0.6);
     }}
     
-    /* Overlapping Crest/Logo Box Style */
+    /* Overlapping Crest/Logo Box */
     .crest-container {{
         display: flex;
         justify-content: center;
-        margin-top: -42px;
+        margin-top: -38px;
         position: relative;
         z-index: 10;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }}
     
     .crest-box {{
@@ -116,8 +103,8 @@ st.markdown(f"""
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
-        border: 4px solid #FFFFFF;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        border: 3px solid #FFFFFF;
         font-size: 32px;
     }}
     
@@ -136,35 +123,34 @@ st.markdown(f"""
         font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        margin-bottom: 14px;
+        margin-bottom: 20px;
         font-weight: 600;
     }}
     
-    /* Modern Solid White Form Card */
+    /* Form Padding inside Card */
     div[data-testid="stForm"] {{
         background: #FFFFFF !important;
-        padding: 6px 16px 18px 16px !important;
-        border-radius: 0 0 28px 28px !important;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2) !important;
+        padding: 0px 24px 24px 24px !important;
         border: none !important;
+        box-shadow: none !important;
     }}
     
     /* Label Styling */
     div[data-testid="stForm"] label p {{
         color: #0F172A !important;
         font-weight: 700 !important;
-        font-size: 0.83rem !important;
+        font-size: 0.85rem !important;
     }}
     
-    /* Input Fields Modern Look */
+    /* Input Fields */
     .stTextInput>div>div>input {{
         background-color: #F8FAFC !important;
         color: #0F172A !important;
         font-weight: 600;
-        border-radius: 10px;
+        border-radius: 12px;
         border: 1.5px solid #E2E8F0;
-        padding: 10px 14px;
-        font-size: 0.88rem;
+        padding: 11px 14px;
+        font-size: 0.9rem;
         transition: all 0.3s ease;
     }}
     
@@ -174,60 +160,57 @@ st.markdown(f"""
         box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
     }}
     
-    /* Checkbox Styling */
+    /* Checkbox */
     .stCheckbox label p {{
         color: #334155 !important;
         font-weight: 600 !important;
-        font-size: 0.83rem !important;
+        font-size: 0.85rem !important;
     }}
     
-    /* Unique Gradient Submit Button */
+    /* Submit Button */
     .stFormSubmitButton>button {{
         width: 100% !important;
         background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
         color: white !important;
         font-weight: 700 !important;
-        font-size: 0.92rem !important;
+        font-size: 0.95rem !important;
         letter-spacing: 0.5px;
         border: none !important;
-        padding: 11px !important;
-        border-radius: 10px !important;
-        box-shadow: 0 5px 15px rgba(15, 23, 42, 0.3) !important;
-        margin-top: 6px !important;
+        padding: 12px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35) !important;
+        margin-top: 10px !important;
         transition: all 0.3s ease !important;
     }}
     
     .stFormSubmitButton>button:hover {{
         background: linear-gradient(135deg, #1E293B 0%, #0284C7 100%) !important;
-        box-shadow: 0 7px 20px rgba(2, 132, 199, 0.4) !important;
+        box-shadow: 0 8px 22px rgba(2, 132, 199, 0.4) !important;
         transform: translateY(-1px);
     }}
     
-    .phone-footer {{
+    .portal-footer {{
         text-align: center;
         color: #64748B;
         font-size: 11px;
-        margin-top: 14px;
+        padding-bottom: 20px;
         font-weight: 500;
-        letter-spacing: 0.3px;
+        background: #FFFFFF;
     }}
     </style>
 """, unsafe_allow_html=True)
 
 # --- UI Render ---
-st.markdown("<div class='phone-mockup'>", unsafe_allow_html=True)
+st.markdown("<div class='portal-card'>", unsafe_allow_html=True)
 
-# Status bar
-st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
-
-# Top Large Picture Banner Section (Edge-to-Edge)
+# Top Banner
 st.markdown("""
-    <div class='phone-banner'>
-        <div class='banner-top-title'>IUBAT Nexus</div>
+    <div class='portal-banner'>
+        <div class='banner-title'>IUBAT Nexus</div>
     </div>
 """, unsafe_allow_html=True)
 
-# Overlapping Crest & University Info Box
+# Crest & Headings
 st.markdown("""
     <div class='crest-container'>
         <div class='crest-box'>🎓</div>
@@ -236,7 +219,7 @@ st.markdown("""
     <div class='university-subheading'>Excellence in Higher Education & Research</div>
 """, unsafe_allow_html=True)
 
-# Form Container acting as a clean solid white card
+# Form
 with st.form("login_form"):
     user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
     password = st.text_input("Password *", type="password", placeholder="••••••••")
@@ -250,7 +233,7 @@ with st.form("login_form"):
         else:
             st.error("❌ Please enter both ID Number and Password.")
 
-# Footer inside phone mockup
-st.markdown("<div class='phone-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
+# Footer
+st.markdown("<div class='portal-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)

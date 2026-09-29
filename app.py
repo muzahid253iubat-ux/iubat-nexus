@@ -48,20 +48,20 @@ def get_fixed_background():
 bg_image_data = get_fixed_background()
 logo_image_data = get_asset_base64("logo.png")
 
-# --- Custom CSS for Full Landscape Banner Background ---
+# --- Custom CSS for Perfect Banner Fit (Ensuring Bottom Green Area is Visible) ---
 st.markdown(f"""
     <style>
     .stApp {{
         background: #090D16;
     }}
     
-    /* Full Landscape Banner Background without Zoom/Crop */
+    /* Full Landscape Banner Background - Positioned to show bottom green helpline section */
     .stApp::before {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: url('{bg_image_data}') no-repeat center center fixed;
-        background-size: 100% 100%;  /* Puro picture-ke screen-er shathe 100% fit korbe */
+        background: url('{bg_image_data}') no-repeat center bottom fixed;
+        background-size: cover;
         z-index: 0;
     }}
     
@@ -70,16 +70,16 @@ st.markdown(f"""
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.35);
+        background: rgba(9, 13, 22, 0.45);
         z-index: 0;
     }}
     
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 3.5rem !important;
-        padding-bottom: 3rem !important;
-        max-width: 440px !important;
+        padding-top: 3rem !important;
+        padding-bottom: 2rem !important;
+        max-width: 420px !important;
     }}
     
     #MainMenu, header, footer {{visibility: hidden;}}
@@ -89,8 +89,8 @@ st.markdown(f"""
         background: rgba(15, 23, 42, 0.88) !important;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border-radius: 24px !important;
-        padding: 35px 32px 32px 32px !important;
+        border-radius: 22px !important;
+        padding: 30px 28px 28px 28px !important;
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
     }}
@@ -103,13 +103,13 @@ st.markdown(f"""
     .card-crest-box {{
         display: flex;
         justify-content: center;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }}
     
     .card-crest {{
         background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-        width: 76px;
-        height: 76px;
+        width: 70px;
+        height: 70px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -128,7 +128,7 @@ st.markdown(f"""
     .card-title {{
         text-align: center;
         color: #FFFFFF !important;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: 800;
         letter-spacing: 0.5px;
         margin-bottom: 2px;
@@ -137,11 +137,11 @@ st.markdown(f"""
     .card-subtitle {{
         text-align: center;
         color: #94A3B8 !important;
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 1.2px;
         font-weight: 600;
-        margin-bottom: 28px;
+        margin-bottom: 24px;
     }}
     
     /* Input Fields Design */
@@ -151,8 +151,8 @@ st.markdown(f"""
         font-weight: 500;
         border-radius: 10px;
         border: 1.5px solid rgba(255, 255, 255, 0.12);
-        padding: 12px 16px;
-        font-size: 0.95rem;
+        padding: 11px 15px;
+        font-size: 0.9rem;
     }}
     
     .stTextInput>div>div>input::placeholder {{
@@ -170,12 +170,12 @@ st.markdown(f"""
         display: block !important;
         color: #94A3B8 !important;
         font-weight: 500 !important;
-        font-size: 0.85rem !important;
+        font-size: 0.82rem !important;
     }}
     
     .forgot-pass {{
         color: #38BDF8;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         font-weight: 500;
         text-decoration: none;
         transition: color 0.2s;
@@ -192,18 +192,18 @@ st.markdown(f"""
         background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
         color: #FFFFFF !important;
         font-weight: 700 !important;
-        font-size: 1rem !important;
+        font-size: 0.95rem !important;
         letter-spacing: 1.5px;
         border: none !important;
-        padding: 13px !important;
+        padding: 12px !important;
         border-radius: 10px !important;
         box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4) !important;
-        margin-top: 10px !important;
+        margin-top: 8px !important;
         transition: all 0.3s ease !important;
     }}
     
     .stFormSubmitButton>button:hover {{
-        background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+        background: linear-gradient(135deg, #1D4ED8 100%, #1E40AF 100%) !important;
         transform: translateY(-1px);
         box-shadow: 0 10px 25px rgba(37, 99, 235, 0.6) !important;
     }}
@@ -212,7 +212,7 @@ st.markdown(f"""
         text-align: center;
         color: #94A3B8;
         font-size: 11px;
-        margin-top: 25px;
+        margin-top: 20px;
         font-weight: 500;
         letter-spacing: 0.3px;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);

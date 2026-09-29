@@ -10,8 +10,9 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- Asset Readers ---
-def get_asset_base64(filename):
+# --- Ultra-Fast Cached Asset Reader ---
+@st.cache_data(show_spinner=False)
+def get_asset_base64_cached(filename):
     assets_dir = os.path.join(os.getcwd(), "assets")
     target_path = os.path.join(assets_dir, filename)
     
@@ -29,14 +30,15 @@ def get_asset_base64(filename):
             return f"data:{mime};base64,{encoded}"
     return None
 
-def get_fixed_background():
-    bg_data = get_asset_base64("bp.jpg")
+@st.cache_data(show_spinner=False)
+def get_fixed_background_cached():
+    bg_data = get_asset_base64_cached("bp.jpg")
     if bg_data:
         return bg_data
     return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"
 
-bg_image_data = get_fixed_background()
-logo_image_data = get_asset_base64("logo.png")
+bg_image_data = get_fixed_background_cached()
+logo_image_data = get_asset_base64_cached("logo.png")
 
 # --- Persistent Session & Remember Me Check ---
 if "logged_in" not in st.session_state:
@@ -46,15 +48,13 @@ if "user_id" not in st.session_state:
 if "active_tab" not in st.session_state:
     st.session_state.active_tab = "Home"
 
-# Check URL query params for persistent login (Remember Me functionality)
 query_params = st.query_params
 if not st.session_state.logged_in and "session_user" in query_params:
     st.session_state.logged_in = True
     st.session_state.user_id = query_params["session_user"]
 
-# --- Dynamic Styling Based on Login State ---
+# --- Dynamic Styling for Instant Rendering ---
 if not st.session_state.logged_in:
-    # Login Page Styling (With Campus Background)
     st.markdown(f"""
         <style>
         .stApp {{
@@ -122,7 +122,6 @@ if not st.session_state.logged_in:
     """, unsafe_allow_html=True)
 
 else:
-    # App Dashboard Styling (Clean Mobile App Theme, No Campus Background)
     st.markdown("""
         <style>
         .stApp {
@@ -198,18 +197,14 @@ if not st.session_state.logged_in:
                 st.session_state.logged_in = True
                 st.session_state.user_id = user_id
                 st.session_state.active_tab = "Home"
-                
-                # If Remember Me is checked, save login state in browser URL parameters
                 if remember_me:
                     st.query_params["session_user"] = user_id
-                
                 st.rerun()
             else:
                 st.error("❌ Please enter both ID Number and Password.")
     st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top: 15px;'>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
 
 else:
-    # --- App Dashboard Header ---
     st.markdown(f"""
         <div class='app-header'>
             <div>
@@ -222,13 +217,11 @@ else:
         </div>
     """, unsafe_allow_html=True)
 
-    # Navigation handling inside dashboard
     if st.session_state.active_tab != "Home":
         if st.button("⬅️ Back to Dashboard"):
             st.session_state.active_tab = "Home"
             st.rerun()
 
-    # --- HOME DASHBOARD (4 OPTIONS) ---
     if st.session_state.active_tab == "Home":
         st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 10px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
 
@@ -256,11 +249,9 @@ else:
                 del st.query_params["session_user"]
             st.rerun()
 
-    # --- SUB-PAGE 1: EMERGENCY SOS ---
     elif st.session_state.active_tab == "SOS":
         st.markdown("### 🚨 Emergency SOS & Hotline")
         st.markdown("If you are facing an emergency on campus or around Tongi/Uttara, reach out immediately:")
-        
         st.markdown("""
             <div class='sched-card' style='border-left: 4px solid #EF4444;'>
                 <b>Campus Security Control Room</b><br>
@@ -276,11 +267,9 @@ else:
         if st.button("🚨 Trigger Panic Alert (Test)", type="primary", use_container_width=True):
             st.error("⚠️ Emergency alert sent to security desk with your GPS location!")
 
-    # --- SUB-PAGE 2: FACULTY DIRECTORY ---
     elif st.session_state.active_tab == "Faculty":
         st.markdown("### 👨‍🏫 Faculty Directory")
         st.text_input("Search Faculty", placeholder="Search by name or department...")
-        
         st.markdown("""
             <div class='sched-card'>
                 <b>Prof. Dr. M. Ahmed</b><br>
@@ -296,7 +285,6 @@ else:
             </div>
         """, unsafe_allow_html=True)
 
-    # --- SUB-PAGE 3: BUS SCHEDULE & LIVE TRACKING ---
     elif st.session_state.active_tab == "Bus":
         st.markdown("### 🚌 Bus Schedule & Live Tracking")
         st.markdown("""
@@ -312,7 +300,6 @@ else:
                 <div style='font-size: 0.8rem;'><b>Helper:</b> Ripon (01861455868)</div>
             </div>
         """, unsafe_allow_html=True)
-
         with st.expander("🗺️ Route Stoppages"):
             st.markdown("""
                 <div class='route-stop'>📍 Campus (Uttara)</div>
@@ -323,7 +310,6 @@ else:
                 <div class='route-stop'>📍 Nimtoly Bridge</div>
             """, unsafe_allow_html=True)
 
-    # --- SUB-PAGE/OPTION 4: ALUMNI NETWORK ---
     elif st.session_state.active_tab == "Alumni":
         st.markdown("### 🎓 Alumni Network & Mentorship")
         st.markdown("Connect with senior graduates working in top engineering firms globally and locally.")

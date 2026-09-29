@@ -37,35 +37,56 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS (Removed Blue Overlay, Clean Background & Fixed Inputs) ---
+# --- Custom CSS with Blurred Background & Perfect Layout ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: url('{bg_image_data}');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
+        background: #0F172A;
     }}
     
-    #MainMenu, header, footer {{visibility: hidden;}}
+    /* Blurred Background Pseudo-element */
+    .stApp::before {{
+        content: "";
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: url('{bg_image_data}') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(8px);
+        -webkit-filter: blur(8px);
+        transform: scale(1.1);
+        z-index: 0;
+    }}
     
+    /* Dark overlay for contrast */
+    .stApp::after {{
+        content: "";
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.55);
+        z-index: 0;
+    }}
+    
+    /* Ensure content stays above background layers */
     .block-container {{
+        position: relative;
+        z-index: 1;
         padding-top: 1.5rem !important;
         padding-bottom: 2rem !important;
         max-width: 460px !important;
     }}
     
+    #MainMenu, header, footer {{visibility: hidden;}}
+    
     /* First Section: Banner Card */
     .banner-card {{
-        background: rgba(15, 23, 42, 0.75);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border-radius: 20px;
         padding: 35px 20px;
         text-align: center;
         color: white;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.2);
         margin-bottom: 24px;
     }}

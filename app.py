@@ -37,32 +37,32 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Reference-Style Dark Frosted Glass Theme ---
+# --- Custom CSS for Balanced Blur & Dark Glass Theme ---
 st.markdown(f"""
     <style>
     .stApp {{
         background: #090D16;
     }}
     
-    /* Background Image with Blur */
+    /* Background Image with Balanced Subtle Blur */
     .stApp::before {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: url('{bg_image_data}') no-repeat center center fixed;
         background-size: cover;
-        filter: blur(4px);
-        -webkit-filter: blur(4px);
-        transform: scale(1.05);
+        filter: blur(1.5px);
+        -webkit-filter: blur(1.5px);
+        transform: scale(1.02);
         z-index: 0;
     }}
     
-    /* Dark Luxury Overlay */
+    /* Balanced Dark Overlay for Crystal Clear Visibility */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.75);
+        background: rgba(9, 13, 22, 0.45);
         z-index: 0;
     }}
     
@@ -79,12 +79,12 @@ st.markdown(f"""
     /* Form Container acting as Gorgeous Dark Glass Card */
     div[data-testid="stForm"] {{
         background: rgba(15, 23, 42, 0.88) !important;
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border-radius: 24px !important;
         padding: 35px 32px 32px 32px !important;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
     }}
     
     div[data-testid="stForm"] label p {{
@@ -137,7 +137,7 @@ st.markdown(f"""
         color: #F8FAFC !important;
         font-weight: 500;
         border-radius: 10px;
-        border: 1.5px solid rgba(255, 255, 255, 0.1);
+        border: 1.5px solid rgba(255, 255, 255, 0.12);
         padding: 12px 16px;
         font-size: 0.95rem;
     }}
@@ -209,14 +209,14 @@ st.markdown(f"""
 
 # --- UI Render ---
 
-# Login Form (Reference Style Dark Glass Card with Logo, Title, Slogan inside)
+# Login Form
 with st.form("login_form"):
     st.markdown("""
         <div class='card-crest-box'>
             <div class='card-crest'>🎓</div>
         </div>
         <div class='card-title'>IUBAT Nexus</div>
-        <div class='card-subtitle'>Excellence in Higher Education & Research</div>
+        <div class='card-subtitle'>SMART PORTAL FOR INNOVATION & ACADEMICS</div>
     """, unsafe_allow_html=True)
 
     user_id = st.text_input("ID Number", placeholder="🆔 ID Number *")

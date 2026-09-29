@@ -249,7 +249,7 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
         """, unsafe_allow_html=True)
 
         with st.form("admin_login_form"):
-            admin_pass = st.text_input("Admin Password", type="password", placeholder="Enter Admin Password (default: IuM5005B25Mat&19NOV)")
+            admin_pass = st.text_input("Admin Password", type="password", placeholder="Enter Admin Password")
             if st.form_submit_button("Access Admin Dashboard"):
                 if admin_pass == "IuM5005B25Mat&19NOV":
                     st.session_state.is_admin = True
@@ -259,7 +259,7 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
                     time.sleep(0.5)
                     st.rerun()
                 else:
-                    st.error("❌ Incorrect Admin Password! (Default is IuM5005B25Mat&19NOV)")
+                    st.error("❌ Incorrect Admin Password!")
 
         if st.button("⬅️ Back to Student Sign In", use_container_width=True):
             st.session_state.is_admin_login = False
@@ -514,7 +514,7 @@ else:
             st.session_state.active_tab = "SOS"
             st.rerun()
 
-        if st.button("👨‍🏫  Faculty Directory & Consultations", use_container_width=True):
+        if st.button("👨‍‍🏫  Faculty Directory & Consultations", use_container_width=True):
             st.session_state.active_tab = "Faculty"
             st.rerun()
 

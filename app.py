@@ -111,60 +111,60 @@ if not st.session_state.logged_in:
         }}
         .nav-brand-container img {{ width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
 
-        /* Custom Streamlit Button Styling to prevent truncation and match glassmorphism */
+        /* Custom Streamlit Button Styling */
         div.stButton > button {{
             width: 100% !important;
             border-radius: 10px !important;
             font-weight: 600 !important;
-            font-size: 0.88rem !important;
-            padding: 8px 14px !important;
+            font-size: 0.85rem !important;
+            padding: 6px 12px !important;
             white-space: nowrap !important;
             overflow: visible !important;
-            text-overflow: clip !important;
         }}
 
-        /* Hero Section - Compact Box Width */
+        /* Hero Section - Even Smaller & Background Matched Width */
         .hero-container {{
-            max-width: 420px; margin: 20px auto 0 auto;
+            max-width: 370px; margin: 15px auto 0 auto;
         }}
         .hero-showcase {{
-            display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 14px;
+            display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 12px;
         }}
         .floating-badge {{
-            width: 36px; height: 36px; background: rgba(30, 41, 59, 0.85); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.15); font-size: 0.9rem; animation: float 3s ease-in-out infinite;
+            width: 32px; height: 32px; background: rgba(15, 23, 42, 0.75); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.8rem; animation: float 3s ease-in-out infinite;
         }}
         .floating-badge:nth-child(even) {{ animation-delay: 1.5s; }}
-        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-4px); }} }}
+        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-3px); }} }}
 
         .central-avatar {{
-            width: 65px; height: 65px; background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            width: 58px; height: 58px; background: linear-gradient(135deg, #0F172A 0%, #090D16 100%);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4); border: 2.5px solid rgba(56, 189, 248, 0.6); overflow: hidden;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); border: 2px solid rgba(56, 189, 248, 0.5); overflow: hidden;
         }}
         .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
 
         .hero-title {{
-            text-align: center; color: #F8FAFC !important; font-size: 1.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 6px;
+            text-align: center; color: #F8FAFC !important; font-size: 1.35rem; font-weight: 800; line-height: 1.2; margin-bottom: 4px;
         }}
         .hero-subtitle {{
-            text-align: center; color: #94A3B8 !important; font-size: 0.78rem; line-height: 1.4; margin-bottom: 16px; padding: 0 5px;
+            text-align: center; color: #94A3B8 !important; font-size: 0.75rem; line-height: 1.3; margin-bottom: 12px; padding: 0 4px;
         }}
 
+        /* Perfectly Matched Background & Compact Form Box */
         div[data-testid="stForm"] {{
-            background: rgba(15, 23, 42, 0.88) !important; backdrop-filter: blur(16px);
-            border-radius: 16px !important; padding: 16px 14px 12px 14px !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: rgba(11, 18, 33, 0.82) !important; backdrop-filter: blur(14px);
+            border-radius: 14px !important; padding: 14px 12px 10px 12px !important;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55) !important; border: 1px solid rgba(56, 189, 248, 0.15) !important;
         }}
         div[data-testid="stTextInput"] label {{ display: none !important; }}
         .stTextInput>div>div>input {{
-            background-color: rgba(30, 41, 59, 0.8) !important; color: #F8FAFC !important; border-radius: 8px;
-            border: 1.5px solid rgba(255, 255, 255, 0.12); padding: 8px 10px; font-size: 0.82rem;
+            background-color: rgba(15, 23, 42, 0.7) !important; color: #F8FAFC !important; border-radius: 7px;
+            border: 1px solid rgba(56, 189, 248, 0.2); padding: 7px 9px; font-size: 0.8rem;
         }}
         .stFormSubmitButton>button {{
             width: 100% !important; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
-            color: #FFFFFF !important; font-weight: 700; border-radius: 8px; border: none; padding: 8px;
+            color: #FFFFFF !important; font-weight: 700; border-radius: 7px; border: none; padding: 7px;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -222,12 +222,12 @@ if not st.session_state.logged_in:
             st.session_state.is_registering = False
             st.rerun()
 
-    st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
 
     st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:
         st.markdown("""
-            <div class="hero-title" style="font-size: 1.35rem; margin-top: 5px;">Create your IUBAT Account</div>
+            <div class="hero-title" style="font-size: 1.25rem; margin-top: 4px;">Create your IUBAT Account</div>
             <div class="hero-subtitle">Access campus services, academic tools, and student portals instantly.</div>
         """, unsafe_allow_html=True)
 
@@ -256,7 +256,7 @@ if not st.session_state.logged_in:
 
     else:
         st.markdown(f"""
-            <div class="hero-showcase" style="margin-top: 5px;">
+            <div class="hero-showcase" style="margin-top: 4px;">
                 <div class="floating-badge">🚨</div>
                 <div class="floating-badge">👨‍🏫</div>
                 {avatar_html}
@@ -275,7 +275,7 @@ if not st.session_state.logged_in:
             with col1:
                 remember_me = st.checkbox("Remember me")
             with col2:
-                st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' style='color: #38BDF8; font-size: 0.7rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
+                st.markdown("<div style='text-align: right; padding-top: 3px;'><a href='#' style='color: #38BDF8; font-size: 0.68rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:
@@ -288,7 +288,7 @@ if not st.session_state.logged_in:
                 else:
                     st.error("❌ Please enter both ID Number and Password.")
 
-    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 10px; margin-top: 12px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 9px; margin-top: 10px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 else:

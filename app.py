@@ -51,9 +51,9 @@ st.markdown(f"""
         top: 0; left: 0; width: 100%; height: 100%;
         background: url('{bg_image_data}') no-repeat center center fixed;
         background-size: cover;
-        filter: blur(1.5px);
-        -webkit-filter: blur(1.5px);
-        transform: scale(1.02);
+        filter: blur(1.0px);
+        -webkit-filter: blur(1.0px);
+        transform: scale(1.05);
         z-index: 0;
     }}
     
@@ -219,7 +219,7 @@ with st.form("login_form"):
         <div class='card-subtitle'>SMART PORTAL FOR INNOVATION & ACADEMICS</div>
     """, unsafe_allow_html=True)
 
-    user_id = st.text_input("ID Number", placeholder="🆔 ID Number *")
+    user_id = st.text_input("Your ID Number", placeholder="Your ID Number *")
     password = st.text_input("Password", type="password", placeholder="🔒 Password *")
 
     col1, col2 = st.columns([1.2, 1])
@@ -228,7 +228,7 @@ with st.form("login_form"):
     with col2:
         st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' class='forgot-pass'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
-    submit_btn = st.form_submit_button("Submit")
+    submit_btn = st.form_submit_button("Login")
     if submit_btn:
         if user_id and password:
             st.success(f"Welcome back, {user_id}!")

@@ -7,7 +7,7 @@ import time
 st.set_page_config(
     page_title="IUBAT Nexus | Smart Portal",
     page_icon="🎓",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
@@ -87,7 +87,7 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
     st.session_state.splash_shown = True
     st.rerun()
 
-# --- Dynamic Styling & Layout ---
+# --- Google-Inspired Styling & Top Navigation ---
 if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
@@ -101,42 +101,32 @@ if not st.session_state.logged_in:
             background: rgba(9, 13, 22, 0.78); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 1.2rem !important; max-width: 520px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 1rem !important; max-width: 950px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
-        /* Perfect Header Layout for Left & Right Corner */
-        .top-navbar {{
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 25px; width: 100%; gap: 10px; flex-wrap: wrap;
+        /* Navbar Layout */
+        .nav-brand-container {{
+            display: flex; align-items: center; gap: 12px; color: #FFFFFF; font-weight: 800; font-size: 1.25rem; white-space: nowrap;
         }}
-        .nav-brand {{
-            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 1.1rem;
-        }}
-        .nav-brand img {{ width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
-        
-        .nav-actions {{ display: flex; align-items: center; gap: 8px; }}
+        .nav-brand-container img {{ width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
 
-        /* Custom Streamlit Button Styling for Full Text Display */
-        .stButton>button {{
-            background: rgba(30, 41, 59, 0.85) !important;
-            color: #F8FAFC !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            border-radius: 8px !important;
-            font-size: 0.78rem !important;
+        /* Custom Streamlit Button Styling to prevent truncation and match glassmorphism */
+        div.stButton > button {{
+            width: 100% !important;
+            border-radius: 10px !important;
             font-weight: 600 !important;
-            padding: 6px 12px !important;
+            font-size: 0.88rem !important;
+            padding: 8px 14px !important;
             white-space: nowrap !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
+            overflow: visible !important;
+            text-overflow: clip !important;
         }}
-        .stButton>button:hover {{
-            background: rgba(51, 65, 85, 0.95) !important;
-            border-color: #38BDF8 !important;
-            color: #38BDF8 !important;
-        }}
-        
+
         /* Hero Section */
+        .hero-container {{
+            max-width: 480px; margin: 30px auto 0 auto;
+        }}
         .hero-showcase {{
             display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 18px;
         }}
@@ -183,7 +173,7 @@ else:
     st.markdown("""
         <style>
         .stApp { background: #0F172A !important; }
-        .block-container { position: relative; z-index: 1; padding-top: 1.5rem !important; padding-bottom: 2rem !important; max-width: 420px !important; margin: auto !important; }
+        .block-container { position: relative; z-index: 1; padding-top: 1rem !important; padding-bottom: 2rem !important; max-width: 480px !important; margin: auto !important; }
         #MainMenu, header, footer {visibility: hidden;}
 
         .app-header {
@@ -210,28 +200,32 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # Top Navbar: Left corner brand, Right corner full text buttons
-    col_left, col_right1, col_right2 = st.columns([1.5, 1.1, 1.1])
+    # Top Navbar strictly aligned: Left corner "IUBAT Nexus", Right corner "Create an account" & "Go to Account"
+    col_left, col_mid, col_btn1, col_btn2 = st.columns([2.2, 0.8, 1.5, 1.5])
     
     with col_left:
         st.markdown(f"""
-            <div class="nav-brand">
+            <div class="nav-brand-container">
                 {logo_small} IUBAT Nexus
             </div>
         """, unsafe_allow_html=True)
         
-    with col_right1:
+    with col_mid:
+        st.write("") # Spacer
+
+    with col_btn1:
         if st.button("Create an account", use_container_width=True):
             st.session_state.is_registering = True
             st.rerun()
-            
-    with col_right2:
-        if st.button("Go to Account", use_container_width=True):
+
+    with col_btn2:
+        if st.button("Go to Account", type="primary", use_container_width=True):
             st.session_state.is_registering = False
             st.rerun()
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
 
+    st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:
         # --- Register View ---
         st.markdown("""
@@ -298,6 +292,7 @@ if not st.session_state.logged_in:
                     st.error("❌ Please enter both ID Number and Password.")
 
     st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top: 15px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 else:
     # --- Main Logged-In Dashboard ---
@@ -314,7 +309,7 @@ else:
         </div>
     """, unsafe_allow_html=True)
 
-    # Top Tab Navigation inside Dashboard (includes Go to Account button for updating info)
+    # Top Tab Navigation inside Dashboard
     col_t1, col_t2, col_t3 = st.columns(3)
     with col_t1:
         if st.button("🏠 Home", use_container_width=True):
@@ -426,7 +421,7 @@ else:
                 <div class='route-stop'>📍 Tongi Station Road</div>
                 <div class='route-stop'>📍 Amtoly Mor</div>
                 <div class='route-stop'>📍 T & T Bazar</div>
-                <div class='route-stop'>📍 Shilmoon</div>
+                <div class='route-stop'>ICs Shilmoon</div>
                 <div class='route-stop'>📍 Nimtoly Bridge</div>
             """, unsafe_allow_html=True)
 

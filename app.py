@@ -30,13 +30,16 @@ def get_asset_base64(filename):
     return None
 
 def get_fixed_background():
-    bg_data = get_asset_base64("bg.jpg")
+    # Directly look for bp.jpg since you saved it with that name
+    bg_data = get_asset_base64("bp.jpg")
     if bg_data:
         return bg_data
+        
     assets_dir = os.path.join(os.getcwd(), "assets")
     if os.path.exists(assets_dir):
+        exts = ('.png', '.jpg', '.jpeg', '.webp')
         for f in sorted(os.listdir(assets_dir)):
-            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')) and 'bg' in f.lower():
+            if f.lower().endswith(exts):
                 path = os.path.join(assets_dir, f)
                 with open(path, "rb") as file:
                     encoded = base64.b64encode(file.read()).decode()
@@ -60,7 +63,7 @@ st.markdown(f"""
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: url('{bg_image_data}') no-repeat center bottom fixed;
+        background: url('{bg_image_data}') no-repeat center center fixed;
         background-size: cover;
         z-index: 0;
     }}
@@ -70,7 +73,7 @@ st.markdown(f"""
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.4);
+        background: rgba(9, 13, 22, 0.45);
         z-index: 0;
     }}
     

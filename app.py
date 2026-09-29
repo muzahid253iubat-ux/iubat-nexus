@@ -4,7 +4,7 @@ import base64
 
 # --- App Setup ---
 st.set_page_config(
-    page_title="IUBAT Nexus | Mobile Portal",
+    page_title="IUBAT Nexus | Portal",
     page_icon="🎓",
     layout="centered",
     initial_sidebar_state="collapsed"
@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Centered Mobile App Simulation ---
+# --- Custom CSS for Exact Smartphone Mockup & UI Styling ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(10, 15, 30, 0.6), rgba(10, 15, 30, 0.75)), 
+        background: linear-gradient(rgba(10, 15, 30, 0.4), rgba(10, 15, 30, 0.6)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -49,133 +49,143 @@ st.markdown(f"""
         background-repeat: no-repeat;
     }}
     
-    /* Hide Streamlit elements to keep it clean */
     #MainMenu, header, footer {{visibility: hidden;}}
     
-    /* Center wrapper for the mobile card */
     .block-container {{
-        padding-top: 3rem !important;
-        padding-bottom: 3rem !important;
-        max-width: 440px !important;
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+        max-width: 420px !important;
     }}
     
-    /* Mobile App Frame Container */
-    .mobile-frame {{
-        background: rgba(15, 23, 42, 0.88);
-        padding: 30px 24px;
-        border-radius: 35px;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 2px solid rgba(255, 255, 255, 0.18);
+    /* Phone Mockup Outer Frame */
+    .phone-mockup {{
+        background: #0F172A;
+        border-radius: 45px;
+        padding: 15px 15px 25px 15px;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85);
+        border: 4px solid #334155;
     }}
     
-    /* Simulated Phone Status Bar */
+    /* Phone Status Bar */
     .status-bar {{
         display: flex;
         justify-content: space-between;
-        color: #94A3B8;
+        color: #FFFFFF;
         font-size: 13px;
         font-weight: 600;
-        margin-bottom: 20px;
-        padding: 0 5px;
+        padding: 5px 15px 10px 15px;
     }}
     
-    .app-logo-area {{
+    /* Inner Card matching reference style */
+    .login-card {{
+        background: #FFFFFF;
+        padding: 28px 22px;
+        border-radius: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        color: #0F172A;
+    }}
+    
+    .crest-box {{
         text-align: center;
-        margin-bottom: 15px;
+        margin-bottom: 12px;
     }}
     
-    .app-logo-icon {{
-        font-size: 38px;
-        background: rgba(255, 255, 255, 0.1);
+    .crest-icon {{
+        font-size: 36px;
+        background: #F1F5F9;
         display: inline-block;
-        padding: 12px;
-        border-radius: 20px;
-        margin-bottom: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 10px 14px;
+        border-radius: 16px;
+        border: 1px solid #E2E8F0;
     }}
     
-    .main-title {{
-        font-size: 1.6rem;
+    .portal-title {{
+        font-size: 1.45rem;
         font-weight: 800;
-        color: #FFFFFF;
+        color: #0F172A;
         text-align: center;
-        letter-spacing: 0.5px;
         margin-bottom: 2px;
+        letter-spacing: 0.3px;
     }}
     
-    .sub-title {{
-        color: #94A3B8 !important;
+    .portal-subtitle {{
+        color: #64748B;
         text-align: center;
-        font-size: 0.8rem;
-        font-weight: 500;
-        margin-bottom: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: 22px;
     }}
     
     label {{
-        color: #E2E8F0 !important;
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
+        color: #334155 !important;
+        font-weight: 700 !important;
+        font-size: 0.88rem !important;
     }}
     
     .stTextInput>div>div>input {{
-        background-color: rgba(255, 255, 255, 0.95) !important;
+        background-color: #F8FAFC !important;
         color: #0F172A !important;
         font-weight: 600;
         border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 12px;
-        font-size: 0.95rem;
+        border: 1px solid #CBD5E1;
+        padding: 11px;
+        font-size: 0.92rem;
     }}
     
     .stTextInput>div>div>input:focus {{
-        border-color: #3B82F6;
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        border-color: #1E293B;
+        box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.15);
+    }}
+    
+    .stCheckbox {{
+        margin-top: -5px;
+        margin-bottom: 5px;
     }}
     
     .stButton>button {{
         width: 100%;
-        background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+        background: #1E293B;
         color: white;
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 0.98rem;
         border: none;
         padding: 12px;
         border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        transition: all 0.3s ease;
-        margin-top: 10px;
+        box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
+        transition: all 0.2s ease;
+        margin-top: 5px;
     }}
     
     .stButton>button:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
-        background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
+        background: #0F172A;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.4);
     }}
     
-    .app-footer {{
+    .phone-footer {{
         text-align: center;
-        color: rgba(255, 255, 255, 0.6);
+        color: #64748B;
         font-size: 11px;
-        margin-top: 25px;
-        letter-spacing: 0.3px;
+        margin-top: 20px;
+        font-weight: 500;
+        line-height: 1.4;
     }}
     </style>
 """, unsafe_allow_html=True)
 
-# --- Main App Container (Mobile Card Frame) ---
-st.markdown("<div class='mobile-frame'>", unsafe_allow_html=True)
+# --- UI Render ---
+st.markdown("<div class='phone-mockup'>", unsafe_allow_html=True)
 
-# Fake mobile status bar
-st.markdown("<div class='status-bar'><span>6:46</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
+# Status bar
+st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
 
-# App Logo and Title
+# White inner card container
+st.markdown("<div class='login-card'>", unsafe_allow_html=True)
+
 st.markdown("""
-    <div class='app-logo-area'>
-        <div class='app-logo-icon'>🎓</div>
-        <div class='main-title'>IUBAT Nexus</div>
-        <div class='sub-title'>Excellence in Higher Education & Research</div>
+    <div class='crest-box'>
+        <div class='crest-icon'>🛡️</div>
+        <div class='portal-title'>IUBAT Nexus</div>
+        <div class='portal-subtitle'>Excellence in Higher Education & Research</div>
     </div>
 """, unsafe_allow_html=True)
 
@@ -190,6 +200,10 @@ if st.button("Submit"):
         st.success(f"Welcome back, {user_id}!")
     else:
         st.error("❌ Please enter both ID Number and Password.")
-        
-st.markdown("<div class='app-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True) # End login-card
+
+# Footer inside phone mockup
+st.markdown("<div class='phone-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True) # End phone-mockup

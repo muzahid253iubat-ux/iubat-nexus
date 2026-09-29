@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Mobile App Layout Simulation ---
+# --- Custom CSS for Centered Mobile App Simulation ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(10, 15, 30, 0.5), rgba(10, 15, 30, 0.65)), 
+        background: linear-gradient(rgba(10, 15, 30, 0.6), rgba(10, 15, 30, 0.75)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -49,17 +49,25 @@ st.markdown(f"""
         background-repeat: no-repeat;
     }}
     
+    /* Hide Streamlit elements to keep it clean */
+    #MainMenu, header, footer {{visibility: hidden;}}
+    
+    /* Center wrapper for the mobile card */
+    .block-container {{
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+        max-width: 440px !important;
+    }}
+    
     /* Mobile App Frame Container */
     .mobile-frame {{
-        background: rgba(15, 23, 42, 0.85);
-        padding: 30px 25px;
+        background: rgba(15, 23, 42, 0.88);
+        padding: 30px 24px;
         border-radius: 35px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        border: 2px solid rgba(255, 255, 255, 0.15);
-        max-width: 410px;
-        margin: 0 auto;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.18);
     }}
     
     /* Simulated Phone Status Bar */
@@ -69,22 +77,22 @@ st.markdown(f"""
         color: #94A3B8;
         font-size: 13px;
         font-weight: 600;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         padding: 0 5px;
     }}
     
     .app-logo-area {{
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }}
     
     .app-logo-icon {{
-        font-size: 40px;
+        font-size: 38px;
         background: rgba(255, 255, 255, 0.1);
         display: inline-block;
         padding: 12px;
         border-radius: 20px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         border: 1px solid rgba(255, 255, 255, 0.15);
     }}
     
@@ -100,9 +108,9 @@ st.markdown(f"""
     .sub-title {{
         color: #94A3B8 !important;
         text-align: center;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         font-weight: 500;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }}
     
     label {{
@@ -137,7 +145,7 @@ st.markdown(f"""
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         transition: all 0.3s ease;
-        margin-top: 5px;
+        margin-top: 10px;
     }}
     
     .stButton>button:hover {{
@@ -150,39 +158,38 @@ st.markdown(f"""
         text-align: center;
         color: rgba(255, 255, 255, 0.6);
         font-size: 11px;
-        margin-top: 20px;
+        margin-top: 25px;
         letter-spacing: 0.3px;
     }}
     </style>
 """, unsafe_allow_html=True)
 
-# --- Main App Container (Mobile Frame Look) ---
-with st.container():
-    st.markdown("<div class='mobile-frame'>", unsafe_allow_html=True)
-    
-    # Fake mobile status bar
-    st.markdown("<div class='status-bar'><span>6:44</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
-    
-    # App Logo and Title
-    st.markdown("""
-        <div class='app-logo-area'>
-            <div class='app-logo-icon'>🎓</div>
-            <div class='main-title'>IUBAT Nexus</div>
-            <div class='sub-title'>Excellence in Higher Education & Research</div>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
-    password = st.text_input("Password *", type="password", placeholder="••••••••")
-    
-    remember_me = st.checkbox("Remember me")
-    
-    st.write("")
-    if st.button("Submit"):
-        if user_id and password:
-            st.success(f"Welcome back, {user_id}!")
-        else:
-            st.error("❌ Please enter both ID Number and Password.")
-            
-    st.markdown("<div class='app-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+# --- Main App Container (Mobile Card Frame) ---
+st.markdown("<div class='mobile-frame'>", unsafe_allow_html=True)
+
+# Fake mobile status bar
+st.markdown("<div class='status-bar'><span>6:46</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
+
+# App Logo and Title
+st.markdown("""
+    <div class='app-logo-area'>
+        <div class='app-logo-icon'>🎓</div>
+        <div class='main-title'>IUBAT Nexus</div>
+        <div class='sub-title'>Excellence in Higher Education & Research</div>
+    </div>
+""", unsafe_allow_html=True)
+
+user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
+password = st.text_input("Password *", type="password", placeholder="••••••••")
+
+remember_me = st.checkbox("Remember me")
+
+st.write("")
+if st.button("Submit"):
+    if user_id and password:
+        st.success(f"Welcome back, {user_id}!")
+    else:
+        st.error("❌ Please enter both ID Number and Password.")
+        
+st.markdown("<div class='app-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)

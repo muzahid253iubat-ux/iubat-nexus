@@ -258,7 +258,7 @@ with st.form("login_form"):
         <div class='card-subtitle'>Smart Portal for Innovation & Academics</div>
     """, unsafe_allow_html=True)
 
-    user_id = st.text_input("ID Number", placeholder="Your ID Number *")
+    user_id = st.text_input("Your ID Number", placeholder="Your ID Number *")
     password = st.text_input("Password", type="password", placeholder="Password *")
 
     col1, col2 = st.columns([1.1, 1])

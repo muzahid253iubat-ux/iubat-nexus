@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Clean Glassmorphism & High Readability ---
+# --- Custom CSS for Clear Background & Vibrant Unique Text Colors ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(10, 25, 47, 0.78), rgba(15, 23, 42, 0.85)), 
+        background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.5)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -50,93 +50,98 @@ st.markdown(f"""
     }}
     
     .main-title {{
-        font-size: 2.8rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: 3rem;
+        font-weight: 900;
+        color: #FFD700;
         text-align: center;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         margin-bottom: 0px;
-        text-shadow: 0 4px 20px rgba(0, 198, 255, 0.3);
+        text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.4);
     }}
     
     .sub-title {{
-        color: #CBD5E1 !important;
+        color: #00FFFF !important;
         text-align: center;
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-top: 5px;
-        margin-bottom: 30px;
-        letter-spacing: 0.5px;
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-top: 8px;
+        margin-bottom: 35px;
+        letter-spacing: 0.8px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
     }}
     
     .login-container {{
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(10, 20, 35, 0.82);
         padding: 40px;
         border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 215, 0, 0.3);
         max-width: 440px;
         margin: 0 auto;
     }}
     
     .login-header {{
-        color: #FFFFFF !important;
+        color: #FFD700 !important;
         text-align: center;
-        font-size: 1.8rem;
-        font-weight: 700;
+        font-size: 1.9rem;
+        font-weight: 800;
         margin-bottom: 25px;
         letter-spacing: 0.5px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
     }}
     
     label {{
-        color: #F1F5F9 !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
+        color: #00FFFF !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
     }}
     
     .stTextInput>div>div>input {{
-        background-color: rgba(15, 23, 42, 0.7) !important;
-        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        color: #0F172A !important;
+        font-weight: 600;
         border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 2px solid #00FFFF;
         padding: 14px;
         font-size: 1rem;
     }}
     
     .stTextInput>div>div>input:focus {{
-        border-color: #00C6FF;
-        box-shadow: 0 0 12px rgba(0, 198, 255, 0.4);
+        border-color: #FFD700;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
     }}
     
     .stButton>button {{
         width: 100%;
-        background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
-        color: white;
-        font-weight: 700;
-        font-size: 1.05rem;
+        background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+        color: #0F172A;
+        font-weight: 800;
+        font-size: 1.1rem;
         border: none;
         padding: 14px;
         border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0, 114, 255, 0.4);
+        box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
         transition: all 0.3s ease;
         margin-top: 10px;
     }}
     
     .stButton>button:hover {{
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 114, 255, 0.6);
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.8);
+        background: linear-gradient(135deg, #FFE135 0%, #FFA500 100%);
     }}
     
     .footer {{
         text-align: center;
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 12px;
+        color: #FFFFFF;
+        font-weight: 600;
+        font-size: 13px;
         margin-top: 50px;
         letter-spacing: 0.5px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
     }}
     </style>
 """, unsafe_allow_html=True)

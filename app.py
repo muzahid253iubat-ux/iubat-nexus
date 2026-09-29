@@ -79,7 +79,7 @@ st.markdown(f"""
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 7.5rem !important; /* Box-ke ektu niche namanor jonno padding bariye dewa holo */
+        padding-top: 11.5rem !important; /* Box-ke aro ektu niche namanor jonno padding bariye dewa holo */
         padding-bottom: 3rem !important;
         max-width: 420px !important;
     }}

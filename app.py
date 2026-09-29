@@ -109,7 +109,7 @@ if not st.session_state.logged_in:
             padding: 0 24px; z-index: 999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
         }}
         .nav-brand {{
-            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; text-decoration: none;
+            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; text-decoration: none; white-space: nowrap;
         }}
         .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8; }}
 
@@ -117,9 +117,9 @@ if not st.session_state.logged_in:
             display: flex; align-items: center; gap: 10px;
         }}
 
-        /* Push main Streamlit content down below fixed header and restrict login card width */
+        /* Increased max-width slightly so buttons and form have adequate room */
         .block-container {{
-            position: relative; z-index: 1; padding-top: 75px !important; max-width: 440px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 75px !important; max-width: 560px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
@@ -146,26 +146,26 @@ if not st.session_state.logged_in:
         .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
 
         .hero-title {{
-            text-align: center; color: #F8FAFC !important; font-size: 1.15rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
+            text-align: center; color: #F8FAFC !important; font-size: 1.25rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
         }}
         .hero-subtitle {{
-            text-align: center; color: #94A3B8 !important; font-size: 0.7rem; line-height: 1.3; margin-bottom: 8px; padding: 0 2px;
+            text-align: center; color: #94A3B8 !important; font-size: 0.75rem; line-height: 1.3; margin-bottom: 8px; padding: 0 2px;
         }}
 
         /* Compact ID/Pass Box */
         div[data-testid="stForm"] {{
             background: rgba(11, 18, 33, 0.9) !important; backdrop-filter: blur(14px);
-            border-radius: 12px !important; padding: 10px 10px 6px 10px !important;
+            border-radius: 12px !important; padding: 12px 14px 8px 14px !important;
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55) !important; border: 1px solid rgba(56, 189, 248, 0.15) !important;
         }}
         div[data-testid="stTextInput"] label {{ display: none !important; }}
         .stTextInput>div>div>input {{
             background-color: rgba(15, 23, 42, 0.75) !important; color: #F8FAFC !important; border-radius: 6px;
-            border: 1px solid rgba(56, 189, 248, 0.2); padding: 6px 8px; font-size: 0.75rem;
+            border: 1px solid rgba(56, 189, 248, 0.2); padding: 7px 10px; font-size: 0.8rem;
         }}
         .stFormSubmitButton>button {{
             width: 100% !important; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
-            color: #FFFFFF !important; font-weight: 700; border-radius: 6px; border: none; padding: 6px; font-size: 0.78rem;
+            color: #FFFFFF !important; font-weight: 700; border-radius: 6px; border: none; padding: 7px; font-size: 0.8rem;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -174,7 +174,7 @@ else:
     st.markdown("""
         <style>
         .stApp { background: #0F172A !important; }
-        .block-container { position: relative; z-index: 1; padding-top: 1rem !important; padding-bottom: 2rem !important; max-width: 420px !important; margin: auto !important; }
+        .block-container { position: relative; z-index: 1; padding-top: 1rem !important; padding-bottom: 2rem !important; max-width: 520px !important; margin: auto !important; }
         #MainMenu, header, footer {visibility: hidden;}
 
         .app-header {
@@ -213,8 +213,8 @@ if not st.session_state.logged_in:
         </div>
     """, unsafe_allow_html=True)
 
-    # Placing buttons in a top helper row mapped to the right side of the global header via flex styling
-    col_spacer, col_b1, col_b2 = st.columns([2.5, 1.1, 1.1])
+    # Placing buttons in a top helper row mapped to the right side of the global header with adequate spacing
+    col_spacer, col_b1, col_b2 = st.columns([1.9, 1.35, 1.35])
     with col_b1:
         if st.button("Create an account", use_container_width=True, key="btn_create_acc"):
             st.session_state.is_registering = True
@@ -227,7 +227,7 @@ if not st.session_state.logged_in:
     st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:
         st.markdown("""
-            <div class="hero-title" style="font-size: 1.1rem; margin-top: 4px;">Create your IUBAT Account</div>
+            <div class="hero-title" style="font-size: 1.15rem; margin-top: 4px;">Create your IUBAT Account</div>
             <div class="hero-subtitle">Access campus services and student portals instantly.</div>
         """, unsafe_allow_html=True)
 
@@ -275,7 +275,7 @@ if not st.session_state.logged_in:
             with col1:
                 remember_me = st.checkbox("Remember me")
             with col2:
-                st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' style='color: #38BDF8; font-size: 0.65rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
+                st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' style='color: #38BDF8; font-size: 0.7rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:
@@ -288,16 +288,16 @@ if not st.session_state.logged_in:
                 else:
                     st.error("❌ Please enter both ID Number and Password.")
 
-    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 9px; margin-top: 8px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 10px; margin-top: 10px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 else:
     st.markdown(f"""
         <div class='app-header'>
             <div>
-                <div style='font-size: 0.68rem; color: #94A3B8;'>Welcome back,</div>
-                <div style='font-size: 1rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
-                <div style='font-size: 0.68rem; color: #38BDF8;'>ID: {st.session_state.user_id}</div>
+                <div style='font-size: 0.7rem; color: #94A3B8;'>Welcome back,</div>
+                <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
+                <div style='font-size: 0.7rem; color: #38BDF8;'>ID: {st.session_state.user_id}</div>
             </div>
             <div>
                 <span class='badge-tag'>🟢 Online</span>
@@ -326,7 +326,7 @@ else:
     st.markdown("<br>", unsafe_allow_html=True)
 
     if st.session_state.active_tab == "Home":
-        st.markdown("<div style='font-size: 0.85rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
 
         if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
             st.session_state.active_tab = "SOS"
@@ -366,12 +366,12 @@ else:
             <div class='sched-card' style='border-left: 4px solid #EF4444;'>
                 <b>Campus Security Control Room</b><br>
                 📞 Hotline: +880 1713-393291<br>
-                <span style='font-size: 0.72rem; color: #94A3B8;'>Available 24/7 for urgent assistance.</span>
+                <span style='font-size: 0.75rem; color: #94A3B8;'>Available 24/7 for urgent assistance.</span>
             </div>
             <div class='sched-card' style='border-left: 4px solid #F59E0B;'>
                 <b>Medical Center Emergency</b><br>
                 📞 Ambulance: +880 1819-000000<br>
-                <span style='font-size: 0.72rem; color: #94A3B8;'>First aid and emergency evacuation.</span>
+                <span style='font-size: 0.75rem; color: #94A3B8;'>First aid and emergency evacuation.</span>
             </div>
         """, unsafe_allow_html=True)
         if st.button("🚨 Trigger Panic Alert (Test)", type="primary", use_container_width=True):
@@ -403,11 +403,11 @@ else:
                     <span style='font-weight: 700;'>Bus 02: Campus to Tongi</span>
                     <span class='badge-tag'>On Trip</span>
                 </div>
-                <div style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'>
+                <div style='color: #94A3B8; font-size: 0.8rem; margin-bottom: 6px;'>
                     🕒 Departure: <b>05:30 PM</b> | ETA: <b>07:30 PM</b>
                 </div>
-                <div style='font-size: 0.78rem;'><b>Driver:</b> Sobuj Hossain (01621796157)</div>
-                <div style='font-size: 0.78rem;'><b>Helper:</b> Ripon (01861455868)</div>
+                <div style='font-size: 0.8rem;'><b>Driver:</b> Sobuj Hossain (01621796157)</div>
+                <div style='font-size: 0.8rem;'><b>Helper:</b> Ripon (01861455868)</div>
             </div>
         """, unsafe_allow_html=True)
         with st.expander("🗺 Route Stoppages"):

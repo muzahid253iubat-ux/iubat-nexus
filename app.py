@@ -79,7 +79,7 @@ st.markdown(f"""
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 11.5rem !important; /* Box-ke aro ektu niche namanor jonno padding bariye dewa holo */
+        padding-top: 11.5rem !important;
         padding-bottom: 3rem !important;
         max-width: 420px !important;
     }}
@@ -210,14 +210,24 @@ st.markdown(f"""
         box-shadow: 0 10px 25px rgba(37, 99, 235, 0.6) !important;
     }}
     
+    /* Enhanced Footer with Background Card for Clear Readability */
     .portal-footer {{
         text-align: center;
-        color: #94A3B8;
-        font-size: 11px;
+        color: #CBD5E1;
+        font-size: 11.5px;
         margin-top: 20px;
-        font-weight: 500;
-        letter-spacing: 0.3px;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        background: rgba(15, 23, 42, 0.75);
+        padding: 8px 16px;
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -254,4 +264,4 @@ with st.form("login_form"):
         else:
             st.error("❌ Please enter both ID Number and Password.")
 
-st.markdown("<div class='portal-footer'>Version: 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
+st.markdown("<div class='portal-footer'>Version: 1.0.0 Beta &nbsp;|&nbsp; © 2026 IUBAT Nexus</div>", unsafe_allow_html=True)

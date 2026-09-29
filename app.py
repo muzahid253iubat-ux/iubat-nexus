@@ -105,13 +105,13 @@ if not st.session_state.logged_in:
         }}
         .stApp::after {{
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 13, 22, 0.84); z-index: 0;
+            background: rgba(9, 13, 22, 0.62); z-index: 0;
         }}
         
         /* Fixed True Global Header Bar */
         .global-header {{
             position: fixed; top: 0; left: 0; width: 100%; height: 56px;
-            background: rgba(11, 18, 33, 0.95); backdrop-filter: blur(12px);
+            background: rgba(11, 18, 33, 0.88); backdrop-filter: blur(8px);
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 24px; z-index: 99999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
         }}
@@ -179,7 +179,7 @@ if not st.session_state.logged_in:
 
         /* Compact ID/Pass Box */
         div[data-testid="stForm"] {{
-            background: rgba(11, 18, 33, 0.9) !important; backdrop-filter: blur(14px);
+            background: rgba(11, 18, 33, 0.85) !important; backdrop-filter: blur(10px);
             border-radius: 12px !important; padding: 12px 14px 8px 14px !important;
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55) !important; border: 1px solid rgba(56, 189, 248, 0.15) !important;
         }}

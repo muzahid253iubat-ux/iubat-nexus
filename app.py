@@ -57,24 +57,67 @@ st.markdown(f"""
         z-index: 0;
     }}
     
-    /* Overlay for readability */
+    /* Darker overlay for high contrast readability */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.45);
+        background: rgba(15, 23, 42, 0.55);
         z-index: 0;
     }}
     
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 3.5rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 2rem !important;
         max-width: 440px !important;
     }}
     
     #MainMenu, header, footer {{visibility: hidden;}}
+
+    /* First Section: Crisp High-Contrast Banner Card */
+    .banner-card {{
+        background: linear-gradient(135deg, #090D16 0%, #1E293B 100%) !important;
+        border-radius: 20px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        margin-bottom: 24px;
+    }}
+    
+    .banner-crest {{
+        background: #0A192F;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+        border: 2.5px solid #FFFFFF;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }}
+    
+    .banner-title {{
+        color: #FFFFFF !important;
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    }}
+    
+    .banner-subtitle {{
+        color: #38BDF8 !important;
+        font-size: 0.7rem;
+        margin-top: 5px;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        font-weight: 700;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    }}
 
     /* Floating Avatar Header */
     .avatar-container {{
@@ -99,7 +142,7 @@ st.markdown(f"""
         font-size: 38px;
     }}
 
-    /* Form Container acting as the gorgeous White Card */
+    /* Form Container acting as White Card */
     div[data-testid="stForm"] {{
         background: #FFFFFF !important;
         border-radius: 24px !important;
@@ -169,7 +212,7 @@ st.markdown(f"""
     
     .portal-footer {{
         text-align: center;
-        color: #F1F5F9;
+        color: #FFFFFF;
         font-size: 11px;
         margin-top: 25px;
         font-weight: 600;
@@ -181,6 +224,15 @@ st.markdown(f"""
 
 # --- UI Render ---
 
+# 1st Section: Crisp Banner Card
+st.markdown("""
+    <div class='banner-card'>
+        <div class='banner-crest'>🎓</div>
+        <div class='banner-title'>IUBAT Nexus</div>
+        <div class='banner-subtitle'>Smart Portal for Innovation & Academics</div>
+    </div>
+""", unsafe_allow_html=True)
+
 # Floating Avatar Header
 st.markdown("""
     <div class='avatar-container'>
@@ -188,7 +240,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Login Form (Acts as the White Card)
+# Login Form (White Card)
 with st.form("login_form"):
     user_id = st.text_input("Username", placeholder="👤 Username")
     password = st.text_input("Password", type="password", placeholder="🔒 Password")

@@ -117,7 +117,6 @@ if not st.session_state.logged_in:
             display: flex; align-items: center; gap: 10px;
         }}
 
-        /* Increased max-width slightly so buttons and form have adequate room */
         .block-container {{
             position: relative; z-index: 1; padding-top: 75px !important; max-width: 560px !important; margin: auto !important;
         }}
@@ -128,25 +127,25 @@ if not st.session_state.logged_in:
             width: 100%; margin: 0 auto;
         }}
         .hero-showcase {{
-            display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px;
+            display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 10px;
         }}
         .floating-badge {{
-            width: 46px; height: 46px; background: rgba(11, 18, 33, 0.85); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,0.4);
-            border: 1.5px solid rgba(56, 189, 248, 0.3); font-size: 1.4rem; animation: float 3s ease-in-out infinite;
+            width: 64px; height: 64px; background: rgba(11, 18, 33, 0.88); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+            border: 2px solid rgba(56, 189, 248, 0.35); font-size: 1.9rem; animation: float 3s ease-in-out infinite;
         }}
         .floating-badge:nth-child(even) {{ animation-delay: 1.5s; }}
-        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-4px); }} }}
+        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-5px); }} }}
 
         .central-avatar {{
-            width: 64px; height: 64px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
+            width: 85px; height: 85px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); border: 2.5px solid rgba(56, 189, 248, 0.6); overflow: hidden;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45); border: 3px solid rgba(56, 189, 248, 0.7); overflow: hidden;
         }}
         .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
 
         .hero-title {{
-            text-align: center; color: #F8FAFC !important; font-size: 1.25rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
+            text-align: center; color: #F8FAFC !important; font-size: 1.3rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
         }}
         .hero-subtitle {{
             text-align: center; color: #94A3B8 !important; font-size: 0.75rem; line-height: 1.3; margin-bottom: 8px; padding: 0 2px;
@@ -201,19 +200,16 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # Fixed Global Navbar with Logo on Extreme Left and Buttons on Extreme Right (Uncut & Fully Visible)
     st.markdown(f"""
         <div class="global-header">
             <div class="nav-brand">
                 {logo_small} IUBAT Nexus
             </div>
             <div class="nav-actions" id="navbar-buttons-mount">
-                <!-- Buttons injected via Streamlit columns below for reactivity -->
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # Placing buttons in a top helper row mapped to the right side of the global header with adequate spacing
     col_spacer, col_b1, col_b2 = st.columns([1.9, 1.35, 1.35])
     with col_b1:
         if st.button("Create an account", use_container_width=True, key="btn_create_acc"):

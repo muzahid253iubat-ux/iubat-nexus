@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for High Readability & Unique Design ---
+# --- Custom CSS for Clean Glassmorphism & High Readability ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(5, 11, 20, 0.88), rgba(10, 25, 47, 0.92)), 
+        background: linear-gradient(rgba(10, 25, 47, 0.78), rgba(15, 23, 42, 0.85)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -62,7 +62,7 @@ st.markdown(f"""
     }}
     
     .sub-title {{
-        color: #94A3B8 !important;
+        color: #CBD5E1 !important;
         text-align: center;
         font-size: 1.1rem;
         font-weight: 500;
@@ -72,19 +72,19 @@ st.markdown(f"""
     }}
     
     .login-container {{
-        background: rgba(15, 23, 42, 0.85);
+        background: rgba(255, 255, 255, 0.08);
         padding: 40px;
         border-radius: 24px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         max-width: 440px;
         margin: 0 auto;
     }}
     
     .login-header {{
-        color: #F8FAFC !important;
+        color: #FFFFFF !important;
         text-align: center;
         font-size: 1.8rem;
         font-weight: 700;
@@ -93,23 +93,23 @@ st.markdown(f"""
     }}
     
     label {{
-        color: #E2E8F0 !important;
+        color: #F1F5F9 !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
     }}
     
     .stTextInput>div>div>input {{
-        background-color: rgba(30, 41, 59, 0.9) !important;
+        background-color: rgba(15, 23, 42, 0.7) !important;
         color: #ffffff !important;
         border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 14px;
         font-size: 1rem;
     }}
     
     .stTextInput>div>div>input:focus {{
         border-color: #00C6FF;
-        box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
+        box-shadow: 0 0 12px rgba(0, 198, 255, 0.4);
     }}
     
     .stButton>button {{

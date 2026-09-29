@@ -87,7 +87,7 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
     st.session_state.splash_shown = True
     st.rerun()
 
-# --- Google-Inspired Styling & Top Navigation ---
+# --- Dynamic Styling & Layout ---
 if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
@@ -101,21 +101,40 @@ if not st.session_state.logged_in:
             background: rgba(9, 13, 22, 0.78); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 1.5rem !important; max-width: 480px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 1.2rem !important; max-width: 520px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
-        /* Google Style Top Navbar */
-        .google-navbar {{
+        /* Perfect Header Layout for Left & Right Corner */
+        .top-navbar {{
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 25px; padding: 0 5px;
+            margin-bottom: 25px; width: 100%; gap: 10px; flex-wrap: wrap;
         }}
         .nav-brand {{
             display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 1.1rem;
         }}
-        .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
+        .nav-brand img {{ width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
         
-        .nav-actions {{ display: flex; align-items: center; gap: 12px; }}
+        .nav-actions {{ display: flex; align-items: center; gap: 8px; }}
+
+        /* Custom Streamlit Button Styling for Full Text Display */
+        .stButton>button {{
+            background: rgba(30, 41, 59, 0.85) !important;
+            color: #F8FAFC !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 8px !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            padding: 6px 12px !important;
+            white-space: nowrap !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }}
+        .stButton>button:hover {{
+            background: rgba(51, 65, 85, 0.95) !important;
+            border-color: #38BDF8 !important;
+            color: #38BDF8 !important;
+        }}
         
         /* Hero Section */
         .hero-showcase {{
@@ -191,24 +210,27 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # Google-style Top Navbar with "Create an account" and "Go to Account" triggers
-    col_nav1, col_nav2 = st.columns([1, 1])
-    with col_nav1:
+    # Top Navbar: Left corner brand, Right corner full text buttons
+    col_left, col_right1, col_right2 = st.columns([1.5, 1.1, 1.1])
+    
+    with col_left:
         st.markdown(f"""
-            <div class="google-navbar">
-                <div class="nav-brand">{logo_small} IUBAT Nexus</div>
+            <div class="nav-brand">
+                {logo_small} IUBAT Nexus
             </div>
         """, unsafe_allow_html=True)
-    with col_nav2:
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("Create Account", use_container_width=True):
-                st.session_state.is_registering = True
-                st.rerun()
-        with c2:
-            if st.button("Go to Account", type="primary", use_container_width=True):
-                st.session_state.is_registering = False
-                st.rerun()
+        
+    with col_right1:
+        if st.button("Create an account", use_container_width=True):
+            st.session_state.is_registering = True
+            st.rerun()
+            
+    with col_right2:
+        if st.button("Go to Account", use_container_width=True):
+            st.session_state.is_registering = False
+            st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     if st.session_state.is_registering:
         # --- Register View ---

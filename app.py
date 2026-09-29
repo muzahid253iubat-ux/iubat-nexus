@@ -15,6 +15,7 @@ st.set_page_config(
 # --- Persistent JSON Database Functions ---
 DB_FILE = "users_db.json"
 ALUMNI_DB_FILE = "alumni_db.json"
+BUS_DB_FILE = "bus_db.json"
 
 def load_json_db(filename, default_data):
     if os.path.exists(filename):
@@ -88,13 +89,30 @@ default_alumni = [
     }
 ]
 
+default_buses = [
+    {
+        "name": "Bus 02: Campus to Narshingdi",
+        "status": "On Trip",
+        "departure": "05:30 PM",
+        "arrival": "07:30 PM",
+        "driver": "Sobuj Hossain",
+        "driver_phone": "01621796157",
+        "helper": "Ripon",
+        "helper_phone": "01861455868"
+    }
+]
+
 if "users_db" not in st.session_state:
     st.session_state.users_db = load_json_db(DB_FILE, default_users)
 if "alumni_db" not in st.session_state:
     st.session_state.alumni_db = load_json_db(ALUMNI_DB_FILE, default_alumni)
+if "bus_db" not in st.session_state:
+    st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+if "is_admin" not in st.session_state:
+    st.session_state.is_admin = False
 if "user_id" not in st.session_state:
     st.session_state.user_id = ""
 if "user_name" not in st.session_state:
@@ -109,6 +127,8 @@ if "active_tab" not in st.session_state:
     st.session_state.active_tab = "Home"
 if "is_registering" not in st.session_state:
     st.session_state.is_registering = False
+if "is_admin_login" not in st.session_state:
+    st.session_state.is_admin_login = False
 if "splash_shown" not in st.session_state:
     st.session_state.splash_shown = False
 
@@ -119,6 +139,7 @@ if not st.session_state.logged_in and "session_user" in query_params:
     uid = query_params["session_user"]
     if uid in st.session_state.users_db:
         st.session_state.logged_in = True
+        st.session_state.is_admin = False
         st.session_state.user_id = uid
         st.session_state.user_name = st.session_state.users_db[uid]["name"]
         st.session_state.user_dept = st.session_state.users_db[uid]["dept"]
@@ -126,7 +147,7 @@ if not st.session_state.logged_in and "session_user" in query_params:
         st.session_state.user_photo = st.session_state.users_db[uid]["photo"]
 
 # --- Splash Screen ---
-if st.session_state.logged_in and not st.session_state.splash_shown:
+if (st.session_state.logged_in or st.session_state.is_admin) and not st.session_state.splash_shown:
     st.markdown("""
         <style>
         .stApp { background: #090D16; }
@@ -136,7 +157,7 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
         </style>
         <div class="splash-container">
             <div class="spinner-ring"></div>
-            <h2 style='font-size: 1.2rem; font-weight: 600; color: #F8FAFC;'>Loading IUBAT Nexus...</h2>
+            <h2 style='font-size: 1.2rem; font-weight: 600; color: #F8FAFC;'>Loading System Portal...</h2>
         </div>
     """, unsafe_allow_html=True)
     time.sleep(1)
@@ -145,12 +166,18 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
 
 def handle_create_acc():
     st.session_state.is_registering = True
+    st.session_state.is_admin_login = False
 
 def handle_goto_acc():
     st.session_state.is_registering = False
+    st.session_state.is_admin_login = False
+
+def handle_admin_login_view():
+    st.session_state.is_admin_login = True
+    st.session_state.is_registering = False
 
 # --- Styling ---
-if not st.session_state.logged_in:
+if not st.session_state.logged_in and not st.session_state.is_admin:
     st.markdown(f"""
         <style>
         .stApp {{ background: #090D16; }}
@@ -159,8 +186,8 @@ if not st.session_state.logged_in:
         .global-header {{ position: fixed; top: 0; left: 0; width: 100%; height: 56px; background: rgba(11, 18, 33, 0.88); backdrop-filter: blur(8px); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; z-index: 99999; border-bottom: 1px solid rgba(56, 189, 248, 0.15); }}
         .nav-brand {{ display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; text-decoration: none; white-space: nowrap; }}
         .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8; }}
-        .header-actions-container {{ position: fixed; top: 12px; right: 24px; z-index: 100000; display: flex; align-items: center; gap: 10px; }}
-        .header-actions-container div.stButton > button {{ border-radius: 6px !important; padding: 2px 14px !important; font-size: 0.78rem !important; font-weight: 600 !important; min-height: 32px !important; height: 32px !important; background-color: rgba(30, 41, 59, 0.9) !important; color: #F8FAFC !important; border: 1px solid rgba(56, 189, 248, 0.3) !important; }}
+        .header-actions-container {{ position: fixed; top: 12px; right: 24px; z-index: 100000; display: flex; align-items: center; gap: 8px; }}
+        .header-actions-container div.stButton > button {{ border-radius: 6px !important; padding: 2px 10px !important; font-size: 0.75rem !important; font-weight: 600 !important; min-height: 32px !important; height: 32px !important; background-color: rgba(30, 41, 59, 0.9) !important; color: #F8FAFC !important; border: 1px solid rgba(56, 189, 248, 0.3) !important; }}
         .block-container {{ position: relative; z-index: 1; padding-top: 75px !important; max-width: 560px !important; margin: auto !important; }}
         #MainMenu, header, footer {{visibility: hidden;}}
         .hero-container {{ width: 100%; margin: 0 auto; }}
@@ -194,7 +221,7 @@ else:
 avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Logo'></div>" if logo_image_data else "<div class='central-avatar'>🎓</div>"
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
-if not st.session_state.logged_in:
+if not st.session_state.logged_in and not st.session_state.is_admin:
     st.markdown(f"""
         <div class="global-header">
             <div class="nav-brand">
@@ -204,16 +231,41 @@ if not st.session_state.logged_in:
     """, unsafe_allow_html=True)
     
     st.markdown("<div class='header-actions-container'>", unsafe_allow_html=True)
-    col_b1, col_b2 = st.columns(2)
+    col_b1, col_b2, col_b3 = st.columns(3)
     with col_b1:
-        st.button("Create an account", key="btn_create_acc", on_click=handle_create_acc)
+        st.button("Sign In", key="btn_goto_acc", on_click=handle_goto_acc)
     with col_b2:
-        st.button("Go to Account", key="btn_goto_acc", on_click=handle_goto_acc)
+        st.button("Register", key="btn_create_acc", on_click=handle_create_acc)
+    with col_b3:
+        st.button("🔐 Admin", key="btn_admin_login", on_click=handle_admin_login_view)
     st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     
-    if st.session_state.is_registering:
+    if st.session_state.is_admin_login:
+        st.markdown("""
+            <div class="hero-title" style="font-size: 1.15rem; margin-top: 4px;">Admin Control Panel</div>
+            <div class="hero-subtitle">Enter administrator password to manage system database.</div>
+        """, unsafe_allow_html=True)
+
+        with st.form("admin_login_form"):
+            admin_pass = st.text_input("Admin Password", type="password", placeholder="Enter Admin Password (default: IuM5005B25Mat&19NOV)")
+            if st.form_submit_button("Access Admin Dashboard"):
+                if admin_pass == "IuM5005B25Mat&19NOV":
+                    st.session_state.is_admin = True
+                    st.session_state.logged_in = False
+                    st.session_state.active_tab = "AdminPanel"
+                    st.success("✅ Admin Authentication Successful!")
+                    time.sleep(0.5)
+                    st.rerun()
+                else:
+                    st.error("❌ Incorrect Admin Password! (Default is IuM5005B25Mat&19NOV)")
+
+        if st.button("⬅️ Back to Student Sign In", use_container_width=True):
+            st.session_state.is_admin_login = False
+            st.rerun()
+
+    elif st.session_state.is_registering:
         st.markdown("""
             <div class="hero-title" style="font-size: 1.15rem; margin-top: 4px;">Create your IUBAT Account</div>
             <div class="hero-subtitle">Enter your exact details to register your student profile.</div>
@@ -243,6 +295,7 @@ if not st.session_state.logged_in:
                     save_json_db(DB_FILE, st.session_state.users_db)
 
                     st.session_state.logged_in = True
+                    st.session_state.is_admin = False
                     st.session_state.user_id = reg_id
                     st.session_state.user_name = reg_name
                     st.session_state.user_dept = reg_dept
@@ -288,6 +341,7 @@ if not st.session_state.logged_in:
                         stored_pass = st.session_state.users_db[user_id].get("password")
                         if stored_pass == password or password == "123":
                             st.session_state.logged_in = True
+                            st.session_state.is_admin = False
                             st.session_state.user_id = user_id
                             st.session_state.user_name = st.session_state.users_db[user_id]["name"]
                             st.session_state.user_dept = st.session_state.users_db[user_id]["dept"]
@@ -308,47 +362,152 @@ if not st.session_state.logged_in:
     st.markdown("</div>", unsafe_allow_html=True)
 
 else:
-    profile_avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.user_photo else (f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓")
+    if st.session_state.is_admin:
+        header_title = "🛡️ System Administrator Dashboard"
+        header_subtitle = "Master Control Center"
+    else:
+        profile_avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.user_photo else (f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓")
+        header_title = st.session_state.user_name
+        header_subtitle = f"{st.session_state.user_univ} • ID: {st.session_state.user_id} | {st.session_state.user_dept}"
 
     st.markdown(f"""
         <div class='app-header'>
             <div style='display: flex; align-items: center; gap: 12px;'>
                 <div style='width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid #38BDF8; background: #0B1221; display: flex; align-items: center; justify-content: center;'>
-                    {profile_avatar_html}
+                    {f"<img src='{logo_image_data}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.is_admin else profile_avatar_html}
                 </div>
                 <div>
-                    <div style='font-size: 0.7rem; color: #94A3B8;'>{st.session_state.user_univ} • Welcome back,</div>
-                    <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
-                    <div style='font-size: 0.7rem; color: #38BDF8;'>ID: {st.session_state.user_id} | {st.session_state.user_dept}</div>
+                    <div style='font-size: 0.7rem; color: #94A3B8;'>{"Admin Control" if st.session_state.is_admin else "Welcome back,"}</div>
+                    <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>{header_title}</div>
+                    <div style='font-size: 0.7rem; color: #38BDF8;'>{header_subtitle}</div>
                 </div>
             </div>
             <div>
-                <span class='badge-tag'>🟢 Online</span>
+                <span class='badge-tag'>{"🔴 Admin Mode" if st.session_state.is_admin else "🟢 Online"}</span>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    col_t1, col_t2, col_t3 = st.columns(3)
-    with col_t1:
-        if st.button("🏠 Home", use_container_width=True):
-            st.session_state.active_tab = "Home"
-            st.rerun()
-    with col_t2:
-        if st.button("⚙️ Go to Account", use_container_width=True):
-            st.session_state.active_tab = "Account"
-            st.rerun()
-    with col_t3:
-        if st.button("🚪 Logout", use_container_width=True):
-            st.session_state.logged_in = False
-            st.session_state.splash_shown = False
-            st.session_state.active_tab = "Home"
-            if "session_user" in st.query_params:
-                del st.query_params["session_user"]
-            st.rerun()
+    if st.session_state.is_admin:
+        col_t1, col_t2, col_t3 = st.columns(3)
+        with col_t1:
+            if st.button("🛡️ Admin Panel", use_container_width=True):
+                st.session_state.active_tab = "AdminPanel"
+                st.rerun()
+        with col_t2:
+            if st.button("🚌 Manage Buses", use_container_width=True):
+                st.session_state.active_tab = "AdminBuses"
+                st.rerun()
+        with col_t3:
+            if st.button("🚪 Logout Admin", use_container_width=True):
+                st.session_state.is_admin = False
+                st.session_state.splash_shown = False
+                st.session_state.active_tab = "Home"
+                st.rerun()
+    else:
+        col_t1, col_t2, col_t3 = st.columns(3)
+        with col_t1:
+            if st.button("🏠 Home", use_container_width=True):
+                st.session_state.active_tab = "Home"
+                st.rerun()
+        with col_t2:
+            if st.button("⚙️ Go to Account", use_container_width=True):
+                st.session_state.active_tab = "Account"
+                st.rerun()
+        with col_t3:
+            if st.button("🚪 Logout", use_container_width=True):
+                st.session_state.logged_in = False
+                st.session_state.splash_shown = False
+                st.session_state.active_tab = "Home"
+                if "session_user" in st.query_params:
+                    del st.query_params["session_user"]
+                st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    if st.session_state.active_tab == "Home":
+    if st.session_state.is_admin and st.session_state.active_tab == "AdminPanel":
+        st.markdown("### 🛡️ Admin Master Control Panel")
+        st.markdown("Here you can manage all registered student accounts and alumni network entries.")
+        
+        st.markdown("---")
+        st.markdown("#### 👥 Registered Student Accounts")
+        st.session_state.users_db = load_json_db(DB_FILE, default_users)
+        
+        if len(st.session_state.users_db) == 0:
+            st.info("No user accounts registered yet.")
+        else:
+            for uid, udata in list(st.session_state.users_db.items()):
+                st.markdown(f"""
+                    <div class='sched-card'>
+                        <b>{udata.get('name')}</b> (ID: <code>{uid}</code>)<br>
+                        <span class='badge-tag'>{udata.get('dept')}</span> • {udata.get('univ')}<br>
+                        🔑 Password: <code>{udata.get('password')}</code>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                col_del1, col_del2 = st.columns([1, 4])
+                with col_del1:
+                    if st.button(f"🗑️ Delete ID {uid}", key=f"del_user_{uid}"):
+                        if uid in st.session_state.users_db:
+                            del st.session_state.users_db[uid]
+                            save_json_db(DB_FILE, st.session_state.users_db)
+                            st.success(f"Deleted user {uid} successfully!")
+                            time.sleep(0.5)
+                            st.rerun()
+
+        st.markdown("---")
+        st.markdown("#### 🎓 Alumni Directory Control")
+        st.session_state.alumni_db = load_json_db(ALUMNI_DB_FILE, default_alumni)
+        
+        for idx, alumni in enumerate(st.session_state.alumni_db):
+            st.markdown(f"""
+                <div class='sched-card'>
+                    <b>{alumni['name']}</b> ({alumni['batch']})<br>
+                    💼 {alumni['role']}<br>
+                    📞 {alumni['contact']}
+                </div>
+            """, unsafe_allow_html=True)
+            if st.button(f"🗑️ Remove Alumni #{idx+1}", key=f"del_alumni_{idx}"):
+                st.session_state.alumni_db.pop(idx)
+                save_json_db(ALUMNI_DB_FILE, st.session_state.alumni_db)
+                st.success("Alumni removed successfully!")
+                time.sleep(0.5)
+                st.rerun()
+
+    elif st.session_state.is_admin and st.session_state.active_tab == "AdminBuses":
+        st.markdown("### 🚌 Admin Bus Schedule & Live Control")
+        st.markdown("Update live bus tracking status and timings:")
+        
+        st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
+        
+        with st.form("update_bus_form"):
+            b_name = st.text_input("Bus Route Name", value=st.session_state.bus_db[0]["name"] if st.session_state.bus_db else "")
+            b_status = st.text_input("Trip Status", value=st.session_state.bus_db[0]["status"] if st.session_state.bus_db else "On Trip")
+            b_dep = st.text_input("Departure Time", value=st.session_state.bus_db[0]["departure"] if st.session_state.bus_db else "05:30 PM")
+            b_arr = st.text_input("Arrival ETA", value=st.session_state.bus_db[0]["arrival"] if st.session_state.bus_db else "07:30 PM")
+            b_drv = st.text_input("Driver Name & Phone", value=f"{st.session_state.bus_db[0]['driver']} ({st.session_state.bus_db[0]['driver_phone']})" if st.session_state.bus_db else "")
+            
+            if st.form_submit_button("Update Live Bus Info"):
+                parts = b_drv.split("(")
+                d_name = parts[0].strip()
+                d_phone = parts[1].replace(")", "").strip() if len(parts) > 1 else ""
+                
+                st.session_state.bus_db[0] = {
+                    "name": b_name,
+                    "status": b_status,
+                    "departure": b_dep,
+                    "arrival": b_arr,
+                    "driver": d_name,
+                    "driver_phone": d_phone,
+                    "helper": "Ripon",
+                    "helper_phone": "01861455868"
+                }
+                save_json_db(BUS_DB_FILE, st.session_state.bus_db)
+                st.success("✅ Bus live status updated successfully!")
+                time.sleep(0.5)
+                st.rerun()
+
+    elif not st.session_state.is_admin and st.session_state.active_tab == "Home":
         st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
 
         if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
@@ -367,7 +526,7 @@ else:
             st.session_state.active_tab = "Alumni"
             st.rerun()
 
-    elif st.session_state.active_tab == "Account":
+    elif not st.session_state.is_admin and st.session_state.active_tab == "Account":
         st.markdown("### ⚙ Account Management")
         with st.form("update_account_form"):
             new_name = st.text_input("Full Name", value=st.session_state.user_name)
@@ -389,7 +548,7 @@ else:
                 time.sleep(0.5)
                 st.rerun()
 
-    elif st.session_state.active_tab == "SOS":
+    elif not st.session_state.is_admin and st.session_state.active_tab == "SOS":
         st.markdown("### 🚨 Emergency SOS & Hotline")
         st.markdown("Tap any option below for instant emergency communication:")
         
@@ -397,12 +556,12 @@ else:
             st.success("🚨 Connecting to 999 Emergency Service...")
         if st.button("👥 Tap to Close Friends", use_container_width=True):
             st.success("📲 Alert sent to your designated Close Friends group!")
-        if st.button("👨‍👩‍👧 Tap to Family", use_container_width=True):
+        if st.button("👨‍👩‍‍👧 Tap to Family", use_container_width=True):
             st.success("📲 Emergency alert sent to your Family contacts!")
         if st.button("🏛 Tap to University Authority", use_container_width=True):
             st.success("🚨 Alert dispatched to IUBAT Campus Security & Proctor Office!")
 
-    elif st.session_state.active_tab == "Faculty":
+    elif not st.session_state.is_admin and st.session_state.active_tab == "Faculty":
         st.markdown("### 👨‍🏫 Faculty Directory & Consultations")
         st.text_input("Search Faculty", placeholder="Search by name or department...")
         
@@ -423,19 +582,22 @@ else:
             </div>
         """, unsafe_allow_html=True)
 
-    elif st.session_state.active_tab == "Bus":
+    elif not st.session_state.is_admin and st.session_state.active_tab == "Bus":
         st.markdown("### 🚌 Bus Schedule & Live Tracking")
-        st.markdown("""
+        st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
+        b_info = st.session_state.bus_db[0] if st.session_state.bus_db else default_buses[0]
+        
+        st.markdown(f"""
             <div class='sched-card'>
                 <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;'>
-                    <span style='font-weight: 700;'>Bus 02: Campus to Narshingdi</span>
-                    <span class='badge-tag'>On Trip</span>
+                    <span style='font-weight: 700;'>{b_info['name']}</span>
+                    <span class='badge-tag'>{b_info['status']}</span>
                 </div>
                 <div style='color: #94A3B8; font-size: 0.8rem; margin-bottom: 6px;'>
-                    🕒 Departure: <b>05:30 PM</b> | Arrival(ETA): <b>07:30 PM</b>
+                    🕒 Departure: <b>{b_info['departure']}</b> | Arrival(ETA): <b>{b_info['arrival']}</b>
                 </div>
-                <div style='font-size: 0.8rem;'><b>Driver:</b> Sobuj Hossain (01621796157)</div>
-                <div style='font-size: 0.8rem;'><b>Helper:</b> Ripon (01861455868)</div>
+                <div style='font-size: 0.8rem;'><b>Driver:</b> {b_info['driver']} ({b_info['driver_phone']})</div>
+                <div style='font-size: 0.8rem;'><b>Helper:</b> {b_info['helper']} ({b_info['helper_phone']})</div>
             </div>
         """, unsafe_allow_html=True)
         
@@ -454,7 +616,7 @@ else:
                 <div class='route-stop'>📍 Basugaon</div>
             """, unsafe_allow_html=True)
 
-    elif st.session_state.active_tab == "Alumni":
+    elif not st.session_state.is_admin and st.session_state.active_tab == "Alumni":
         st.markdown("### 🎓 Alumni Network & Mentorship")
         st.markdown("Register below to join the alumni directory or connect with graduates:")
         

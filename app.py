@@ -7,7 +7,7 @@ import time
 st.set_page_config(
     page_title="IUBAT Nexus | Smart Portal",
     page_icon="🎓",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="collapsed"
 )
 
@@ -101,32 +101,23 @@ if not st.session_state.logged_in:
             background: rgba(9, 13, 22, 0.78); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 1rem !important; max-width: 950px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 1.5rem !important; max-width: 480px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
-        /* Navbar Layout */
-        .nav-brand-container {{
-            display: flex; align-items: center; gap: 12px; color: #FFFFFF; font-weight: 800; font-size: 1.25rem; white-space: nowrap;
+        /* Google Style Top Navbar */
+        .google-navbar {{
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 25px; padding: 0 5px;
         }}
-        .nav-brand-container img {{ width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
-
-        /* Custom Streamlit Button Styling to prevent truncation and match glassmorphism */
-        div.stButton > button {{
-            width: 100% !important;
-            border-radius: 10px !important;
-            font-weight: 600 !important;
-            font-size: 0.88rem !important;
-            padding: 8px 14px !important;
-            white-space: nowrap !important;
-            overflow: visible !important;
-            text-overflow: clip !important;
+        .nav-brand {{
+            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 1.1rem;
         }}
-
+        .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
+        
+        .nav-actions {{ display: flex; align-items: center; gap: 12px; }}
+        
         /* Hero Section */
-        .hero-container {{
-            max-width: 480px; margin: 30px auto 0 auto;
-        }}
         .hero-showcase {{
             display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 18px;
         }}
@@ -173,7 +164,7 @@ else:
     st.markdown("""
         <style>
         .stApp { background: #0F172A !important; }
-        .block-container { position: relative; z-index: 1; padding-top: 1rem !important; padding-bottom: 2rem !important; max-width: 480px !important; margin: auto !important; }
+        .block-container { position: relative; z-index: 1; padding-top: 1.5rem !important; padding-bottom: 2rem !important; max-width: 420px !important; margin: auto !important; }
         #MainMenu, header, footer {visibility: hidden;}
 
         .app-header {
@@ -200,32 +191,25 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # Top Navbar strictly aligned: Left corner "IUBAT Nexus", Right corner "Create an account" & "Go to Account"
-    col_left, col_mid, col_btn1, col_btn2 = st.columns([2.2, 0.8, 1.5, 1.5])
-    
-    with col_left:
+    # Google-style Top Navbar with "Create an account" and "Go to Account" triggers
+    col_nav1, col_nav2 = st.columns([1, 1])
+    with col_nav1:
         st.markdown(f"""
-            <div class="nav-brand-container">
-                {logo_small} IUBAT Nexus
+            <div class="google-navbar">
+                <div class="nav-brand">{logo_small} IUBAT Nexus</div>
             </div>
         """, unsafe_allow_html=True)
-        
-    with col_mid:
-        st.write("") # Spacer
+    with col_nav2:
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("Create Account", use_container_width=True):
+                st.session_state.is_registering = True
+                st.rerun()
+        with c2:
+            if st.button("Go to Account", type="primary", use_container_width=True):
+                st.session_state.is_registering = False
+                st.rerun()
 
-    with col_btn1:
-        if st.button("Create an account", use_container_width=True):
-            st.session_state.is_registering = True
-            st.rerun()
-
-    with col_btn2:
-        if st.button("Go to Account", type="primary", use_container_width=True):
-            st.session_state.is_registering = False
-            st.rerun()
-
-    st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:
         # --- Register View ---
         st.markdown("""
@@ -292,7 +276,6 @@ if not st.session_state.logged_in:
                     st.error("❌ Please enter both ID Number and Password.")
 
     st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top: 15px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 else:
     # --- Main Logged-In Dashboard ---
@@ -309,7 +292,7 @@ else:
         </div>
     """, unsafe_allow_html=True)
 
-    # Top Tab Navigation inside Dashboard
+    # Top Tab Navigation inside Dashboard (includes Go to Account button for updating info)
     col_t1, col_t2, col_t3 = st.columns(3)
     with col_t1:
         if st.button("🏠 Home", use_container_width=True):
@@ -421,7 +404,7 @@ else:
                 <div class='route-stop'>📍 Tongi Station Road</div>
                 <div class='route-stop'>📍 Amtoly Mor</div>
                 <div class='route-stop'>📍 T & T Bazar</div>
-                <div class='route-stop'>ICs Shilmoon</div>
+                <div class='route-stop'>📍 Shilmoon</div>
                 <div class='route-stop'>📍 Nimtoly Bridge</div>
             """, unsafe_allow_html=True)
 

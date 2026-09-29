@@ -98,74 +98,72 @@ if not st.session_state.logged_in:
         }}
         .stApp::after {{
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 13, 22, 0.78); z-index: 0;
+            background: rgba(9, 13, 22, 0.82); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 0.8rem !important; max-width: 1050px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 0.8rem !important; max-width: 420px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
-        /* Navbar Layout - Perfect Left & Right Pinning */
-        .top-navbar {{
-            display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 5px 0; margin-bottom: 5px;
-        }}
+        /* Navbar Brand Styling */
         .nav-brand-container {{
-            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; white-space: nowrap;
+            display: flex; align-items: center; gap: 8px; color: #FFFFFF; font-weight: 800; font-size: 1rem; white-space: nowrap; height: 36px;
         }}
-        .nav-brand-container img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
+        .nav-brand-container img {{ width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
 
-        /* Custom Streamlit button overrides for top navbar */
+        /* Custom Streamlit button overrides for compact top navbar */
         .stButton > button {{
-            border-radius: 7px !important;
+            border-radius: 6px !important;
             font-weight: 600 !important;
-            font-size: 0.75rem !important;
-            padding: 5px 10px !important;
+            font-size: 0.7rem !important;
+            padding: 4px 8px !important;
             white-space: nowrap !important;
+            min-height: 32px !important;
         }}
 
         /* Hero Section - Compact Width & Perfectly Matched Background Color */
         .hero-container {{
-            max-width: 340px; margin: 5px auto 0 auto;
+            width: 100%; margin: 2px auto 0 auto;
         }}
         .hero-showcase {{
-            display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 8px;
+            display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 6px;
         }}
         .floating-badge {{
-            width: 28px; height: 28px; background: rgba(11, 18, 33, 0.75); border-radius: 50%;
+            width: 26px; height: 26px; background: rgba(11, 18, 33, 0.75); border-radius: 50%;
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.7rem; animation: float 3s ease-in-out infinite;
+            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.65rem; animation: float 3s ease-in-out infinite;
         }}
         .floating-badge:nth-child(even) {{ animation-delay: 1.5s; }}
         @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-3px); }} }}
 
         .central-avatar {{
-            width: 48px; height: 48px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
+            width: 44px; height: 44px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3); border: 2px solid rgba(56, 189, 248, 0.5); overflow: hidden;
         }}
         .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
 
         .hero-title {{
-            text-align: center; color: #F8FAFC !important; font-size: 1.15rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
+            text-align: center; color: #F8FAFC !important; font-size: 1.1rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
         }}
         .hero-subtitle {{
-            text-align: center; color: #94A3B8 !important; font-size: 0.7rem; line-height: 1.3; margin-bottom: 8px; padding: 0 2px;
+            text-align: center; color: #94A3B8 !important; font-size: 0.68rem; line-height: 1.3; margin-bottom: 6px; padding: 0 2px;
         }}
 
         /* Compact ID/Pass Box Matched with Background */
         div[data-testid="stForm"] {{
-            background: rgba(11, 18, 33, 0.85) !important; backdrop-filter: blur(14px);
-            border-radius: 10px !important; padding: 10px 8px 6px 8px !important;
+            background: rgba(11, 18, 33, 0.88) !important; backdrop-filter: blur(14px);
+            border-radius: 10px !important; padding: 8px 8px 4px 8px !important;
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55) !important; border: 1px solid rgba(56, 189, 248, 0.15) !important;
         }}
         div[data-testid="stTextInput"] label {{ display: none !important; }}
         .stTextInput>div>div>input {{
             background-color: rgba(15, 23, 42, 0.75) !important; color: #F8FAFC !important; border-radius: 5px;
-            border: 1px solid rgba(56, 189, 248, 0.2); padding: 5px 7px; font-size: 0.75rem;
+            border: 1px solid rgba(56, 189, 248, 0.2); padding: 5px 7px; font-size: 0.72rem;
         }}
         .stFormSubmitButton>button {{
             width: 100% !important; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
-            color: #FFFFFF !important; font-weight: 700; border-radius: 5px; border: none; padding: 5px; font-size: 0.78rem;
+            color: #FFFFFF !important; font-weight: 700; border-radius: 5px; border: none; padding: 5px; font-size: 0.75rem;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -201,7 +199,7 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    col_brand, col_space, col_b1, col_b2 = st.columns([2.5, 3.2, 1.4, 1.4])
+    col_brand, col_b1, col_b2 = st.columns([1.6, 1.2, 1.2])
     
     with col_brand:
         st.markdown(f"""
@@ -209,27 +207,24 @@ if not st.session_state.logged_in:
                 {logo_small} IUBAT Nexus
             </div>
         """, unsafe_allow_html=True)
-        
-    with col_space:
-        st.write("")
 
     with col_b1:
-        if st.button("Create an account", use_container_width=True, key="btn_create_acc"):
+        if st.button("Register", use_container_width=True, key="btn_create_acc"):
             st.session_state.is_registering = True
             st.rerun()
 
     with col_b2:
-        if st.button("Go to Account", type="primary", use_container_width=True, key="btn_goto_acc"):
+        if st.button("Sign In", type="primary", use_container_width=True, key="btn_goto_acc"):
             st.session_state.is_registering = False
             st.rerun()
 
-    st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 4px;'></div>", unsafe_allow_html=True)
 
     st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:
         st.markdown("""
-            <div class="hero-title" style="font-size: 1.1rem; margin-top: 2px;">Create your IUBAT Account</div>
-            <div class="hero-subtitle">Access campus services, academic tools, and student portals instantly.</div>
+            <div class="hero-title" style="font-size: 1.05rem; margin-top: 2px;">Create your IUBAT Account</div>
+            <div class="hero-subtitle">Access campus services and student portals instantly.</div>
         """, unsafe_allow_html=True)
 
         with st.form("register_form"):
@@ -276,7 +271,7 @@ if not st.session_state.logged_in:
             with col1:
                 remember_me = st.checkbox("Remember me")
             with col2:
-                st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' style='color: #38BDF8; font-size: 0.62rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
+                st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' style='color: #38BDF8; font-size: 0.6rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:

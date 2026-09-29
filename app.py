@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+import base64
 
 # --- App Setup ---
 st.set_page_config(
@@ -8,50 +10,72 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- Custom CSS for Stunning Background & Glassmorphism ---
-st.markdown("""
+# --- Dynamic Assets Image Reader ---
+def get_local_image_as_base64(image_path):
+    if os.path.exists(image_path):
+        with open(image_path, "rb") as f:
+            data = f.read()
+            return base64.b64encode(data).decode()
+    return None
+
+# Scan assets folder dynamically
+assets_dir = os.path.join(os.getcwd(), "assets")
+background_css = ""
+
+if os.path.exists(assets_dir):
+    image_files = [f for f in os.listdir(assets_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp'))]
+    if image_files:
+        # Takes the first image dynamically found in the assets folder
+        latest_image_path = os.path.join(assets_dir, image_files[0])
+        encoded_img = get_local_image_as_base64(latest_image_path)
+        if encoded_img:
+            background_css = f"data:image/jpeg;base64,{encoded_img}"
+
+# Fallback default if no image is found
+if not background_css:
+    background_css = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"
+
+# --- Custom CSS ---
+st.markdown(f"""
     <style>
-    /* Stunning University Background using High-Quality Image with Dark Overlay */
-    .stApp {
-        background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.85)), 
-                    url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80');
+    .stApp {{
+        background: linear-gradient(rgba(10, 25, 47, 0.78), rgba(10, 25, 47, 0.85)), 
+                    url('{background_css}');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
-    }
+        background-repeat: no-repeat;
+    }}
     
-    /* Glassmorphism Login Container */
-    .login-container {
-        background: rgba(255, 255, 255, 0.07);
+    .login-container {{
+        background: rgba(255, 255, 255, 0.08);
         padding: 40px;
         border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        margin-top: 5vh;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        margin-top: 50px;
         max-width: 450px;
         margin-left: auto;
         margin-right: auto;
-    }
+    }}
     
-    /* Text Styling */
-    h1, h2, h3, p, label {
+    h1, h2, h3, p, label {{
         color: #ffffff !important;
         text-align: center;
-        font-family: 'Inter', sans-serif;
-    }
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }}
     
-    /* Input Fields */
-    .stTextInput>div>div>input {
-        background-color: rgba(255, 255, 255, 0.12);
+    .stTextInput>div>div>input {{
+        background-color: rgba(255, 255, 255, 0.15);
         color: white;
         border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
+        border: none;
+        padding: 12px;
+    }}
     
-    /* Login Button */
-    .stButton>button {
+    .stButton>button {{
         width: 100%;
         background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
         color: white;
@@ -61,43 +85,42 @@ st.markdown("""
         border-radius: 10px;
         box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
         transition: all 0.3s ease;
-    }
-    .stButton>button:hover {
+    }}
+    .stButton>button:hover {{
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(255, 75, 43, 0.6);
-    }
+    }}
     
-    /* Footer */
-    .footer {
+    .footer {{
         position: fixed;
         left: 0;
-        bottom: 15px;
+        bottom: 20px;
         width: 100%;
         text-align: center;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.5);
         font-size: 12px;
-    }
+    }}
     </style>
 """, unsafe_allow_html=True)
 
-# --- Main Login UI ---
+# --- Main App Content ---
 st.markdown("<h1>🎓 IUBAT Nexus</h1>", unsafe_allow_html=True)
 st.markdown("<p>Your Smart University Companion Portal</p>", unsafe_allow_html=True)
 st.write("")
 
 with st.container():
     st.markdown("<div class='login-container'>", unsafe_allow_html=True)
-    st.markdown("<h3>Portal Sign In</h3>", unsafe_allow_html=True)
+    st.markdown("<h3>Sign In</h3>", unsafe_allow_html=True)
     
-    user_id = st.text_input("Student ID / Email", placeholder="e.g., 20103056")
+    user_id = st.text_input("Student ID", placeholder="e.g. 20103056")
     password = st.text_input("Password", type="password", placeholder="••••••••")
     
     st.write("")
-    if st.button("Secure Login"):
+    if st.button("Submit Login"):
         if user_id and password:
             st.success(f"Welcome back, {user_id}!")
         else:
-            st.error("❌ Please enter both ID and password.")
+            st.error("❌ Please enter both Student ID and Password.")
             
     st.markdown("</div>", unsafe_allow_html=True)
 

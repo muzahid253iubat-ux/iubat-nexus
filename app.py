@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS with High-Contrast Banner & Subtle Blur ---
+# --- Custom CSS for Minimalist Card Layout ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: #0F172A;
+        background: #E8F0F2;
     }}
     
     /* Subtle Light Blur Background (3px) */
@@ -57,100 +57,58 @@ st.markdown(f"""
         z-index: 0;
     }}
     
-    /* Contrast overlay */
+    /* Soft overlay for clarity */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.4);
+        background: rgba(230, 240, 245, 0.75);
         z-index: 0;
     }}
     
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 1.5rem !important;
+        padding-top: 4rem !important;
         padding-bottom: 2rem !important;
-        max-width: 460px !important;
+        max-width: 440px !important;
     }}
     
     #MainMenu, header, footer {{visibility: hidden;}}
     
-    /* First Section: High-Contrast Banner Card */
-    .banner-card {{
-        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
-        border-radius: 24px;
-        padding: 35px 20px;
-        text-align: center;
-        color: #FFFFFF !important;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        margin-bottom: 24px;
-    }}
-    
-    .banner-crest {{
-        background: #0F172A;
-        width: 58px;
-        height: 58px;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-        border: 3px solid #FFFFFF;
-        font-size: 26px;
-        margin-bottom: 12px;
-    }}
-    
-    .banner-title {{
-        color: #FFFFFF !important;
-        font-size: 1.4rem;
-        font-weight: 800;
-        letter-spacing: 0.5px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }}
-    
-    .banner-subtitle {{
-        color: #38BDF8 !important;
-        font-size: 0.72rem;
-        margin-top: 6px;
-        text-transform: uppercase;
-        letter-spacing: 1.2px;
-        font-weight: 700;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    }}
-    
-    /* Second Section: Floating Login Card */
-    .avatar-container {{
+    /* Top Avatar Overlapping Card */
+    .avatar-wrapper {{
         display: flex;
         justify-content: center;
-        margin-bottom: -36px;
+        margin-bottom: -42px;
         position: relative;
         z-index: 10;
     }}
     
     .avatar-circle {{
-        background: #0F172A;
-        width: 72px;
-        height: 72px;
+        background: #0A192F;
+        width: 84px;
+        height: 84px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35), 0 0 0 5px rgba(255, 255, 255, 0.25);
-        border: 3px solid #FFFFFF;
-        font-size: 32px;
+        box-shadow: 0 10px 25px rgba(10, 25, 47, 0.25), 0 0 0 6px rgba(255, 255, 255, 0.9);
+        border: 2px solid #FFFFFF;
+        color: #FFFFFF;
+        font-size: 38px;
     }}
     
+    /* Main Card */
     .login-card {{
         background: #FFFFFF;
         border-radius: 24px;
-        padding: 45px 28px 24px 28px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 55px 32px 32px 32px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.8);
     }}
     
-    /* Form Styling inside Login Card */
+    /* Form Styling */
     div[data-testid="stForm"] {{
         background: transparent !important;
         padding: 0px !important;
@@ -163,96 +121,112 @@ st.markdown(f"""
     }}
     
     .stTextInput>div>div>input {{
-        background-color: #F8FAFC !important;
-        color: #0F172A !important;
+        background-color: #E9ECEF !important;
+        color: #334155 !important;
         font-weight: 600;
-        border-radius: 10px;
-        border: 1.5px solid #E2E8F0;
-        padding: 11px 14px;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
+        border-radius: 8px;
+        border: none;
+        padding: 12px 16px;
+        font-size: 0.95rem;
     }}
     
     .stTextInput>div>div>input:focus {{
-        background-color: #FFFFFF !important;
-        border-color: #0F172A;
-        box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
+        background-color: #DEE2E6 !important;
+        box-shadow: none;
+        border: 1px solid #0A192F;
+    }}
+    
+    /* Remember Me & Forgot Password Layout */
+    .row-options {{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 5px;
+        margin-bottom: 15px;
     }}
     
     .stCheckbox label p {{
         display: block !important;
-        color: #475569 !important;
-        font-weight: 600 !important;
+        color: #64748B !important;
+        font-weight: 500 !important;
         font-size: 0.85rem !important;
     }}
     
+    .forgot-pass {{
+        color: #64748B;
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s;
+    }}
+    
+    .forgot-pass:hover {{
+        color: #0A192F;
+        text-decoration: underline;
+    }}
+    
+    /* Login Button */
     .stFormSubmitButton>button {{
         width: 100% !important;
-        background: #0F172A !important;
-        color: white !important;
+        background: #0A192F !important;
+        color: #FFFFFF !important;
         font-weight: 700 !important;
-        font-size: 0.95rem !important;
-        letter-spacing: 1px;
+        font-size: 1rem !important;
+        letter-spacing: 1.5px;
         border: none !important;
-        padding: 12px !important;
-        border-radius: 10px !important;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.3) !important;
-        margin-top: 10px !important;
+        padding: 13px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 6px 15px rgba(10, 25, 47, 0.2) !important;
+        margin-top: 5px !important;
         transition: all 0.3s ease !important;
     }}
     
     .stFormSubmitButton>button:hover {{
-        background: #1E293B !important;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.4) !important;
+        background: #112240 !important;
         transform: translateY(-1px);
     }}
     
     .portal-footer {{
         text-align: center;
-        color: #FFFFFF;
+        color: #475569;
         font-size: 11px;
-        margin-top: 20px;
+        margin-top: 25px;
         font-weight: 600;
         letter-spacing: 0.3px;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }}
     </style>
 """, unsafe_allow_html=True)
 
 # --- UI Render ---
 
-# 1st Section: High-Contrast Banner Card
+# Floating Avatar Header
 st.markdown("""
-    <div class='banner-card'>
-        <div class='banner-crest'>🎓</div>
-        <div class='banner-title'>IUBAT Nexus</div>
-        <div class='banner-subtitle'>Smart Portal for Innovation & Academics</div>
-    </div>
-""", unsafe_allow_html=True)
-
-# 2nd Section: Floating Login Card
-st.markdown("""
-    <div class='avatar-container'>
+    <div class='avatar-wrapper'>
         <div class='avatar-circle'>👤</div>
     </div>
 """, unsafe_allow_html=True)
 
+# Main Login Card Container
 st.markdown("<div class='login-card'>", unsafe_allow_html=True)
 
 with st.form("login_form"):
-    user_id = st.text_input("ID Number", placeholder="👤 ID Number")
+    user_id = st.text_input("Username", placeholder="👤 Username")
     password = st.text_input("Password", type="password", placeholder="🔒 Password")
 
-    remember_me = st.checkbox("Remember me")
+    col1, col2 = st.columns([1.2, 1])
+    with col1:
+        remember_me = st.checkbox("Remember me")
+    with col2:
+        st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' class='forgot-pass'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
     submit_btn = st.form_submit_button("LOGIN")
     if submit_btn:
         if user_id and password:
             st.success(f"Welcome back, {user_id}!")
         else:
-            st.error("❌ Please enter both ID Number and Password.")
+            st.error("❌ Please enter both Username and Password.")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
-st.markdown("<div class='portal-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
+st.markdown("<div class='portal-footer'>IUBAT Nexus • Version 1.0.0 Beta<br>© 2026 All Rights Reserved</div>", unsafe_allow_html=True)

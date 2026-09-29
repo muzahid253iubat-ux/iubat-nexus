@@ -48,14 +48,14 @@ def get_fixed_background():
 bg_image_data = get_fixed_background()
 logo_image_data = get_asset_base64("logo.png")
 
-# --- Custom CSS for Perfect Banner Fit (Ensuring Bottom Green Area is Visible) ---
+# --- Custom CSS: Bottom Banner Section pinned at the bottom ---
 st.markdown(f"""
     <style>
     .stApp {{
         background: #090D16;
     }}
     
-    /* Full Landscape Banner Background - Positioned to show bottom green helpline section */
+    /* Background Image pinned to bottom center so the green helpline strip is always at the bottom */
     .stApp::before {{
         content: "";
         position: fixed;
@@ -65,12 +65,12 @@ st.markdown(f"""
         z-index: 0;
     }}
     
-    /* Soft Dark Overlay to Make the Card Pop Out */
+    /* Soft Dark Overlay for Crystal Clear Card Visibility */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.45);
+        background: rgba(9, 13, 22, 0.42);
         z-index: 0;
     }}
     
@@ -78,7 +78,7 @@ st.markdown(f"""
         position: relative;
         z-index: 1;
         padding-top: 3rem !important;
-        padding-bottom: 2rem !important;
+        padding-bottom: 3.5rem !important;
         max-width: 420px !important;
     }}
     
@@ -233,11 +233,11 @@ with st.form("login_form"):
             {logo_html}
         </div>
         <div class='card-title'>IUBAT Nexus</div>
-        <div class='card-subtitle'>Excellence in Higher Education & Research</div>
+        <div class='card-subtitle'>SMART PORTAL FOR INNOVATION & ACADEMICS</div>
     """, unsafe_allow_html=True)
 
-    user_id = st.text_input("ID Number", placeholder="🆔 ID Number *")
-    password = st.text_input("Password", type="password", placeholder="🔒 Password *")
+    user_id = st.text_input("Your ID Number", placeholder="Your ID Number *")
+    password = st.text_input("Password", type="password", placeholder=" Password *")
 
     col1, col2 = st.columns([1.2, 1])
     with col1:
@@ -245,7 +245,7 @@ with st.form("login_form"):
     with col2:
         st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' class='forgot-pass'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
-    submit_btn = st.form_submit_button("Submit")
+    submit_btn = st.form_submit_button("Login")
     if submit_btn:
         if user_id and password:
             st.success(f"Welcome back, {user_id}!")

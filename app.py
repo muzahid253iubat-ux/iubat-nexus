@@ -37,7 +37,7 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Clean Professional Card Layout ---
+# --- Custom CSS for Unique Modern Floating Card Design ---
 st.markdown(f"""
     <style>
     .stApp {{
@@ -57,80 +57,69 @@ st.markdown(f"""
         max-width: 440px !important;
     }}
     
-    /* Main Portal Card Container */
-    .portal-card {{
+    /* Unique Master Container Card */
+    .master-card {{
         background: #FFFFFF;
-        border-radius: 24px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        border-radius: 28px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.15);
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
     }}
     
-    /* Banner Header */
-    .portal-banner {{
-        background: linear-gradient(rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.6)), url('{bg_image_data}');
+    /* Header Hero Section */
+    .hero-banner {{
+        background: linear-gradient(rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.75)), url('{bg_image_data}');
         background-size: cover;
         background-position: center;
-        padding: 45px 20px 55px 20px;
+        padding: 50px 20px 40px 20px;
         text-align: center;
         color: white;
-        position: relative;
     }}
     
-    .banner-title {{
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #FFFFFF;
+    .hero-title {{
+        font-size: 1.4rem;
+        font-weight: 800;
         letter-spacing: 0.5px;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
     }}
     
-    /* Overlapping Crest/Logo Box */
-    .crest-container {{
+    .hero-subtitle {{
+        font-size: 0.75rem;
+        color: #CBD5E1;
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    }}
+    
+    /* Floating Icon Badge */
+    .badge-wrapper {{
         display: flex;
         justify-content: center;
-        margin-top: -38px;
+        margin-top: -30px;
         position: relative;
-        z-index: 10;
-        margin-bottom: 8px;
+        z-index: 5;
+        margin-bottom: 10px;
     }}
     
-    .crest-box {{
-        background: #FFFFFF;
-        width: 68px;
-        height: 68px;
-        border-radius: 18px;
+    .badge-icon {{
+        background: #0F172A;
+        color: #FFFFFF;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        border: 3px solid #FFFFFF;
-        font-size: 32px;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.3);
+        border: 4px solid #FFFFFF;
+        font-size: 26px;
     }}
     
-    .university-heading {{
-        text-align: center;
-        color: #0F172A;
-        font-size: 1.35rem;
-        font-weight: 800;
-        margin-top: 4px;
-        letter-spacing: 0.3px;
-    }}
-    
-    .university-subheading {{
-        text-align: center;
-        color: #64748B;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        margin-bottom: 20px;
-        font-weight: 600;
-    }}
-    
-    /* Form Padding inside Card */
+    /* Form Padding inside Master Card */
     div[data-testid="stForm"] {{
         background: #FFFFFF !important;
-        padding: 0px 24px 24px 24px !important;
+        padding: 0px 28px 24px 28px !important;
         border: none !important;
         box-shadow: none !important;
     }}
@@ -189,34 +178,35 @@ st.markdown(f"""
         transform: translateY(-1px);
     }}
     
-    .portal-footer {{
+    /* Seamless Footer inside Master Card */
+    .card-footer {{
         text-align: center;
         color: #64748B;
         font-size: 11px;
-        padding-bottom: 20px;
+        padding: 0px 0px 24px 0px;
         font-weight: 500;
         background: #FFFFFF;
+        letter-spacing: 0.3px;
     }}
     </style>
 """, unsafe_allow_html=True)
 
 # --- UI Render ---
-st.markdown("<div class='portal-card'>", unsafe_allow_html=True)
+st.markdown("<div class='master-card'>", unsafe_allow_html=True)
 
-# Top Banner
+# Hero Header with Banner Background
 st.markdown("""
-    <div class='portal-banner'>
-        <div class='banner-title'>IUBAT Nexus</div>
+    <div class='hero-banner'>
+        <div class='hero-title'>IUBAT Nexus</div>
+        <div class='hero-subtitle'>Excellence in Higher Education & Research</div>
     </div>
 """, unsafe_allow_html=True)
 
-# Crest & Headings
+# Floating Badge Icon
 st.markdown("""
-    <div class='crest-container'>
-        <div class='crest-box'>🎓</div>
+    <div class='badge-wrapper'>
+        <div class='badge-icon'>🎓</div>
     </div>
-    <div class='university-heading'>IUBAT Nexus</div>
-    <div class='university-subheading'>Excellence in Higher Education & Research</div>
 """, unsafe_allow_html=True)
 
 # Form
@@ -233,7 +223,7 @@ with st.form("login_form"):
         else:
             st.error("❌ Please enter both ID Number and Password.")
 
-# Footer
-st.markdown("<div class='portal-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
+# Seamless Footer inside the same card
+st.markdown("<div class='card-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)

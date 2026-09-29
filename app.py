@@ -101,88 +101,85 @@ if not st.session_state.logged_in:
             background: rgba(9, 13, 22, 0.78); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 1rem !important; max-width: 1000px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 0.8rem !important; max-width: 1050px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
-        /* Navbar Layout - Perfect Left & Right Alignment */
-        .navbar-container {{
-            display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;
+        /* Navbar Layout - Perfect Left & Right Pinning */
+        .top-navbar {{
+            display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 5px 0; margin-bottom: 5px;
         }}
         .nav-brand-container {{
-            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.2rem; white-space: nowrap;
+            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; white-space: nowrap;
         }}
-        .nav-brand-container img {{ width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
+        .nav-brand-container img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
 
-        .nav-buttons-container {{
-            display: flex; align-items: center; gap: 10px; white-space: nowrap;
+        /* Absolute right buttons container using pure CSS flex to prevent truncation */
+        .nav-right-actions {{
+            display: flex; align-items: center; gap: 8px;
         }}
-
-        /* Navbar Transparent Glassmorphism Buttons */
-        .nav-btn-custom {{
-            background: rgba(30, 41, 59, 0.65) !important;
+        
+        /* Custom Streamlit button overrides for top navbar */
+        .nav-right-actions div.stButton > button {{
+            background: rgba(30, 41, 59, 0.7) !important;
             backdrop-filter: blur(10px) !important;
             border: 1px solid rgba(56, 189, 248, 0.3) !important;
             color: #F8FAFC !important;
-            border-radius: 8px !important;
+            border-radius: 7px !important;
             font-weight: 600 !important;
-            font-size: 0.8rem !important;
-            padding: 6px 14px !important;
-            cursor: pointer !important;
-            transition: all 0.2s ease;
+            font-size: 0.75rem !important;
+            padding: 5px 12px !important;
+            white-space: nowrap !important;
+            width: auto !important;
         }}
-        .nav-btn-custom:hover {{
-            background: rgba(56, 189, 248, 0.25) !important;
-            border-color: #38BDF8 !important;
-        }}
-        .nav-btn-primary {{
+        .nav-right-actions div.stButton:nth-child(2) > button {{
             background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
         }}
 
         /* Hero Section - Compact Width & Perfectly Matched Background Color */
         .hero-container {{
-            max-width: 360px; margin: 10px auto 0 auto;
+            max-width: 340px; margin: 5px auto 0 auto;
         }}
         .hero-showcase {{
-            display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 8px;
         }}
         .floating-badge {{
-            width: 30px; height: 30px; background: rgba(11, 18, 33, 0.7); border-radius: 50%;
+            width: 28px; height: 28px; background: rgba(11, 18, 33, 0.75); border-radius: 50%;
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.75rem; animation: float 3s ease-in-out infinite;
+            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.7rem; animation: float 3s ease-in-out infinite;
         }}
         .floating-badge:nth-child(even) {{ animation-delay: 1.5s; }}
         @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-3px); }} }}
 
         .central-avatar {{
-            width: 52px; height: 52px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
+            width: 48px; height: 48px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); border: 2px solid rgba(56, 189, 248, 0.5); overflow: hidden;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3); border: 2px solid rgba(56, 189, 248, 0.5); overflow: hidden;
         }}
         .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
 
         .hero-title {{
-            text-align: center; color: #F8FAFC !important; font-size: 1.25rem; font-weight: 800; line-height: 1.2; margin-bottom: 3px;
+            text-align: center; color: #F8FAFC !important; font-size: 1.15rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
         }}
         .hero-subtitle {{
-            text-align: center; color: #94A3B8 !important; font-size: 0.72rem; line-height: 1.3; margin-bottom: 10px; padding: 0 4px;
+            text-align: center; color: #94A3B8 !important; font-size: 0.7rem; line-height: 1.3; margin-bottom: 8px; padding: 0 2px;
         }}
 
         /* Compact ID/Pass Box Matched with Background */
         div[data-testid="stForm"] {{
-            background: rgba(11, 18, 33, 0.88) !important; backdrop-filter: blur(14px);
-            border-radius: 12px !important; padding: 12px 10px 8px 10px !important;
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6) !important; border: 1px solid rgba(56, 189, 248, 0.18) !important;
+            background: rgba(11, 18, 33, 0.85) !important; backdrop-filter: blur(14px);
+            border-radius: 10px !important; padding: 10px 8px 6px 8px !important;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55) !important; border: 1px solid rgba(56, 189, 248, 0.15) !important;
         }}
         div[data-testid="stTextInput"] label {{ display: none !important; }}
         .stTextInput>div>div>input {{
-            background-color: rgba(15, 23, 42, 0.8) !important; color: #F8FAFC !important; border-radius: 6px;
-            border: 1px solid rgba(56, 189, 248, 0.22); padding: 6px 8px; font-size: 0.78rem;
+            background-color: rgba(15, 23, 42, 0.75) !important; color: #F8FAFC !important; border-radius: 5px;
+            border: 1px solid rgba(56, 189, 248, 0.2); padding: 5px 7px; font-size: 0.75rem;
         }}
         .stFormSubmitButton>button {{
             width: 100% !important; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
-            color: #FFFFFF !important; font-weight: 700; border-radius: 6px; border: none; padding: 6px; font-size: 0.82rem;
+            color: #FFFFFF !important; font-weight: 700; border-radius: 5px; border: none; padding: 5px; font-size: 0.78rem;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -215,37 +212,36 @@ else:
 
 # --- UI Render Logic ---
 avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Logo'></div>" if logo_image_data else "<div class='central-avatar'>🎓</div>"
-logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
+logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_small else "🎓"
 
 if not st.session_state.logged_in:
-    # Navbar Header layout using pure HTML/CSS container to keep left & right pinned without truncation[cite: 15]
+    # Top Navbar layout container
     st.markdown(f"""
-        <div class="navbar-container">
+        <div class="top-navbar">
             <div class="nav-brand-container">
                 {logo_small} IUBAT Nexus
-            </div>
-            <div class="nav-buttons-container" id="nav-action-btns">
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # Streamlit buttons placed into columns below the navbar header div for native interactivity
-    col_space, col_btn1, col_btn2 = st.columns([4.2, 1.9, 1.9])
-    with col_btn1:
-        if st.button("Create an account", use_container_width=True):
+    # Placing buttons right above using a container wrapper or columns injected into custom right class
+    # To keep native click handlers working perfectly, we use Streamlit columns but wrapped in CSS target
+    col_spacer, col_b1, col_b2 = st.columns([5.2, 1.4, 1.4])
+    with col_b1:
+        if st.button("Create an account", use_container_width=True, key="btn_create_acc"):
             st.session_state.is_registering = True
             st.rerun()
-    with col_btn2:
-        if st.button("Go to Account", type="primary", use_container_width=True):
+    with col_b2:
+        if st.button("Go to Account", type="primary", use_container_width=True, key="btn_goto_acc"):
             st.session_state.is_registering = False
             st.rerun()
 
-    st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
 
     st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:
         st.markdown("""
-            <div class="hero-title" style="font-size: 1.15rem; margin-top: 2px;">Create your IUBAT Account</div>
+            <div class="hero-title" style="font-size: 1.1rem; margin-top: 2px;">Create your IUBAT Account</div>
             <div class="hero-subtitle">Access campus services, academic tools, and student portals instantly.</div>
         """, unsafe_allow_html=True)
 
@@ -293,7 +289,7 @@ if not st.session_state.logged_in:
             with col1:
                 remember_me = st.checkbox("Remember me")
             with col2:
-                st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' style='color: #38BDF8; font-size: 0.65rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
+                st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' style='color: #38BDF8; font-size: 0.62rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:
@@ -306,7 +302,7 @@ if not st.session_state.logged_in:
                 else:
                     st.error("❌ Please enter both ID Number and Password.")
 
-    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 8px; margin-top: 8px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 8px; margin-top: 6px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 else:

@@ -10,20 +10,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- Fixed Background Image Reader ---
-def get_fixed_background():
+# --- Asset Readers (Background & Logo) ---
+def get_asset_base64(filename):
     assets_dir = os.path.join(os.getcwd(), "assets")
-    target_path = os.path.join(assets_dir, "bg.jpg")
+    target_path = os.path.join(assets_dir, filename)
     
     if not os.path.exists(target_path) and os.path.exists(assets_dir):
+        exts = ('.png', '.jpg', '.jpeg', '.webp')
         for f in sorted(os.listdir(assets_dir)):
-            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')) and ' ' not in f:
-                target_path = os.path.join(assets_dir, f)
-                break
-                
-    if not os.path.exists(target_path) and os.path.exists(assets_dir):
-        for f in sorted(os.listdir(assets_dir)):
-            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+            if f.lower().endswith(exts) and (filename.split('.')[0] in f.lower()):
                 target_path = os.path.join(assets_dir, f)
                 break
                 
@@ -32,44 +27,60 @@ def get_fixed_background():
             encoded = base64.b64encode(file.read()).decode()
             mime = "image/jpeg" if target_path.lower().endswith(('.jpg', '.jpeg')) else "image/png"
             return f"data:{mime};base64,{encoded}"
-            
+    return None
+
+def get_fixed_background():
+    bg_data = get_asset_base64("bg.jpg")
+    if bg_data:
+        return bg_data
+    assets_dir = os.path.join(os.getcwd(), "assets")
+    if os.path.exists(assets_dir):
+        for f in sorted(os.listdir(assets_dir)):
+            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')) and 'bg' in f.lower():
+                path = os.path.join(assets_dir, f)
+                with open(path, "rb") as file:
+                    encoded = base64.b64encode(file.read()).decode()
+                    mime = "image/jpeg" if path.lower().endswith(('.jpg', '.jpeg')) else "image/png"
+                    return f"data:{mime};base64,{encoded}"
+                    
     return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"
 
 bg_image_data = get_fixed_background()
+logo_image_data = get_asset_base64("logo.png")
 
-# --- Custom CSS for Balanced Blur & Dark Glass Theme ---
+# --- Custom CSS for Full Illustration Background & Dark Glass Theme ---
 st.markdown(f"""
     <style>
     .stApp {{
         background: #090D16;
     }}
     
-    /* Background Image with Balanced Subtle Blur */
+    /* Full Illustration Background Image with Minimal Blur */
     .stApp::before {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: url('{bg_image_data}') no-repeat center center fixed;
         background-size: cover;
-        filter: blur(1.0px);
-        -webkit-filter: blur(1.0px);
-        transform: scale(1.05);
+        filter: blur(1px);
+        -webkit-filter: blur(1px);
+        transform: scale(1.02);
         z-index: 0;
     }}
     
-    /* Balanced Dark Overlay for Crystal Clear Visibility */
+    /* Soft Dark Overlay to Make the Card Pop Out */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.45);
+        background: rgba(9, 13, 22, 0.4);
         z-index: 0;
     }}
     
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 4.5rem !important;
+        padding-top: 4rem !important;
         padding-bottom: 3rem !important;
         max-width: 440px !important;
     }}
@@ -100,16 +111,21 @@ st.markdown(f"""
     
     .card-crest {{
         background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-        width: 72px;
-        height: 72px;
+        width: 76px;
+        height: 76px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 0 4px rgba(255, 255, 255, 0.1);
         border: 2px solid rgba(255, 255, 255, 0.25);
-        color: #FFFFFF;
-        font-size: 32px;
+        overflow: hidden;
+    }}
+    
+    .card-crest img {{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }}
     
     .card-title {{
@@ -209,17 +225,23 @@ st.markdown(f"""
 
 # --- UI Render ---
 
+# Determine Logo HTML
+if logo_image_data:
+    logo_html = f"<div class='card-crest'><img src='{logo_image_data}' alt='IUBAT Logo'></div>"
+else:
+    logo_html = "<div class='card-crest'>🎓</div>"
+
 # Login Form
 with st.form("login_form"):
-    st.markdown("""
+    st.markdown(f"""
         <div class='card-crest-box'>
-            <div class='card-crest'>🎓</div>
+            {logo_html}
         </div>
         <div class='card-title'>IUBAT Nexus</div>
-        <div class='card-subtitle'>SMART PORTAL FOR INNOVATION & ACADEMICS</div>
+        <div class='card-subtitle'>Excellence in Higher Education & Research</div>
     """, unsafe_allow_html=True)
 
-    user_id = st.text_input("Your ID Number", placeholder="Your ID Number *")
+    user_id = st.text_input("ID Number", placeholder="🆔 ID Number *")
     password = st.text_input("Password", type="password", placeholder="🔒 Password *")
 
     col1, col2 = st.columns([1.2, 1])
@@ -228,7 +250,7 @@ with st.form("login_form"):
     with col2:
         st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' class='forgot-pass'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
-    submit_btn = st.form_submit_button("Login")
+    submit_btn = st.form_submit_button("Submit")
     if submit_btn:
         if user_id and password:
             st.success(f"Welcome back, {user_id}!")

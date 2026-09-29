@@ -7,7 +7,7 @@ import time
 st.set_page_config(
     page_title="IUBAT Nexus | Smart Portal",
     page_icon="🎓",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
@@ -87,7 +87,7 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
     st.session_state.splash_shown = True
     st.rerun()
 
-# --- Google-Inspired Styling & Top Navigation ---
+# --- Google-Inspired Styling & Full-Width Navbar Setup ---
 if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
@@ -98,64 +98,74 @@ if not st.session_state.logged_in:
         }}
         .stApp::after {{
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 13, 22, 0.78); z-index: 0;
+            background: rgba(9, 13, 22, 0.84); z-index: 0;
         }}
+        
+        /* Full width header styling */
+        .global-header {{
+            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+            background: rgba(11, 18, 33, 0.85); backdrop-filter: blur(12px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; z-index: 999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+        }}
+        .nav-brand {{
+            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; text-decoration: none;
+        }}
+        .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8; }}
+
+        .nav-actions {{
+            display: flex; align-items: center; gap: 10px;
+        }}
+
+        /* Push main Streamlit content down below fixed header and restrict login card width */
         .block-container {{
-            position: relative; z-index: 1; padding-top: 1.5rem !important; max-width: 480px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 75px !important; max-width: 440px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
-        /* Google Style Top Navbar */
-        .google-navbar {{
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 25px; padding: 0 5px;
-        }}
-        .nav-brand {{
-            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 1.1rem;
-        }}
-        .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
-        
-        .nav-actions {{ display: flex; align-items: center; gap: 12px; }}
-        
         /* Hero Section */
+        .hero-container {{
+            width: 100%; margin: 0 auto;
+        }}
         .hero-showcase {{
-            display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 18px;
+            display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 6px;
         }}
         .floating-badge {{
-            width: 40px; height: 40px; background: rgba(30, 41, 59, 0.85); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.15); font-size: 1rem; animation: float 3s ease-in-out infinite;
+            width: 26px; height: 26px; background: rgba(11, 18, 33, 0.75); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.65rem; animation: float 3s ease-in-out infinite;
         }}
         .floating-badge:nth-child(even) {{ animation-delay: 1.5s; }}
-        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-5px); }} }}
+        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-3px); }} }}
 
         .central-avatar {{
-            width: 75px; height: 75px; background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            width: 44px; height: 44px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4); border: 2.5px solid rgba(56, 189, 248, 0.6); overflow: hidden;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3); border: 2px solid rgba(56, 189, 248, 0.5); overflow: hidden;
         }}
         .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
 
         .hero-title {{
-            text-align: center; color: #F8FAFC !important; font-size: 1.7rem; font-weight: 800; line-height: 1.2; margin-bottom: 8px;
+            text-align: center; color: #F8FAFC !important; font-size: 1.15rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
         }}
         .hero-subtitle {{
-            text-align: center; color: #94A3B8 !important; font-size: 0.8rem; line-height: 1.4; margin-bottom: 22px; padding: 0 10px;
+            text-align: center; color: #94A3B8 !important; font-size: 0.7rem; line-height: 1.3; margin-bottom: 8px; padding: 0 2px;
         }}
 
+        /* Compact ID/Pass Box */
         div[data-testid="stForm"] {{
-            background: rgba(15, 23, 42, 0.9) !important; backdrop-filter: blur(16px);
-            border-radius: 18px !important; padding: 20px 18px 16px 18px !important;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7) !important; border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            background: rgba(11, 18, 33, 0.9) !important; backdrop-filter: blur(14px);
+            border-radius: 12px !important; padding: 10px 10px 6px 10px !important;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55) !important; border: 1px solid rgba(56, 189, 248, 0.15) !important;
         }}
         div[data-testid="stTextInput"] label {{ display: none !important; }}
         .stTextInput>div>div>input {{
-            background-color: rgba(30, 41, 59, 0.8) !important; color: #F8FAFC !important; border-radius: 8px;
-            border: 1.5px solid rgba(255, 255, 255, 0.12); padding: 9px 12px; font-size: 0.85rem;
+            background-color: rgba(15, 23, 42, 0.75) !important; color: #F8FAFC !important; border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2); padding: 6px 8px; font-size: 0.75rem;
         }}
         .stFormSubmitButton>button {{
             width: 100% !important; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
-            color: #FFFFFF !important; font-weight: 700; border-radius: 8px; border: none; padding: 10px;
+            color: #FFFFFF !important; font-weight: 700; border-radius: 6px; border: none; padding: 6px; font-size: 0.78rem;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -164,23 +174,23 @@ else:
     st.markdown("""
         <style>
         .stApp { background: #0F172A !important; }
-        .block-container { position: relative; z-index: 1; padding-top: 1.5rem !important; padding-bottom: 2rem !important; max-width: 420px !important; margin: auto !important; }
+        .block-container { position: relative; z-index: 1; padding-top: 1rem !important; padding-bottom: 2rem !important; max-width: 420px !important; margin: auto !important; }
         #MainMenu, header, footer {visibility: hidden;}
 
         .app-header {
-            background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); padding: 14px 18px;
-            border-radius: 16px; color: white; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); padding: 12px 16px;
+            border-radius: 14px; color: white; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.08);
             display: flex; justify-content: space-between; align-items: center;
         }
         .sched-card {
-            background: rgba(30, 41, 59, 0.75); border-radius: 14px; padding: 14px; color: #F8FAFC;
-            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px;
+            background: rgba(30, 41, 59, 0.75); border-radius: 12px; padding: 12px; color: #F8FAFC;
+            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 8px;
         }
         .badge-tag {
-            background: rgba(56, 189, 248, 0.15); color: #38BDF8; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600;
+            background: rgba(56, 189, 248, 0.15); color: #38BDF8; padding: 2px 6px; border-radius: 6px; font-size: 0.68rem; font-weight: 600;
         }
         .route-stop {
-            padding: 6px 0; border-left: 2px solid #38BDF8; padding-left: 12px; margin-left: 6px; font-size: 0.8rem; color: #CBD5E1;
+            padding: 5px 0; border-left: 2px solid #38BDF8; padding-left: 10px; margin-left: 6px; font-size: 0.78rem; color: #CBD5E1;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -191,30 +201,34 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # Google-style Top Navbar with "Create an account" and "Go to Account" triggers
-    col_nav1, col_nav2 = st.columns([1, 1])
-    with col_nav1:
-        st.markdown(f"""
-            <div class="google-navbar">
-                <div class="nav-brand">{logo_small} IUBAT Nexus</div>
+    # Fixed Global Navbar with Logo on Extreme Left and Buttons on Extreme Right (Uncut & Fully Visible)
+    st.markdown(f"""
+        <div class="global-header">
+            <div class="nav-brand">
+                {logo_small} IUBAT Nexus
             </div>
-        """, unsafe_allow_html=True)
-    with col_nav2:
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("Create Account", use_container_width=True):
-                st.session_state.is_registering = True
-                st.rerun()
-        with c2:
-            if st.button("Go to Account", type="primary", use_container_width=True):
-                st.session_state.is_registering = False
-                st.rerun()
+            <div class="nav-actions" id="navbar-buttons-mount">
+                <!-- Buttons injected via Streamlit columns below for reactivity -->
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
+    # Placing buttons in a top helper row mapped to the right side of the global header via flex styling
+    col_spacer, col_b1, col_b2 = st.columns([2.5, 1.1, 1.1])
+    with col_b1:
+        if st.button("Create an account", use_container_width=True, key="btn_create_acc"):
+            st.session_state.is_registering = True
+            st.rerun()
+    with col_b2:
+        if st.button("Go to Account", type="primary", use_container_width=True, key="btn_goto_acc"):
+            st.session_state.is_registering = False
+            st.rerun()
+
+    st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:
-        # --- Register View ---
         st.markdown("""
-            <div class="hero-title" style="font-size: 1.5rem; margin-top: 10px;">Create your IUBAT Account</div>
-            <div class="hero-subtitle">Access campus services, academic tools, and student portals instantly.</div>
+            <div class="hero-title" style="font-size: 1.1rem; margin-top: 4px;">Create your IUBAT Account</div>
+            <div class="hero-subtitle">Access campus services and student portals instantly.</div>
         """, unsafe_allow_html=True)
 
         with st.form("register_form"):
@@ -241,9 +255,8 @@ if not st.session_state.logged_in:
             st.rerun()
 
     else:
-        # --- Login View ---
         st.markdown(f"""
-            <div class="hero-showcase" style="margin-top: 10px;">
+            <div class="hero-showcase" style="margin-top: 4px;">
                 <div class="floating-badge">🚨</div>
                 <div class="floating-badge">👨‍🏫</div>
                 {avatar_html}
@@ -251,18 +264,18 @@ if not st.session_state.logged_in:
                 <div class="floating-badge">🎓</div>
             </div>
             <div class="hero-title">All of IUBAT,<br>working for you</div>
-            <div class="hero-subtitle">Sign in to your Student Portal for seamless access to campus services and academic records.</div>
+            <div class="hero-subtitle">Sign in to your Student Portal for seamless access to campus services.</div>
         """, unsafe_allow_html=True)
 
         with st.form("login_form"):
-            user_id = st.text_input("Your ID Number", placeholder="Your ID Number *")
+            user_id = st.text_input("ID Number", placeholder="Your ID Number *")
             password = st.text_input("Password", type="password", placeholder="Password *")
 
             col1, col2 = st.columns([1.1, 1])
             with col1:
                 remember_me = st.checkbox("Remember me")
             with col2:
-                st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' style='color: #38BDF8; font-size: 0.72rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
+                st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' style='color: #38BDF8; font-size: 0.65rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:
@@ -275,16 +288,16 @@ if not st.session_state.logged_in:
                 else:
                     st.error("❌ Please enter both ID Number and Password.")
 
-    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top: 15px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 9px; margin-top: 8px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 else:
-    # --- Main Logged-In Dashboard ---
     st.markdown(f"""
         <div class='app-header'>
             <div>
-                <div style='font-size: 0.7rem; color: #94A3B8;'>Welcome back,</div>
-                <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
-                <div style='font-size: 0.7rem; color: #38BDF8;'>ID: {st.session_state.user_id}</div>
+                <div style='font-size: 0.68rem; color: #94A3B8;'>Welcome back,</div>
+                <div style='font-size: 1rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
+                <div style='font-size: 0.68rem; color: #38BDF8;'>ID: {st.session_state.user_id}</div>
             </div>
             <div>
                 <span class='badge-tag'>🟢 Online</span>
@@ -292,7 +305,6 @@ else:
         </div>
     """, unsafe_allow_html=True)
 
-    # Top Tab Navigation inside Dashboard (includes Go to Account button for updating info)
     col_t1, col_t2, col_t3 = st.columns(3)
     with col_t1:
         if st.button("🏠 Home", use_container_width=True):
@@ -314,7 +326,7 @@ else:
     st.markdown("<br>", unsafe_allow_html=True)
 
     if st.session_state.active_tab == "Home":
-        st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 10px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 0.85rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
 
         if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
             st.session_state.active_tab = "SOS"
@@ -354,12 +366,12 @@ else:
             <div class='sched-card' style='border-left: 4px solid #EF4444;'>
                 <b>Campus Security Control Room</b><br>
                 📞 Hotline: +880 1713-393291<br>
-                <span style='font-size: 0.75rem; color: #94A3B8;'>Available 24/7 for urgent assistance.</span>
+                <span style='font-size: 0.72rem; color: #94A3B8;'>Available 24/7 for urgent assistance.</span>
             </div>
             <div class='sched-card' style='border-left: 4px solid #F59E0B;'>
                 <b>Medical Center Emergency</b><br>
                 📞 Ambulance: +880 1819-000000<br>
-                <span style='font-size: 0.75rem; color: #94A3B8;'>First aid and emergency evacuation.</span>
+                <span style='font-size: 0.72rem; color: #94A3B8;'>First aid and emergency evacuation.</span>
             </div>
         """, unsafe_allow_html=True)
         if st.button("🚨 Trigger Panic Alert (Test)", type="primary", use_container_width=True):
@@ -387,15 +399,15 @@ else:
         st.markdown("### 🚌 Bus Schedule & Live Tracking")
         st.markdown("""
             <div class='sched-card'>
-                <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;'>
+                <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;'>
                     <span style='font-weight: 700;'>Bus 02: Campus to Tongi</span>
                     <span class='badge-tag'>On Trip</span>
                 </div>
-                <div style='color: #94A3B8; font-size: 0.8rem; margin-bottom: 8px;'>
+                <div style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'>
                     🕒 Departure: <b>05:30 PM</b> | ETA: <b>07:30 PM</b>
                 </div>
-                <div style='font-size: 0.8rem;'><b>Driver:</b> Sobuj Hossain (01621796157)</div>
-                <div style='font-size: 0.8rem;'><b>Helper:</b> Ripon (01861455868)</div>
+                <div style='font-size: 0.78rem;'><b>Driver:</b> Sobuj Hossain (01621796157)</div>
+                <div style='font-size: 0.78rem;'><b>Helper:</b> Ripon (01861455868)</div>
             </div>
         """, unsafe_allow_html=True)
         with st.expander("🗺 Route Stoppages"):

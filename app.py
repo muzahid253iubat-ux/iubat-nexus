@@ -10,21 +10,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- Fixed Background Image Reader (Clean & Safe) ---
+# --- Fixed Background Image Reader ---
 def get_fixed_background():
     assets_dir = os.path.join(os.getcwd(), "assets")
-    
-    # Check for exact 'bg.jpg' first
     target_path = os.path.join(assets_dir, "bg.jpg")
     
-    # If bg.jpg doesn't exist, search for any clean image filename without weird spaces
     if not os.path.exists(target_path) and os.path.exists(assets_dir):
         for f in sorted(os.listdir(assets_dir)):
             if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')) and ' ' not in f:
                 target_path = os.path.join(assets_dir, f)
                 break
                 
-    # If still not found, grab the first available image
     if not os.path.exists(target_path) and os.path.exists(assets_dir):
         for f in sorted(os.listdir(assets_dir)):
             if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
@@ -37,16 +33,15 @@ def get_fixed_background():
             mime = "image/jpeg" if target_path.lower().endswith(('.jpg', '.jpeg')) else "image/png"
             return f"data:{mime};base64,{encoded}"
             
-    # Fallback default high-res campus image if nothing found
     return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Fixed Background & Glassmorphism ---
+# --- Custom CSS for High Readability & Unique Design ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(10, 25, 47, 0.78), rgba(10, 25, 47, 0.85)), 
+        background: linear-gradient(rgba(5, 11, 20, 0.88), rgba(10, 25, 47, 0.92)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -54,53 +49,105 @@ st.markdown(f"""
         background-repeat: no-repeat;
     }}
     
-    .login-container {{
-        background: rgba(255, 255, 255, 0.08);
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        margin-top: 50px;
-        max-width: 450px;
-        margin-left: auto;
-        margin-right: auto;
+    .main-title {{
+        font-size: 2.8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+        text-shadow: 0 4px 20px rgba(0, 198, 255, 0.3);
     }}
     
-    h1, h2, h3, p, label {{
-        color: #ffffff !important;
+    .sub-title {{
+        color: #94A3B8 !important;
         text-align: center;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-top: 5px;
+        margin-bottom: 30px;
+        letter-spacing: 0.5px;
+    }}
+    
+    .login-container {{
+        background: rgba(15, 23, 42, 0.85);
+        padding: 40px;
+        border-radius: 24px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        max-width: 440px;
+        margin: 0 auto;
+    }}
+    
+    .login-header {{
+        color: #F8FAFC !important;
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        letter-spacing: 0.5px;
+    }}
+    
+    label {{
+        color: #E2E8F0 !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
     }}
     
     .stTextInput>div>div>input {{
-        background-color: rgba(255, 255, 255, 0.15);
-        color: white;
-        border-radius: 10px;
-        border: none;
-        padding: 12px;
+        background-color: rgba(30, 41, 59, 0.9) !important;
+        color: #ffffff !important;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 14px;
+        font-size: 1rem;
+    }}
+    
+    .stTextInput>div>div>input:focus {{
+        border-color: #00C6FF;
+        box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
     }}
     
     .stButton>button {{
         width: 100%;
-        background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+        background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
         color: white;
-        font-weight: bold;
+        font-weight: 700;
+        font-size: 1.05rem;
         border: none;
-        padding: 12px;
+        padding: 14px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 114, 255, 0.4);
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }}
+    
+    .stButton>button:hover {{
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 114, 255, 0.6);
+    }}
+    
+    .footer {{
+        text-align: center;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+        margin-top: 50px;
+        letter-spacing: 0.5px;
     }}
     </style>
 """, unsafe_allow_html=True)
 
 # --- Main App Content ---
-st.markdown("<h1>🎓 IUBAT Nexus</h1>", unsafe_allow_html=True)
-st.markdown("<p>Your Smart University Companion Portal</p>", unsafe_allow_html=True)
-st.write("")
+st.markdown("<div class='main-title'>🎓 IUBAT Nexus</div>", unsafe_allow_html=True)
+st.markdown("<div class='sub-title'>Your Smart University Companion Portal</div>", unsafe_allow_html=True)
 
 with st.container():
     st.markdown("<div class='login-container'>", unsafe_allow_html=True)
-    st.markdown("<h3>Sign In</h3>", unsafe_allow_html=True)
+    st.markdown("<div class='login-header'>Sign In</div>", unsafe_allow_html=True)
     
     user_id = st.text_input("Student ID", placeholder="e.g. 20103056")
     password = st.text_input("Password", type="password", placeholder="••••••••")
@@ -114,4 +161,4 @@ with st.container():
             
     st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown("<div style='text-align: center; color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 40px;'>Developed by Muzahid | IUBAT Nexus Beta © 2026</div>", unsafe_allow_html=True)
+st.markdown("<div class='footer'>Developed by Muzahid | IUBAT Nexus Beta © 2026</div>", unsafe_allow_html=True)

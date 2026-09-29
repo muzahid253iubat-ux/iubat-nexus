@@ -128,20 +128,20 @@ if not st.session_state.logged_in:
             width: 100%; margin: 0 auto;
         }}
         .hero-showcase {{
-            display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 6px;
+            display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 8px;
         }}
         .floating-badge {{
-            width: 26px; height: 26px; background: rgba(11, 18, 33, 0.75); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 0.65rem; animation: float 3s ease-in-out infinite;
+            width: 38px; height: 38px; background: rgba(11, 18, 33, 0.85); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+            border: 1.5px solid rgba(56, 189, 248, 0.3); font-size: 1.1rem; animation: float 3s ease-in-out infinite;
         }}
         .floating-badge:nth-child(even) {{ animation-delay: 1.5s; }}
-        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-3px); }} }}
+        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-4px); }} }}
 
         .central-avatar {{
-            width: 44px; height: 44px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
+            width: 54px; height: 54px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3); border: 2px solid rgba(56, 189, 248, 0.5); overflow: hidden;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); border: 2.5px solid rgba(56, 189, 248, 0.6); overflow: hidden;
         }}
         .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
 

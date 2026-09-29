@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS Matching Reference Floating Minimal Card Style ---
+# --- Custom CSS for Stacked Layout (Banner on top, Card below) ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.95)), 
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -52,61 +52,88 @@ st.markdown(f"""
     #MainMenu, header, footer {{visibility: hidden;}}
     
     .block-container {{
-        padding-top: 4rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 2rem !important;
-        max-width: 440px !important;
+        max-width: 460px !important;
     }}
     
-    /* Floating Avatar Circle centered on top of card */
+    /* First Section: Banner Card (Image 1 style) */
+    .banner-card {{
+        background: linear-gradient(rgba(15, 23, 42, 0.35), rgba(15, 23, 42, 0.75)), url('{bg_image_data}');
+        background-size: cover;
+        background-position: center;
+        border-radius: 20px;
+        padding: 40px 20px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        margin-bottom: 28px; /* Gap between banner and login card */
+        position: relative;
+    }}
+    
+    .banner-crest {{
+        background: rgba(15, 23, 42, 0.85);
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        font-size: 24px;
+        margin-bottom: 12px;
+    }}
+    
+    .banner-title {{
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+    }}
+    
+    .banner-subtitle {{
+        font-size: 0.7rem;
+        color: #CBD5E1;
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+    }}
+    
+    /* Second Section: Floating Login Card (Image 2 style) */
     .avatar-container {{
         display: flex;
         justify-content: center;
-        margin-bottom: -40px;
+        margin-bottom: -36px;
         position: relative;
         z-index: 10;
     }}
     
     .avatar-circle {{
         background: #0F172A;
-        width: 80px;
-        height: 80px;
+        width: 72px;
+        height: 72px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35), 0 0 0 6px rgba(255, 255, 255, 0.2);
-        border: 4px solid #FFFFFF;
-        font-size: 36px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35), 0 0 0 5px rgba(255, 255, 255, 0.25);
+        border: 3px solid #FFFFFF;
+        font-size: 32px;
     }}
     
-    /* Main Floating Card */
-    .floating-card {{
+    .login-card {{
         background: #FFFFFF;
         border-radius: 24px;
-        padding: 50px 30px 30px 30px;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+        padding: 45px 28px 24px 28px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(255, 255, 255, 0.2);
     }}
     
-    .card-heading {{
-        text-align: center;
-        color: #0F172A;
-        font-size: 1.25rem;
-        font-weight: 800;
-        margin-bottom: 4px;
-    }}
-    
-    .card-subheading {{
-        text-align: center;
-        color: #64748B;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 24px;
-        font-weight: 600;
-    }}
-    
-    /* Form Styling */
+    /* Form Styling inside Login Card */
     div[data-testid="stForm"] {{
         background: transparent !important;
         padding: 0px !important;
@@ -114,14 +141,12 @@ st.markdown(f"""
         box-shadow: none !important;
     }}
     
-    /* Label hiding for clean minimal look */
     div[data-testid="stForm"] label p {{
         display: none !important;
     }}
     
-    /* Input Fields Styling */
     .stTextInput>div>div>input {{
-        background-color: #F1F5F9 !important;
+        background-color: #F8FAFC !important;
         color: #0F172A !important;
         font-weight: 600;
         border-radius: 10px;
@@ -137,7 +162,6 @@ st.markdown(f"""
         box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
     }}
     
-    /* Checkbox Styling */
     .stCheckbox label p {{
         display: block !important;
         color: #475569 !important;
@@ -145,7 +169,6 @@ st.markdown(f"""
         font-size: 0.85rem !important;
     }}
     
-    /* Login Submit Button Matching Reference Style */
     .stFormSubmitButton>button {{
         width: 100% !important;
         background: #0F172A !important;
@@ -154,10 +177,10 @@ st.markdown(f"""
         font-size: 0.95rem !important;
         letter-spacing: 1px;
         border: none !important;
-        padding: 13px !important;
+        padding: 12px !important;
         border-radius: 10px !important;
         box-shadow: 0 6px 18px rgba(15, 23, 42, 0.3) !important;
-        margin-top: 12px !important;
+        margin-top: 10px !important;
         transition: all 0.3s ease !important;
     }}
     
@@ -169,9 +192,9 @@ st.markdown(f"""
     
     .portal-footer {{
         text-align: center;
-        color: #64748B;
+        color: #94A3B8;
         font-size: 11px;
-        margin-top: 24px;
+        margin-top: 20px;
         font-weight: 500;
         letter-spacing: 0.3px;
     }}
@@ -179,22 +202,25 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # --- UI Render ---
-# Floating Avatar Circle
+
+# 1st Section: Banner Card (Image 1 style)
+st.markdown("""
+    <div class='banner-card'>
+        <div class='banner-crest'>🎓</div>
+        <div class='banner-title'>IUBAT Nexus</div>
+        <div class='banner-subtitle'>Excellence in Higher Education & Research</div>
+    </div>
+""", unsafe_allow_html=True)
+
+# 2nd Section: Floating Login Card (Image 2 style, placed nicely below)
 st.markdown("""
     <div class='avatar-container'>
         <div class='avatar-circle'>👤</div>
     </div>
 """, unsafe_allow_html=True)
 
-# Floating Card Container
-st.markdown("<div class='floating-card'>", unsafe_allow_html=True)
+st.markdown("<div class='login-card'>", unsafe_allow_html=True)
 
-st.markdown("""
-    <div class='card-heading'>IUBAT Nexus</div>
-    <div class='card-subheading'>Portal Login</div>
-""", unsafe_allow_html=True)
-
-# Form
 with st.form("login_form"):
     user_id = st.text_input("ID Number", placeholder="👤 ID Number")
     password = st.text_input("Password", type="password", placeholder="🔒 Password")

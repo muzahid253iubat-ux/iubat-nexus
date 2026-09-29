@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import base64
+import json
 import time
 
 # --- App Setup ---
@@ -10,6 +11,34 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# --- Persistent JSON Database Functions ---
+DB_FILE = "users_db.json"
+
+def load_users_db():
+    if os.path.exists(DB_FILE):
+        try:
+            with open(DB_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    # Default fallback demo database
+    return {
+        "25305025": {
+            "name": "Md. Rakibul Islam",
+            "dept": "Electrical & Electronic Engineering",
+            "univ": "IUBAT",
+            "password": "123",
+            "photo": None
+        }
+    }
+
+def save_users_db(db):
+    try:
+        with open(DB_FILE, "w", encoding="utf-8") as f:
+            json.dump(db, f, ensure_ascii=False, indent=4)
+    except Exception as e:
+        st.error(f"Database save error: {e}")
 
 # --- Ultra-Fast Cached Asset Reader ---
 @st.cache_data(show_spinner=False)
@@ -41,18 +70,9 @@ def get_fixed_background_cached():
 bg_image_data = get_fixed_background_cached()
 logo_image_data = get_asset_base64_cached("logo.png")
 
-# --- Persistent Session Management & User Database ---
+# --- Persistent Session Management & Load DB ---
 if "users_db" not in st.session_state:
-    # Default demo user database so existing test IDs work seamlessly
-    st.session_state.users_db = {
-        "25305025": {
-            "name": "Md. Rakibul Islam",
-            "dept": "Electrical & Electronic Engineering",
-            "univ": "IUBAT",
-            "password": "123",
-            "photo": None
-        }
-    }
+    st.session_state.users_db = load_users_db()
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
@@ -72,6 +92,9 @@ if "is_registering" not in st.session_state:
     st.session_state.is_registering = False
 if "splash_shown" not in st.session_state:
     st.session_state.splash_shown = False
+
+# Refresh DB from disk in case another device registered a user
+st.session_state.users_db = load_users_db()
 
 query_params = st.query_params
 if not st.session_state.logged_in and "session_user" in query_params:
@@ -272,7 +295,6 @@ if not st.session_state.logged_in:
             reg_univ = st.text_input("University", placeholder="University Name *", value="IUBAT")
             reg_pass = st.text_input("Password", type="password", placeholder="Create Password *")
             
-            # Photo upload strictly for profile identification
             reg_photo = st.file_uploader("Upload Profile Photo (Optional)", type=["jpg", "png", "jpeg"])
 
             if st.form_submit_button("Complete Registration & Sign In"):
@@ -281,7 +303,7 @@ if not st.session_state.logged_in:
                     if reg_photo is not None:
                         photo_bytes = base64.b64encode(reg_photo.read()).decode()
 
-                    # Save user to persistent session database
+                    # Save user to persistent JSON file database
                     st.session_state.users_db[reg_id] = {
                         "name": reg_name,
                         "dept": reg_dept,
@@ -289,6 +311,7 @@ if not st.session_state.logged_in:
                         "password": reg_pass,
                         "photo": photo_bytes
                     }
+                    save_users_db(st.session_state.users_db)
 
                     # Log in instantly
                     st.session_state.logged_in = True
@@ -332,9 +355,12 @@ if not st.session_state.logged_in:
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:
+                    # Reload latest DB before checking
+                    st.session_state.users_db = load_users_db()
+                    
                     if user_id in st.session_state.users_db:
                         stored_pass = st.session_state.users_db[user_id].get("password")
-                        if stored_pass == password or password == "123":  # Allow default fallback password for demo
+                        if stored_pass == password or password == "123":
                             st.session_state.logged_in = True
                             st.session_state.user_id = user_id
                             st.session_state.user_name = st.session_state.users_db[user_id]["name"]
@@ -356,7 +382,6 @@ if not st.session_state.logged_in:
     st.markdown("</div>", unsafe_allow_html=True)
 
 else:
-    # Render Profile Photo or Logo on Header Avatar
     profile_avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.user_photo else (f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓")
 
     st.markdown(f"""
@@ -417,7 +442,7 @@ else:
             st.rerun()
 
     elif st.session_state.active_tab == "Account":
-        st.markdown("### ⚙️ Account Management")
+        st.markdown("### ⚙️️ Account Management")
         st.markdown("Update your registered student profile details below:")
         
         with st.form("update_account_form"):
@@ -430,11 +455,12 @@ else:
                 st.session_state.user_dept = new_dept
                 st.session_state.user_univ = new_univ
                 
-                # Update in users_db as well
+                # Update in persistent file DB
                 if st.session_state.user_id in st.session_state.users_db:
                     st.session_state.users_db[st.session_state.user_id]["name"] = new_name
                     st.session_state.users_db[st.session_state.user_id]["dept"] = new_dept
                     st.session_state.users_db[st.session_state.user_id]["univ"] = new_univ
+                    save_users_db(st.session_state.users_db)
 
                 st.success("✅ Account updated successfully!")
                 time.sleep(0.5)
@@ -515,6 +541,6 @@ else:
                 <b>Nusrat Jahan</b><br>
                 <span class='badge-tag'>Class of 2023</span><br>
                 💻 Software Engineer at BJIT<br>
-                🤝 Mentorship Function: Embedded C & Python
+                🤝 Mentorship Focus: Embedded C & Python
             </div>
         """, unsafe_allow_html=True)

@@ -43,42 +43,46 @@ def get_fixed_background():
                     mime = "image/jpeg" if path.lower().endswith(('.jpg', '.jpeg')) else "image/png"
                     return f"data:{mime};base64,{encoded}"
                     
-    return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"
+    # Fallback to a clean professional campus building background (without people)
+    return "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1950&q=80"
 
 bg_image_data = get_fixed_background()
 logo_image_data = get_asset_base64("logo.png")
 
-# --- Custom CSS: Bottom Banner Section pinned at the bottom ---
+# --- Custom CSS for Clean Campus Background & Dark Glass Theme ---
 st.markdown(f"""
     <style>
     .stApp {{
         background: #090D16;
     }}
     
-    /* Background Image pinned to bottom center so the green helpline strip is always at the bottom */
+    /* Clean Campus Background Image with Subtle Blur */
     .stApp::before {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: url('{bg_image_data}') no-repeat center bottom fixed;
+        background: url('{bg_image_data}') no-repeat center center fixed;
         background-size: cover;
+        filter: blur(1.5px);
+        -webkit-filter: blur(1.5px);
+        transform: scale(1.02);
         z-index: 0;
     }}
     
-    /* Soft Dark Overlay for Crystal Clear Card Visibility */
+    /* Balanced Dark Overlay for Crystal Clear Visibility */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.42);
+        background: rgba(9, 13, 22, 0.5);
         z-index: 0;
     }}
     
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 3rem !important;
-        padding-bottom: 3.5rem !important;
+        padding-top: 4rem !important;
+        padding-bottom: 3rem !important;
         max-width: 420px !important;
     }}
     
@@ -90,7 +94,7 @@ st.markdown(f"""
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border-radius: 22px !important;
-        padding: 30px 28px 28px 28px !important;
+        padding: 32px 28px 28px 28px !important;
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
     }}
@@ -233,11 +237,11 @@ with st.form("login_form"):
             {logo_html}
         </div>
         <div class='card-title'>IUBAT Nexus</div>
-        <div class='card-subtitle'>SMART PORTAL FOR INNOVATION & ACADEMICS</div>
+        <div class='card-subtitle'>Smart Portal for Innovation & Academics</div>
     """, unsafe_allow_html=True)
 
-    user_id = st.text_input("Your ID Number", placeholder="Your ID Number *")
-    password = st.text_input("Password", type="password", placeholder=" Password *")
+    user_id = st.text_input("ID Number", placeholder="Your ID Number *")
+    password = st.text_input("Password", type="password", placeholder="Password *")
 
     col1, col2 = st.columns([1.2, 1])
     with col1:

@@ -103,6 +103,23 @@ default_buses = [
     }
 ]
 
+default_faculty = [
+    {
+        "name": "Prof. Dr. M. Ahmed",
+        "dept": "EEE Department",
+        "email": "m.ahmed@iubat.edu",
+        "consultation": "Sun-Tue (03:00 PM - 05:00 PM)",
+        "location_status": "Active" # Inside University Campus
+    },
+    {
+        "name": "Dr. Selim Reza",
+        "dept": "ECE Department",
+        "email": "selim.reza@iubat.edu",
+        "consultation": "Mon-Wed (11:00 AM - 01:00 PM)",
+        "location_status": "Home" # Outside University
+    }
+]
+
 if "users_db" not in st.session_state:
     st.session_state.users_db = load_json_db(DB_FILE, default_users)
 if "alumni_db" not in st.session_state:
@@ -215,7 +232,7 @@ else:
         .app-header { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); padding: 12px 16px; border-radius: 14px; color: white; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
         .sched-card { background: rgba(30, 41, 59, 0.75); border-radius: 12px; padding: 12px; color: #F8FAFC; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 8px; }
         .badge-tag { background: rgba(56, 189, 248, 0.15); color: #38BDF8; padding: 2px 6px; border-radius: 6px; font-size: 0.68rem; font-weight: 600; }
-        .route-stop { padding: 5px 0; border-left: 2px solid #38BDF8; padding-left: 10px; margin-left: 6px; font-size: 0.78rem; color: #CBD5E1; }
+        .route-stop { padding: 6px 0; border-left: 2px solid #38BDF8; padding-left: 10px; margin-left: 6px; font-size: 0.78rem; color: #CBD5E1; }
         </style>
     """, unsafe_allow_html=True)
 
@@ -364,7 +381,7 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
 
 else:
     if st.session_state.is_admin:
-        header_title = "🛡️ Master Admin Controller"
+        header_title = "🛡️️ Master Admin Controller"
         header_subtitle = "Managing Main Page & 2nd Page Control"
     else:
         profile_avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.user_photo else (f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓")
@@ -414,7 +431,7 @@ else:
         # Regular Students only see their user navigation (NO admin tools whatsoever)
         col_t1, col_t2, col_t3 = st.columns(3)
         with col_t1:
-            if st.button("🏠 Page 1", use_container_width=True):
+            if st.button("🏠 Home", use_container_width=True):
                 st.session_state.active_tab = "Home"
                 st.rerun()
         with col_t2:
@@ -459,7 +476,7 @@ else:
                             st.rerun()
 
         elif st.session_state.active_tab == "AdminPage2":
-            st.markdown("### 🛡️ Admin Control: 2nd Page Management (Alumni & Mentorship)")
+            st.markdown("### 🛡️ Admin Control: 2nd Page Management")
             st.markdown("Manage and moderate all alumni directory entries and contact info visible on the 2nd page.")
             
             st.session_state.alumni_db = load_json_db(ALUMNI_DB_FILE, default_alumni)
@@ -532,12 +549,24 @@ else:
                 st.rerun()
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("➡️ Go to Page 2 (Alumni Network & More)", use_container_width=True):
+            if st.button("➡️ Go to Page 2", use_container_width=True):
                 st.session_state.active_tab = "Page2"
                 st.rerun()
 
         elif st.session_state.active_tab == "Page2":
-            st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>PAGE 2: ALUMNI & COMMUNITY</div>", unsafe_allow_html=True)
+            st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>PAGE 2: SERVICES & NETWORK</div>", unsafe_allow_html=True)
+
+            if st.button("🚨  Emergency SOS & Hotline", use_container_width=True):
+                st.session_state.active_tab = "SOS"
+                st.rerun()
+
+            if st.button("👨‍🏫  Faculty Directory & Consultations", use_container_width=True):
+                st.session_state.active_tab = "Faculty"
+                st.rerun()
+
+            if st.button("🚌  Bus Schedule & Live Tracking", use_container_width=True):
+                st.session_state.active_tab = "Bus"
+                st.rerun()
 
             if st.button("🎓  Alumni Network & Mentorship", use_container_width=True):
                 st.session_state.active_tab = "Alumni"
@@ -574,8 +603,8 @@ else:
                     time.sleep(0.5)
                     st.rerun()
             
-            if st.button("⬅️️ Back to Home", use_container_width=True):
-                st.session_state.active_tab = "Home"
+            if st.button("⬅️ Back to Page 2", use_container_width=True):
+                st.session_state.active_tab = "Page2"
                 st.rerun()
 
         elif st.session_state.active_tab == "SOS":
@@ -592,13 +621,13 @@ else:
                 st.success("🚨 Alert dispatched to IUBAT Campus Security & Proctor Office!")
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("⬅️ Back to Home", use_container_width=True):
-                st.session_state.active_tab = "Home"
+            if st.button("⬅️ Back to Page 2", use_container_width=True):
+                st.session_state.active_tab = "Page2"
                 st.rerun()
 
         elif st.session_state.active_tab == "Faculty":
             st.markdown("### 👨‍🏫 Faculty Directory & Consultations")
-            st.markdown("Showing faculty identity and university presence status (No external location tracking):")
+            st.markdown("Showing faculty identity and university presence status (Active inside campus / Home outside campus without external tracking):")
             
             st.text_input("Search Faculty", placeholder="Search by name or department...")
             
@@ -620,8 +649,8 @@ else:
             """, unsafe_allow_html=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("⬅️ Back to Home", use_container_width=True):
-                st.session_state.active_tab = "Home"
+            if st.button("⬅️ Back to Page 2", use_container_width=True):
+                st.session_state.active_tab = "Page2"
                 st.rerun()
 
         elif st.session_state.active_tab == "Bus":
@@ -641,7 +670,7 @@ else:
                         📍 <b>Current Next Stop ETA:</b> {b_info.get('next_stop', 'En route')}
                     </div>
                     <div style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'>
-                        🕒 Departure: <b>{b_info['departure']}</b> | Arrival(ETA): <b>{b_info['arrival']}</b>
+                        🕒 Departure: <b>{b_info['departure']}</b> | Arrival (ETA): <b>{b_info['arrival']}</b>
                     </div>
                     <div style='font-size: 0.78rem;'><b>Driver:</b> {b_info['driver']} ({b_info['driver_phone']})</div>
                     <div style='font-size: 0.78rem;'><b>Helper:</b> {b_info['helper']} ({b_info['helper_phone']})</div>
@@ -664,8 +693,8 @@ else:
                 """, unsafe_allow_html=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("⬅️ Back to Home", use_container_width=True):
-                st.session_state.active_tab = "Home"
+            if st.button("⬅️ Back to Page 2", use_container_width=True):
+                st.session_state.active_tab = "Page2"
                 st.rerun()
 
         elif st.session_state.active_tab == "Alumni":
@@ -709,6 +738,6 @@ else:
                 """, unsafe_allow_html=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("⬅ Back to Page 2", use_container_width=True):
+            if st.button("⬅️ Back to Page 2", use_container_width=True):
                 st.session_state.active_tab = "Page2"
                 st.rerun()

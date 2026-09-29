@@ -48,23 +48,20 @@ def get_fixed_background():
 bg_image_data = get_fixed_background()
 logo_image_data = get_asset_base64("logo.png")
 
-# --- Custom CSS for Full Illustration Background & Dark Glass Theme ---
+# --- Custom CSS for Full Landscape Banner Background ---
 st.markdown(f"""
     <style>
     .stApp {{
         background: #090D16;
     }}
     
-    /* Full Illustration Background Image with Minimal Blur */
+    /* Full Landscape Banner Background without Zoom/Crop */
     .stApp::before {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: url('{bg_image_data}') no-repeat center center fixed;
-        background-size: cover;
-        filter: blur(1px);
-        -webkit-filter: blur(1px);
-        transform: scale(1.02);
+        background-size: 100% 100%;  /* Puro picture-ke screen-er shathe 100% fit korbe */
         z-index: 0;
     }}
     
@@ -73,14 +70,14 @@ st.markdown(f"""
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.4);
+        background: rgba(9, 13, 22, 0.35);
         z-index: 0;
     }}
     
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 4rem !important;
+        padding-top: 3.5rem !important;
         padding-bottom: 3rem !important;
         max-width: 440px !important;
     }}
@@ -225,13 +222,11 @@ st.markdown(f"""
 
 # --- UI Render ---
 
-# Determine Logo HTML
 if logo_image_data:
     logo_html = f"<div class='card-crest'><img src='{logo_image_data}' alt='IUBAT Logo'></div>"
 else:
     logo_html = "<div class='card-crest'>🎓</div>"
 
-# Login Form
 with st.form("login_form"):
     st.markdown(f"""
         <div class='card-crest-box'>
@@ -257,5 +252,4 @@ with st.form("login_form"):
         else:
             st.error("❌ Please enter both ID Number and Password.")
 
-# Footer
 st.markdown("<div class='portal-footer'>Version: 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)

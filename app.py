@@ -105,7 +105,7 @@ if not st.session_state.logged_in:
         }}
         .stApp::after {{
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 13, 22, 0.62); z-index: 0;
+            background: rgba(9, 13, 22, 0.59); z-index: 0;
         }}
         
         /* Fixed True Global Header Bar */

@@ -43,38 +43,34 @@ def get_fixed_background():
                     mime = "image/jpeg" if path.lower().endswith(('.jpg', '.jpeg')) else "image/png"
                     return f"data:{mime};base64,{encoded}"
                     
-    # Fallback to a clean professional campus building background (without people)
-    return "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1950&q=80"
+    return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1950&q=80"
 
 bg_image_data = get_fixed_background()
 logo_image_data = get_asset_base64("logo.png")
 
-# --- Custom CSS for Clean Campus Background & Dark Glass Theme ---
+# --- Custom CSS for IUBAT Campus Background ---
 st.markdown(f"""
     <style>
     .stApp {{
         background: #090D16;
     }}
     
-    /* Clean Campus Background Image with Subtle Blur */
+    /* IUBAT Campus Background Image with Perfect Full Fit */
     .stApp::before {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: url('{bg_image_data}') no-repeat center center fixed;
+        background: url('{bg_image_data}') no-repeat center bottom fixed;
         background-size: cover;
-        filter: blur(1.5px);
-        -webkit-filter: blur(1.5px);
-        transform: scale(1.02);
         z-index: 0;
     }}
     
-    /* Balanced Dark Overlay for Crystal Clear Visibility */
+    /* Soft Dark Overlay for Crystal Clear Visibility */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.5);
+        background: rgba(9, 13, 22, 0.4);
         z-index: 0;
     }}
     

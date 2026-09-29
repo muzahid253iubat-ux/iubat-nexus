@@ -227,7 +227,7 @@ st.markdown("""
     <div class='banner-card'>
         <div class='banner-crest'>🎓</div>
         <div class='banner-title'>IUBAT Nexus</div>
-        <div class='banner-subtitle'>Excellence in Higher Education & Research</div>
+        <div class='banner-subtitle'>Smart Portal for Innovation & Academics</div>
     </div>
 """, unsafe_allow_html=True)
 

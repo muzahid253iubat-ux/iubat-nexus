@@ -98,41 +98,27 @@ if not st.session_state.logged_in:
         }}
         .stApp::after {{
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 13, 22, 0.84); z-index: 0;
+            background: rgba(9, 13, 22, 0.82); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 0.6rem !important; max-width: 440px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 0.8rem !important; max-width: 420px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
 
-        /* Navbar Layout using Pure Flexbox */
-        .top-navbar-flex {{
-            display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 4px;
-        }}
+        /* Navbar Brand Styling */
         .nav-brand-container {{
-            display: flex; align-items: center; gap: 8px; color: #FFFFFF; font-weight: 800; font-size: 0.95rem; white-space: nowrap;
+            display: flex; align-items: center; gap: 8px; color: #FFFFFF; font-weight: 800; font-size: 1rem; white-space: nowrap; height: 36px;
         }}
-        .nav-brand-container img {{ width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
+        .nav-brand-container img {{ width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8; }}
 
-        .nav-buttons-right {{
-            display: flex; align-items: center; gap: 6px;
-        }}
-
-        /* Streamlit button styling inside top bar */
-        .nav-buttons-right div.stButton > button {{
-            background: rgba(30, 41, 59, 0.8) !important;
-            border: 1px solid rgba(56, 189, 248, 0.3) !important;
-            color: #F8FAFC !important;
+        /* Custom Streamlit button overrides for compact top navbar */
+        .stButton > button {{
             border-radius: 6px !important;
             font-weight: 600 !important;
-            font-size: 0.68rem !important;
-            padding: 3px 8px !important;
+            font-size: 0.7rem !important;
+            padding: 4px 8px !important;
             white-space: nowrap !important;
-            min-height: 28px !important;
-        }}
-        .nav-buttons-right div.stButton:nth-child(2) > button {{
-            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            min-height: 32px !important;
         }}
 
         /* Hero Section */
@@ -166,7 +152,7 @@ if not st.session_state.logged_in:
 
         /* Compact ID/Pass Box Matched with Background */
         div[data-testid="stForm"] {{
-            background: rgba(11, 18, 33, 0.9) !important; backdrop-filter: blur(14px);
+            background: rgba(11, 18, 33, 0.88) !important; backdrop-filter: blur(14px);
             border-radius: 10px !important; padding: 8px 8px 4px 8px !important;
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55) !important; border: 1px solid rgba(56, 189, 248, 0.15) !important;
         }}
@@ -213,23 +199,22 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # Top bar structured with HTML flexbox container, buttons placed cleanly using Streamlit columns inside container
-    st.markdown(f"""
-        <div class="top-navbar-flex">
+    col_brand, col_b1, col_b2 = st.columns([1.6, 1.2, 1.2])
+    
+    with col_brand:
+        st.markdown(f"""
             <div class="nav-brand-container">
                 {logo_small} IUBAT Nexus
             </div>
-        </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    # We use custom container injection for right-aligned buttons without truncation
-    col_empty, col_b1, col_b2 = st.columns([1.2, 1.4, 1.3])
     with col_b1:
-        if st.button("Create an account", use_container_width=True, key="btn_create_acc"):
+        if st.button("Register", use_container_width=True, key="btn_create_acc"):
             st.session_state.is_registering = True
             st.rerun()
+
     with col_b2:
-        if st.button("Go to Account", type="primary", use_container_width=True, key="btn_goto_acc"):
+        if st.button("Sign In", type="primary", use_container_width=True, key="btn_goto_acc"):
             st.session_state.is_registering = False
             st.rerun()
 

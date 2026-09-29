@@ -37,7 +37,7 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS with Smooth Gradient Animation (No Brightness Blinking) ---
+# --- Custom CSS with Smooth Gradient Animation ---
 st.markdown(f"""
     <style>
     .stApp {{
@@ -155,7 +155,6 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # --- Main App Content ---
-st.markdown("<div class='main-title'>🎓 IUBAT Nexus</div>", unsafe_flag=True) if hasattr(st, 'markdown') else None
 st.markdown("<div class='main-title'>🎓 IUBAT Nexus</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>Your Smart University Companion Portal</div>", unsafe_allow_html=True)
 

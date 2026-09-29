@@ -37,14 +37,14 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Gorgeous Dark Frosted Glass Theme ---
+# --- Custom CSS for Premium Soft Light Card Design ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: #090D16;
+        background: #F1F5F9;
     }}
     
-    /* Background Image with Blur */
+    /* Background Image with Gentle Blur */
     .stApp::before {{
         content: "";
         position: fixed;
@@ -57,19 +57,19 @@ st.markdown(f"""
         z-index: 0;
     }}
     
-    /* Dark Luxury Overlay */
+    /* Soft light overlay for clean contrast */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(9, 13, 22, 0.65);
+        background: rgba(241, 245, 249, 0.75);
         z-index: 0;
     }}
     
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 5.5rem !important;  /* Niche namanor jonno padding barano holo */
+        padding-top: 5.5rem !important;
         padding-bottom: 3rem !important;
         max-width: 440px !important;
     }}
@@ -86,41 +86,40 @@ st.markdown(f"""
     }}
     
     .avatar-circle {{
-        background: linear-gradient(135deg, #0A192F 0%, #1E293B 100%);
+        background: #0A192F;
         width: 86px;
         height: 86px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 0 5px rgba(255, 255, 255, 0.15);
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 12px 30px rgba(10, 25, 47, 0.25), 0 0 0 6px rgba(255, 255, 255, 0.95);
+        border: 2px solid #FFFFFF;
         color: #FFFFFF;
         font-size: 38px;
     }}
 
-    /* Form Container acting as Gorgeous Dark Glass Card */
+    /* Form Container acting as a Premium Clean Soft Card */
     div[data-testid="stForm"] {{
-        background: rgba(15, 23, 42, 0.82) !important;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.94) !important;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         border-radius: 24px !important;
         padding: 55px 32px 32px 32px !important;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 25px 50px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8) !important;
     }}
     
     div[data-testid="stForm"] label p {{
         display: none !important;
     }}
     
-    /* Input Fields Design */
+    /* Input Fields Styling */
     .stTextInput>div>div>input {{
-        background-color: rgba(30, 41, 59, 0.7) !important;
-        color: #F8FAFC !important;
-        font-weight: 500;
+        background-color: #F8FAFC !important;
+        color: #1E293B !important;
+        font-weight: 600;
         border-radius: 10px;
-        border: 1.5px solid rgba(255, 255, 255, 0.1);
+        border: 1.5px solid #E2E8F0;
         padding: 12px 16px;
         font-size: 0.95rem;
     }}
@@ -130,36 +129,36 @@ st.markdown(f"""
     }}
     
     .stTextInput>div>div>input:focus {{
-        background-color: rgba(30, 41, 59, 0.95) !important;
-        border-color: #38BDF8 !important;
-        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        background-color: #FFFFFF !important;
+        border-color: #0A192F !important;
+        box-shadow: 0 0 0 3px rgba(10, 25, 47, 0.1);
     }}
     
     /* Checkbox & Links */
     .stCheckbox label p {{
         display: block !important;
-        color: #94A3B8 !important;
+        color: #64748B !important;
         font-weight: 500 !important;
         font-size: 0.85rem !important;
     }}
     
     .forgot-pass {{
-        color: #38BDF8;
+        color: #475569;
         font-size: 0.85rem;
-        font-weight: 500;
+        font-weight: 600;
         text-decoration: none;
         transition: color 0.2s;
     }}
     
     .forgot-pass:hover {{
-        color: #60A5FA;
+        color: #0A192F;
         text-decoration: underline;
     }}
     
     /* Login Button */
     .stFormSubmitButton>button {{
         width: 100% !important;
-        background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+        background: #0A192F !important;
         color: #FFFFFF !important;
         font-weight: 700 !important;
         font-size: 1rem !important;
@@ -167,25 +166,24 @@ st.markdown(f"""
         border: none !important;
         padding: 13px !important;
         border-radius: 10px !important;
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4) !important;
+        box-shadow: 0 8px 20px rgba(10, 25, 47, 0.25) !important;
         margin-top: 10px !important;
         transition: all 0.3s ease !important;
     }}
     
     .stFormSubmitButton>button:hover {{
-        background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+        background: #1E293B !important;
         transform: translateY(-1px);
-        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.6) !important;
+        box-shadow: 0 10px 25px rgba(10, 25, 47, 0.35) !important;
     }}
     
     .portal-footer {{
         text-align: center;
-        color: #94A3B8;
+        color: #475569;
         font-size: 11px;
         margin-top: 25px;
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: 0.3px;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -199,7 +197,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Login Form (Gorgeous Dark Frosted Glass Card)
+# Login Form (Clean Soft Card)
 with st.form("login_form"):
     user_id = st.text_input("Username", placeholder="👤 Username")
     password = st.text_input("Password", type="password", placeholder="🔒 Password")

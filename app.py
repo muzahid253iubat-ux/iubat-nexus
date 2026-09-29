@@ -87,6 +87,13 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
     st.session_state.splash_shown = True
     st.rerun()
 
+# --- Callback Actions for Native-like Streamlit Buttons ---
+def handle_create_acc():
+    st.session_state.is_registering = True
+
+def handle_goto_acc():
+    st.session_state.is_registering = False
+
 # --- Google-Inspired Styling & True Header Setup ---
 if not st.session_state.logged_in:
     st.markdown(f"""
@@ -104,27 +111,36 @@ if not st.session_state.logged_in:
         /* Fixed True Global Header Bar */
         .global-header {{
             position: fixed; top: 0; left: 0; width: 100%; height: 56px;
-            background: rgba(11, 18, 33, 0.92); backdrop-filter: blur(12px);
+            background: rgba(11, 18, 33, 0.95); backdrop-filter: blur(12px);
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 20px; z-index: 99999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+            padding: 0 24px; z-index: 99999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
         }}
         .nav-brand {{
             display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; text-decoration: none; white-space: nowrap;
         }}
         .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8; }}
 
-        .nav-right-buttons {{
+        /* Container for header buttons to align perfectly on right */
+        .header-actions-container {{
+            position: fixed; top: 12px; right: 24px; z-index: 100000;
             display: flex; align-items: center; gap: 10px;
         }}
         
-        /* Streamlit button overrides inside header */
-        .nav-right-buttons div.stButton > button {{
+        /* Streamlit button overrides inside header actions container */
+        .header-actions-container div.stButton > button {{
             border-radius: 6px !important;
-            padding: 4px 12px !important;
+            padding: 2px 14px !important;
             font-size: 0.78rem !important;
             font-weight: 600 !important;
             min-height: 32px !important;
             height: 32px !important;
+            background-color: rgba(30, 41, 59, 0.9) !important;
+            color: #F8FAFC !important;
+            border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        }}
+        .header-actions-container div.stButton > button:hover {{
+            background-color: rgba(56, 189, 248, 0.2) !important;
+            border-color: #38BDF8 !important;
         }}
 
         .block-container {{
@@ -210,37 +226,23 @@ avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Lo
 logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
 
 if not st.session_state.logged_in:
-    # True unified global header bar with brand on left and action buttons on right
-    header_col1, header_col2 = st.columns([4, 2])
-    with header_col1:
-        st.markdown(f"""
-            <div class="global-header">
-                <div class="nav-brand">
-                    {logo_small} IUBAT Nexus
-                </div>
+    # Render True Global Header Bar
+    st.markdown(f"""
+        <div class="global-header">
+            <div class="nav-brand">
+                {logo_small} IUBAT Nexus
             </div>
-        """, unsafe_allow_html=True)
-    
-    # We render buttons inside a custom aligned layout matching the right corner of the header
-    st.markdown("""
-        <style>
-        .header-btn-wrapper {
-            position: fixed; top: 11px; right: 20px; z-index: 100000; display: flex; gap: 8px; align-items: center;
-        }
-        </style>
-        <div class="header-btn-wrapper" id="header-buttons"></div>
+        </div>
     """, unsafe_allow_html=True)
-
-    # Use standard Streamlit buttons placed via container positioning
-    col_spacer, col_b1, col_b2 = st.columns([4.2, 1.1, 1.1])
+    
+    # Render buttons inside fixed header right container using columns wrapped in HTML positioning
+    st.markdown("<div class='header-actions-container'>", unsafe_allow_html=True)
+    col_b1, col_b2 = st.columns(2)
     with col_b1:
-        if st.button("Create an account", key="btn_create_acc"):
-            st.session_state.is_registering = True
-            st.rerun()
+        st.button("Create an account", key="btn_create_acc", on_click=handle_create_acc)
     with col_b2:
-        if st.button("Go to Account", type="primary", key="btn_goto_acc"):
-            st.session_state.is_registering = False
-            st.rerun()
+        st.button("Go to Account", key="btn_goto_acc", on_click=handle_goto_acc)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
     if st.session_state.is_registering:

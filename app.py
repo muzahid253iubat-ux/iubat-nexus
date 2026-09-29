@@ -4,7 +4,7 @@ import base64
 
 # --- App Setup ---
 st.set_page_config(
-    page_title="IUBAT Nexus | Portal",
+    page_title="IUBAT Nexus | Mobile Portal",
     page_icon="🎓",
     layout="centered",
     initial_sidebar_state="collapsed"
@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS with Smooth Gradient Animation ---
+# --- Custom CSS for Mobile App Layout Simulation ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(10, 15, 30, 0.55), rgba(10, 15, 30, 0.7)), 
+        background: linear-gradient(rgba(10, 15, 30, 0.5), rgba(10, 15, 30, 0.65)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -49,62 +49,66 @@ st.markdown(f"""
         background-repeat: no-repeat;
     }}
     
-    @keyframes smoothGradient {{
-        0% {{ background-position: 0% 50%; }}
-        50% {{ background-position: 100% 50%; }}
-        100% {{ background-position: 0% 50%; }}
-    }}
-    
-    .main-title {{
-        font-size: 2.8rem;
-        font-weight: 800;
-        text-align: center;
-        letter-spacing: 1px;
-        margin-bottom: 0px;
-        background: linear-gradient(270deg, #60A5FA, #38BDF8, #818CF8, #60A5FA);
-        background-size: 300% 300%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: smoothGradient 10s ease infinite;
-        text-shadow: none;
-    }}
-    
-    .sub-title {{
-        color: #CBD5E1 !important;
-        text-align: center;
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-top: 6px;
-        margin-bottom: 30px;
-        letter-spacing: 0.5px;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-    }}
-    
-    .login-container {{
-        background: rgba(15, 23, 42, 0.82);
-        padding: 40px;
-        border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        max-width: 440px;
+    /* Mobile App Frame Container */
+    .mobile-frame {{
+        background: rgba(15, 23, 42, 0.85);
+        padding: 30px 25px;
+        border-radius: 35px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        max-width: 410px;
         margin: 0 auto;
     }}
     
-    .login-header {{
-        color: #FFFFFF !important;
+    /* Simulated Phone Status Bar */
+    .status-bar {{
+        display: flex;
+        justify-content: space-between;
+        color: #94A3B8;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        padding: 0 5px;
+    }}
+    
+    .app-logo-area {{
         text-align: center;
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 25px;
+        margin-bottom: 10px;
+    }}
+    
+    .app-logo-icon {{
+        font-size: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        display: inline-block;
+        padding: 12px;
+        border-radius: 20px;
+        margin-bottom: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }}
+    
+    .main-title {{
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #FFFFFF;
+        text-align: center;
         letter-spacing: 0.5px;
+        margin-bottom: 2px;
+    }}
+    
+    .sub-title {{
+        color: #94A3B8 !important;
+        text-align: center;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 25px;
     }}
     
     label {{
-        color: #F8FAFC !important;
+        color: #E2E8F0 !important;
         font-weight: 600 !important;
-        font-size: 0.95rem !important;
+        font-size: 0.9rem !important;
     }}
     
     .stTextInput>div>div>input {{
@@ -113,13 +117,13 @@ st.markdown(f"""
         font-weight: 600;
         border-radius: 12px;
         border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 14px;
-        font-size: 1rem;
+        padding: 12px;
+        font-size: 0.95rem;
     }}
     
     .stTextInput>div>div>input:focus {{
         border-color: #3B82F6;
-        box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
     }}
     
     .stButton>button {{
@@ -127,13 +131,13 @@ st.markdown(f"""
         background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
         color: white;
         font-weight: 700;
-        font-size: 1.05rem;
+        font-size: 1rem;
         border: none;
-        padding: 14px;
+        padding: 12px;
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         transition: all 0.3s ease;
-        margin-top: 10px;
+        margin-top: 5px;
     }}
     
     .stButton>button:hover {{
@@ -142,36 +146,43 @@ st.markdown(f"""
         background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
     }}
     
-    .footer {{
+    .app-footer {{
         text-align: center;
-        color: rgba(255, 255, 255, 0.8);
-        font-weight: 500;
-        font-size: 12px;
-        margin-top: 50px;
-        letter-spacing: 0.5px;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 11px;
+        margin-top: 20px;
+        letter-spacing: 0.3px;
     }}
     </style>
 """, unsafe_allow_html=True)
 
-# --- Main App Content ---
-st.markdown("<div class='main-title'>🎓 IUBAT Nexus</div>", unsafe_allow_html=True)
-st.markdown("<div class='sub-title'>Your Smart University Companion Portal</div>", unsafe_allow_html=True)
-
+# --- Main App Container (Mobile Frame Look) ---
 with st.container():
-    st.markdown("<div class='login-container'>", unsafe_allow_html=True)
-    st.markdown("<div class='login-header'>Sign In</div>", unsafe_allow_html=True)
+    st.markdown("<div class='mobile-frame'>", unsafe_allow_html=True)
     
-    user_id = st.text_input("Student ID", placeholder="e.g. 20103056")
-    password = st.text_input("Password", type="password", placeholder="••••••••")
+    # Fake mobile status bar
+    st.markdown("<div class='status-bar'><span>6:44</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
+    
+    # App Logo and Title
+    st.markdown("""
+        <div class='app-logo-area'>
+            <div class='app-logo-icon'>🎓</div>
+            <div class='main-title'>IUBAT Nexus</div>
+            <div class='sub-title'>Excellence in Higher Education & Research</div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
+    password = st.text_input("Password *", type="password", placeholder="••••••••")
+    
+    remember_me = st.checkbox("Remember me")
     
     st.write("")
-    if st.button("Submit Login"):
+    if st.button("Submit"):
         if user_id and password:
             st.success(f"Welcome back, {user_id}!")
         else:
-            st.error("❌ Please enter both Student ID and Password.")
+            st.error("❌ Please enter both ID Number and Password.")
             
+    st.markdown("<div class='app-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
-
-st.markdown("<div class='footer'>Developed by Muzahid | IUBAT Nexus Beta © 2026</div>", unsafe_allow_html=True)

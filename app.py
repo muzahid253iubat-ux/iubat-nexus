@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Clear Background & Vibrant Unique Text Colors ---
+# --- Custom CSS for Bright Background & Clean Modern Typography ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.5)), 
+        background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.6)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -50,53 +50,51 @@ st.markdown(f"""
     }}
     
     .main-title {{
-        font-size: 3rem;
-        font-weight: 900;
-        color: #FFD700;
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: #FFFFFF;
         text-align: center;
-        letter-spacing: 1.5px;
+        letter-spacing: 1px;
         margin-bottom: 0px;
-        text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.4);
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
     }}
     
     .sub-title {{
-        color: #00FFFF !important;
+        color: #E2E8F0 !important;
         text-align: center;
-        font-size: 1.15rem;
-        font-weight: 600;
-        margin-top: 8px;
-        margin-bottom: 35px;
-        letter-spacing: 0.8px;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-top: 6px;
+        margin-bottom: 30px;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }}
     
     .login-container {{
-        background: rgba(10, 20, 35, 0.82);
+        background: rgba(15, 23, 42, 0.75);
         padding: 40px;
         border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255, 215, 0, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         max-width: 440px;
         margin: 0 auto;
     }}
     
     .login-header {{
-        color: #FFD700 !important;
+        color: #FFFFFF !important;
         text-align: center;
-        font-size: 1.9rem;
-        font-weight: 800;
+        font-size: 1.8rem;
+        font-weight: 700;
         margin-bottom: 25px;
         letter-spacing: 0.5px;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
     }}
     
     label {{
-        color: #00FFFF !important;
-        font-weight: 700 !important;
-        font-size: 1rem !important;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+        color: #F8FAFC !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
     }}
     
     .stTextInput>div>div>input {{
@@ -104,44 +102,44 @@ st.markdown(f"""
         color: #0F172A !important;
         font-weight: 600;
         border-radius: 12px;
-        border: 2px solid #00FFFF;
+        border: 1px solid rgba(255, 255, 255, 0.3);
         padding: 14px;
         font-size: 1rem;
     }}
     
     .stTextInput>div>div>input:focus {{
-        border-color: #FFD700;
-        box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        border-color: #3B82F6;
+        box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
     }}
     
     .stButton>button {{
         width: 100%;
-        background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
-        color: #0F172A;
-        font-weight: 800;
-        font-size: 1.1rem;
+        background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+        color: white;
+        font-weight: 700;
+        font-size: 1.05rem;
         border: none;
         padding: 14px;
         border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         transition: all 0.3s ease;
         margin-top: 10px;
     }}
     
     .stButton>button:hover {{
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.8);
-        background: linear-gradient(135deg, #FFE135 0%, #FFA500 100%);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+        background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
     }}
     
     .footer {{
         text-align: center;
-        color: #FFFFFF;
-        font-weight: 600;
-        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+        font-size: 12px;
         margin-top: 50px;
         letter-spacing: 0.5px;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
     }}
     </style>
 """, unsafe_allow_html=True)

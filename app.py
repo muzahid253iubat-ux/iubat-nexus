@@ -37,7 +37,7 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS with Subtle Light Blur ---
+# --- Custom CSS with High-Contrast Banner & Subtle Blur ---
 st.markdown(f"""
     <style>
     .stApp {{
@@ -57,12 +57,12 @@ st.markdown(f"""
         z-index: 0;
     }}
     
-    /* Very light contrast overlay */
+    /* Contrast overlay */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.35);
+        background: rgba(15, 23, 42, 0.4);
         z-index: 0;
     }}
     
@@ -76,49 +76,48 @@ st.markdown(f"""
     
     #MainMenu, header, footer {{visibility: hidden;}}
     
-    /* First Section: Banner Card */
+    /* First Section: High-Contrast Banner Card */
     .banner-card {{
-        background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 20px;
+        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
+        border-radius: 24px;
         padding: 35px 20px;
         text-align: center;
-        color: white;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #FFFFFF !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.25);
         margin-bottom: 24px;
     }}
     
     .banner-crest {{
         background: #0F172A;
-        width: 54px;
-        height: 54px;
+        width: 58px;
+        height: 58px;
         border-radius: 50%;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        border: 3px solid rgba(255, 255, 255, 0.9);
-        font-size: 24px;
-        margin-bottom: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        border: 3px solid #FFFFFF;
+        font-size: 26px;
+        margin-bottom: 12px;
     }}
     
     .banner-title {{
-        font-size: 1.3rem;
+        color: #FFFFFF !important;
+        font-size: 1.4rem;
         font-weight: 800;
         letter-spacing: 0.5px;
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     }}
     
     .banner-subtitle {{
-        font-size: 0.68rem;
-        color: #CBD5E1;
-        margin-top: 4px;
+        color: #38BDF8 !important;
+        font-size: 0.72rem;
+        margin-top: 6px;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 600;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+        letter-spacing: 1.2px;
+        font-weight: 700;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }}
     
     /* Second Section: Floating Login Card */
@@ -210,7 +209,7 @@ st.markdown(f"""
     
     .portal-footer {{
         text-align: center;
-        color: #E2E8F0;
+        color: #FFFFFF;
         font-size: 11px;
         margin-top: 20px;
         font-weight: 600;
@@ -222,7 +221,7 @@ st.markdown(f"""
 
 # --- UI Render ---
 
-# 1st Section: Banner Card
+# 1st Section: High-Contrast Banner Card
 st.markdown("""
     <div class='banner-card'>
         <div class='banner-crest'>🎓</div>

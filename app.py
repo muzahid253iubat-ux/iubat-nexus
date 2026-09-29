@@ -114,13 +114,25 @@ if not st.session_state.logged_in:
         .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8; }}
 
         .nav-actions {{
-            display: flex; align-items: center; gap: 10px;
+            display: flex; align-items: center; gap: 8px;
+        }}
+
+        /* Clean Streamlit button styling inside navbar */
+        header div[data-testid="stHorizontalBlock"] {{
+            position: fixed; top: 10px; right: 20px; z-index: 1000; width: auto !important; gap: 8px;
+        }}
+        header div[data-testid="column"] {{
+            width: auto !important; flex: 1 1 auto !important; min-width: 130px !important;
+        }}
+        header .stButton>button {{
+            padding: 4px 12px !important; font-size: 0.78rem !important; height: 36px !important; border-radius: 6px !important;
         }}
 
         .block-container {{
             position: relative; z-index: 1; padding-top: 75px !important; max-width: 560px !important; margin: auto !important;
         }}
-        #MainMenu, header, footer {{visibility: hidden;}}
+        #MainMenu, footer {{visibility: hidden;}}
+        header {{visibility: visible; background: transparent;}}
 
         /* Hero Section */
         .hero-container {{
@@ -205,12 +217,11 @@ if not st.session_state.logged_in:
             <div class="nav-brand">
                 {logo_small} IUBAT Nexus
             </div>
-            <div class="nav-actions" id="navbar-buttons-mount">
-            </div>
         </div>
     """, unsafe_allow_html=True)
 
-    col_spacer, col_b1, col_b2 = st.columns([1.9, 1.35, 1.35])
+    # Placing buttons in the top right header space
+    col_spacer, col_b1, col_b2 = st.columns([4, 1, 1])
     with col_b1:
         if st.button("Create an account", use_container_width=True, key="btn_create_acc"):
             st.session_state.is_registering = True
@@ -374,7 +385,7 @@ else:
             st.error("⚠️ Emergency alert sent to security desk with your GPS location!")
 
     elif st.session_state.active_tab == "Faculty":
-        st.markdown("### 👨‍🏫 Faculty Directory")
+        st.markdown("### 👨‍‍🏫 Faculty Directory")
         st.text_input("Search Faculty", placeholder="Search by name or department...")
         st.markdown("""
             <div class='sched-card'>

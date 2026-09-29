@@ -30,7 +30,6 @@ def get_asset_base64(filename):
     return None
 
 def get_fixed_background():
-    # Directly look for bp.jpg since you saved it with that name
     bg_data = get_asset_base64("bp.jpg")
     if bg_data:
         return bg_data
@@ -80,7 +79,7 @@ st.markdown(f"""
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 4rem !important;
+        padding-top: 7.5rem !important; /* Box-ke ektu niche namanor jonno padding bariye dewa holo */
         padding-bottom: 3rem !important;
         max-width: 420px !important;
     }}

@@ -92,13 +92,31 @@ default_alumni = [
 default_buses = [
     {
         "name": "Bus 02: Campus to Narshingdi",
-        "status": "On Trip",
+        "status": "On Trip (Live)",
         "departure": "05:30 PM",
         "arrival": "07:30 PM",
+        "next_stop": "Tongi Station Road (ETA: 10 mins)",
         "driver": "Sobuj Hossain",
         "driver_phone": "01621796157",
         "helper": "Ripon",
         "helper_phone": "01861455868"
+    }
+]
+
+default_faculty = [
+    {
+        "name": "Prof. Dr. M. Ahmed",
+        "dept": "EEE Department",
+        "email": "m.ahmed@iubat.edu",
+        "consultation": "Sun-Tue (03:00 PM - 05:00 PM)",
+        "location_status": "Active (Inside University Campus)"
+    },
+    {
+        "name": "Dr. Selim Reza",
+        "dept": "ECE Department",
+        "email": "selim.reza@iubat.edu",
+        "consultation": "Mon-Wed (11:00 AM - 01:00 PM)",
+        "location_status": "Home (Outside University)"
     }
 ]
 
@@ -135,7 +153,7 @@ if "splash_shown" not in st.session_state:
 st.session_state.users_db = load_json_db(DB_FILE, default_users)
 
 query_params = st.query_params
-if not st.session_state.logged_in and "session_user" in query_params:
+if not st.session_state.logged_in and not st.session_state.is_admin and "session_user" in query_params:
     uid = query_params["session_user"]
     if uid in st.session_state.users_db:
         st.session_state.logged_in = True
@@ -245,7 +263,7 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
     if st.session_state.is_admin_login:
         st.markdown("""
             <div class="hero-title" style="font-size: 1.15rem; margin-top: 4px;">Admin Control Panel</div>
-            <div class="hero-subtitle">Enter administrator password to manage system database.</div>
+            <div class="hero-subtitle">Enter administrator password to manage main page and second page controls.</div>
         """, unsafe_allow_html=True)
 
         with st.form("admin_login_form"):
@@ -254,8 +272,8 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
                 if admin_pass == "IuM5005B25Mat&19NOV":
                     st.session_state.is_admin = True
                     st.session_state.logged_in = False
-                    st.session_state.active_tab = "AdminPanel"
-                    st.success("✅ Admin Authentication Successful!")
+                    st.session_state.active_tab = "AdminHome"
+                    st.success("✅ Admin Master Authentication Successful!")
                     time.sleep(0.5)
                     st.rerun()
                 else:
@@ -363,8 +381,8 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
 
 else:
     if st.session_state.is_admin:
-        header_title = "🛡️ System Administrator Dashboard"
-        header_subtitle = "Master Control Center"
+        header_title = "🛡️ Master Admin Controller"
+        header_subtitle = "Managing Main Page & 2nd Page Control"
     else:
         profile_avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.user_photo else (f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓")
         header_title = st.session_state.user_name
@@ -377,77 +395,79 @@ else:
                     {f"<img src='{logo_image_data}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.is_admin else profile_avatar_html}
                 </div>
                 <div>
-                    <div style='font-size: 0.7rem; color: #94A3B8;'>{"Admin Control" if st.session_state.is_admin else "Welcome back,"}</div>
+                    <div style='font-size: 0.7rem; color: #94A3B8;'>{"🔒 Admin Master Access" if st.session_state.is_admin else "Welcome back,"}</div>
                     <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>{header_title}</div>
                     <div style='font-size: 0.7rem; color: #38BDF8;'>{header_subtitle}</div>
                 </div>
             </div>
             <div>
-                <span class='badge-tag'>{"🔴 Admin Mode" if st.session_state.is_admin else "🟢 Online"}</span>
+                <span class='badge-tag'>{"🛡️ Admin Active" if st.session_state.is_admin else "🟢 Online"}</span>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
+    # --- Strict Separation: ONLY Admin sees Admin navigation & controls ---
     if st.session_state.is_admin:
-        col_t1, col_t2, col_t3 = st.columns(3)
-        with col_t1:
-            if st.button("🛡️ Admin Panel", use_container_width=True):
-                st.session_state.active_tab = "AdminPanel"
+        col_at1, col_at2, col_at3, col_at4 = st.columns(4)
+        with col_at1:
+            if st.button("🏠 Main Page", use_container_width=True):
+                st.session_state.active_tab = "AdminHome"
                 st.rerun()
-        with col_t2:
-            if st.button("🚌 Manage Buses", use_container_width=True):
+        with col_at2:
+            if st.button("📄 2nd Page", use_container_width=True):
+                st.session_state.active_tab = "AdminPage2"
+                st.rerun()
+        with col_at3:
+            if st.button("🚌 Buses", use_container_width=True):
                 st.session_state.active_tab = "AdminBuses"
                 st.rerun()
-        with col_t3:
-            if st.button("🚪 Logout Admin", use_container_width=True):
+        with col_at4:
+            if st.button("🚪 Logout", use_container_width=True):
                 st.session_state.is_admin = False
                 st.session_state.splash_shown = False
                 st.session_state.active_tab = "Home"
                 st.rerun()
     else:
+        # Regular Students only see their user navigation (NO admin tools whatsoever)
         col_t1, col_t2, col_t3 = st.columns(3)
         with col_t1:
             if st.button("🏠 Home", use_container_width=True):
                 st.session_state.active_tab = "Home"
                 st.rerun()
         with col_t2:
-            if st.button("⚙️ Go to Account", use_container_width=True):
-                st.session_state.active_tab = "Account"
+            if st.button("📄 Page 2 (Services)", use_container_width=True):
+                st.session_state.active_tab = "Page2"
                 st.rerun()
         with col_t3:
-            if st.button("🚪 Logout", use_container_width=True):
-                st.session_state.logged_in = False
-                st.session_state.splash_shown = False
-                st.session_state.active_tab = "Home"
-                if "session_user" in st.query_params:
-                    del st.query_params["session_user"]
+            if st.button("⚙️ Account", use_container_width=True):
+                st.session_state.active_tab = "Account"
                 st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    if st.session_state.is_admin and st.session_state.active_tab == "AdminPanel":
-        st.markdown("### 🛡️ Admin Master Control Panel")
-        st.markdown("Here you can manage all registered student accounts and alumni network entries.")
-        
-        st.markdown("---")
-        st.markdown("#### 👥 Registered Student Accounts")
-        st.session_state.users_db = load_json_db(DB_FILE, default_users)
-        
-        if len(st.session_state.users_db) == 0:
-            st.info("No user accounts registered yet.")
-        else:
-            for uid, udata in list(st.session_state.users_db.items()):
-                st.markdown(f"""
-                    <div class='sched-card'>
-                        <b>{udata.get('name')}</b> (ID: <code>{uid}</code>)<br>
-                        <span class='badge-tag'>{udata.get('dept')}</span> • {udata.get('univ')}<br>
-                        🔑 Password: <code>{udata.get('password')}</code>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                col_del1, col_del2 = st.columns([1, 4])
-                with col_del1:
-                    if st.button(f"🗑️ Delete ID {uid}", key=f"del_user_{uid}"):
+    # --- ADMIN CONTROLS FOR MAIN PAGE & 2ND PAGE ---
+    if st.session_state.is_admin:
+        if st.session_state.active_tab == "AdminHome":
+            st.markdown("### 🛡️ Admin Control: Main Page Management")
+            st.markdown("Here you can oversee and control all student user registrations and main page data.")
+            
+            st.markdown("---")
+            st.markdown("#### 👥 Registered Student Accounts Database")
+            st.session_state.users_db = load_json_db(DB_FILE, default_users)
+            
+            if len(st.session_state.users_db) == 0:
+                st.info("No user accounts registered yet.")
+            else:
+                for uid, udata in list(st.session_state.users_db.items()):
+                    st.markdown(f"""
+                        <div class='sched-card'>
+                            <b>{udata.get('name')}</b> (ID: <code>{uid}</code>)<br>
+                            <span class='badge-tag'>{udata.get('dept')}</span> • {udata.get('univ')}<br>
+                            🔑 Password: <code>{udata.get('password')}</code>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    if st.button(f"🗑️️ Delete Student ID {uid}", key=f"del_user_{uid}"):
                         if uid in st.session_state.users_db:
                             del st.session_state.users_db[uid]
                             save_json_db(DB_FILE, st.session_state.users_db)
@@ -455,203 +475,257 @@ else:
                             time.sleep(0.5)
                             st.rerun()
 
-        st.markdown("---")
-        st.markdown("#### 🎓 Alumni Directory Control")
-        st.session_state.alumni_db = load_json_db(ALUMNI_DB_FILE, default_alumni)
-        
-        for idx, alumni in enumerate(st.session_state.alumni_db):
-            st.markdown(f"""
-                <div class='sched-card'>
-                    <b>{alumni['name']}</b> ({alumni['batch']})<br>
-                    💼 {alumni['role']}<br>
-                    📞 {alumni['contact']}
-                </div>
-            """, unsafe_allow_html=True)
-            if st.button(f"🗑️ Remove Alumni #{idx+1}", key=f"del_alumni_{idx}"):
-                st.session_state.alumni_db.pop(idx)
-                save_json_db(ALUMNI_DB_FILE, st.session_state.alumni_db)
-                st.success("Alumni removed successfully!")
-                time.sleep(0.5)
-                st.rerun()
-
-    elif st.session_state.is_admin and st.session_state.active_tab == "AdminBuses":
-        st.markdown("### 🚌 Admin Bus Schedule & Live Control")
-        st.markdown("Update live bus tracking status and timings:")
-        
-        st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
-        
-        with st.form("update_bus_form"):
-            b_name = st.text_input("Bus Route Name", value=st.session_state.bus_db[0]["name"] if st.session_state.bus_db else "")
-            b_status = st.text_input("Trip Status", value=st.session_state.bus_db[0]["status"] if st.session_state.bus_db else "On Trip")
-            b_dep = st.text_input("Departure Time", value=st.session_state.bus_db[0]["departure"] if st.session_state.bus_db else "05:30 PM")
-            b_arr = st.text_input("Arrival ETA", value=st.session_state.bus_db[0]["arrival"] if st.session_state.bus_db else "07:30 PM")
-            b_drv = st.text_input("Driver Name & Phone", value=f"{st.session_state.bus_db[0]['driver']} ({st.session_state.bus_db[0]['driver_phone']})" if st.session_state.bus_db else "")
+        elif st.session_state.active_tab == "AdminPage2":
+            st.markdown("### 🛡️ Admin Control: 2nd Page Management (Alumni & Mentorship)")
+            st.markdown("Manage and moderate all alumni directory entries and contact info visible on the 2nd page.")
             
-            if st.form_submit_button("Update Live Bus Info"):
-                parts = b_drv.split("(")
-                d_name = parts[0].strip()
-                d_phone = parts[1].replace(")", "").strip() if len(parts) > 1 else ""
-                
-                st.session_state.bus_db[0] = {
-                    "name": b_name,
-                    "status": b_status,
-                    "departure": b_dep,
-                    "arrival": b_arr,
-                    "driver": d_name,
-                    "driver_phone": d_phone,
-                    "helper": "Ripon",
-                    "helper_phone": "01861455868"
-                }
-                save_json_db(BUS_DB_FILE, st.session_state.bus_db)
-                st.success("✅ Bus live status updated successfully!")
-                time.sleep(0.5)
-                st.rerun()
-
-    elif not st.session_state.is_admin and st.session_state.active_tab == "Home":
-        st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
-
-        if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
-            st.session_state.active_tab = "SOS"
-            st.rerun()
-
-        if st.button("👨‍‍🏫  Faculty Directory & Consultations", use_container_width=True):
-            st.session_state.active_tab = "Faculty"
-            st.rerun()
-
-        if st.button("🚌  Bus Schedule & Live Tracking", use_container_width=True):
-            st.session_state.active_tab = "Bus"
-            st.rerun()
-
-        if st.button("🎓  Alumni Network & Mentorship", use_container_width=True):
-            st.session_state.active_tab = "Alumni"
-            st.rerun()
-
-    elif not st.session_state.is_admin and st.session_state.active_tab == "Account":
-        st.markdown("### ⚙ Account Management")
-        with st.form("update_account_form"):
-            new_name = st.text_input("Full Name", value=st.session_state.user_name)
-            new_dept = st.text_input("Department", value=st.session_state.user_dept)
-            new_univ = st.text_input("University", value=st.session_state.user_univ)
+            st.session_state.alumni_db = load_json_db(ALUMNI_DB_FILE, default_alumni)
             
-            if st.form_submit_button("Save Changes"):
-                st.session_state.user_name = new_name
-                st.session_state.user_dept = new_dept
-                st.session_state.user_univ = new_univ
-                
-                if st.session_state.user_id in st.session_state.users_db:
-                    st.session_state.users_db[st.session_state.user_id]["name"] = new_name
-                    st.session_state.users_db[st.session_state.user_id]["dept"] = new_dept
-                    st.session_state.users_db[st.session_state.user_id]["univ"] = new_univ
-                    save_json_db(DB_FILE, st.session_state.users_db)
+            for idx, alumni in enumerate(st.session_state.alumni_db):
+                st.markdown(f"""
+                    <div class='sched-card'>
+                        <b>{alumni['name']}</b> ({alumni['batch']})<br>
+                        💼 {alumni['role']}<br>
+                        📞 {alumni['contact']}
+                    </div>
+                """, unsafe_allow_html=True)
+                if st.button(f"🗑️ Remove Alumni Entry #{idx+1}", key=f"del_alumni_{idx}"):
+                    st.session_state.alumni_db.pop(idx)
+                    save_json_db(ALUMNI_DB_FILE, st.session_state.alumni_db)
+                    st.success("Alumni entry removed successfully!")
+                    time.sleep(0.5)
+                    st.rerun()
 
-                st.success("✅ Account updated successfully!")
-                time.sleep(0.5)
+        elif st.session_state.active_tab == "AdminBuses":
+            st.markdown("### 🚌 Admin Bus Schedule & Live Control")
+            st.markdown("Update live bus tracking status and timings:")
+            
+            st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
+            
+            with st.form("update_bus_form"):
+                b_name = st.text_input("Bus Route Name", value=st.session_state.bus_db[0]["name"] if st.session_state.bus_db else "")
+                b_status = st.text_input("Trip Status", value=st.session_state.bus_db[0]["status"] if st.session_state.bus_db else "On Trip (Live)")
+                b_dep = st.text_input("Departure Time", value=st.session_state.bus_db[0]["departure"] if st.session_state.bus_db else "05:30 PM")
+                b_arr = st.text_input("Arrival ETA", value=st.session_state.bus_db[0]["arrival"] if st.session_state.bus_db else "07:30 PM")
+                b_nxt = st.text_input("Next Stop ETA Status", value=st.session_state.bus_db[0].get("next_stop", ""))
+                b_drv = st.text_input("Driver Name & Phone", value=f"{st.session_state.bus_db[0]['driver']} ({st.session_state.bus_db[0]['driver_phone']})" if st.session_state.bus_db else "")
+                
+                if st.form_submit_button("Update Live Bus Info"):
+                    parts = b_drv.split("(")
+                    d_name = parts[0].strip()
+                    d_phone = parts[1].replace(")", "").strip() if len(parts) > 1 else ""
+                    
+                    st.session_state.bus_db[0] = {
+                        "name": b_name,
+                        "status": b_status,
+                        "departure": b_dep,
+                        "arrival": b_arr,
+                        "next_stop": b_nxt,
+                        "driver": d_name,
+                        "driver_phone": d_phone,
+                        "helper": "Ripon",
+                        "helper_phone": "01861455868"
+                    }
+                    save_json_db(BUS_DB_FILE, st.session_state.bus_db)
+                    st.success("✅ Bus live status updated successfully!")
+                    time.sleep(0.5)
+                    st.rerun()
+
+    # --- REGULAR STUDENT VIEWS (Users cannot see or access any admin tools) ---
+    else:
+        if st.session_state.active_tab == "Home":
+            st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>PAGE 1: MAIN SERVICES</div>", unsafe_allow_html=True)
+
+            if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
+                st.session_state.active_tab = "SOS"
                 st.rerun()
 
-    elif not st.session_state.is_admin and st.session_state.active_tab == "SOS":
-        st.markdown("### 🚨 Emergency SOS & Hotline")
-        st.markdown("Tap any option below for instant emergency communication:")
-        
-        if st.button("📞 Tap to 999 (National Emergency)", use_container_width=True):
-            st.success("🚨 Connecting to 999 Emergency Service...")
-        if st.button("👥 Tap to Close Friends", use_container_width=True):
-            st.success("📲 Alert sent to your designated Close Friends group!")
-        if st.button("👨‍👩‍‍👧 Tap to Family", use_container_width=True):
-            st.success("📲 Emergency alert sent to your Family contacts!")
-        if st.button("🏛 Tap to University Authority", use_container_width=True):
-            st.success("🚨 Alert dispatched to IUBAT Campus Security & Proctor Office!")
+            if st.button("👨‍🏫  Faculty Directory & Consultations", use_container_width=True):
+                st.session_state.active_tab = "Faculty"
+                st.rerun()
 
-    elif not st.session_state.is_admin and st.session_state.active_tab == "Faculty":
-        st.markdown("### 👨‍🏫 Faculty Directory & Consultations")
-        st.text_input("Search Faculty", placeholder="Search by name or department...")
-        
-        st.markdown("""
-            <div class='sched-card'>
-                <b>Prof. Dr. M. Ahmed</b><br>
-                <span class='badge-tag'>EEE Department</span><br>
-                📧 Email: m.ahmed@iubat.edu<br>
-                🕒 Consultation: Sun-Tue (03:00 PM - 05:00 PM)<br>
-                <span style='color: #22C55E; font-weight: 700;'>🟢 Active (Inside University Campus)</span>
-            </div>
-            <div class='sched-card'>
-                <b>Dr. Selim Reza</b><br>
-                <span class='badge-tag'>ECE Department</span><br>
-                📧 Email: selim.reza@iubat.edu<br>
-                🕒 Consultation: Mon-Wed (11:00 AM - 01:00 PM)<br>
-                <span style='color: #94A3B8; font-weight: 700;'>🏠 Home (Outside University)</span>
-            </div>
-        """, unsafe_allow_html=True)
+            if st.button("🚌  Bus Schedule & Live Tracking", use_container_width=True):
+                st.session_state.active_tab = "Bus"
+                st.rerun()
 
-    elif not st.session_state.is_admin and st.session_state.active_tab == "Bus":
-        st.markdown("### 🚌 Bus Schedule & Live Tracking")
-        st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
-        b_info = st.session_state.bus_db[0] if st.session_state.bus_db else default_buses[0]
-        
-        st.markdown(f"""
-            <div class='sched-card'>
-                <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;'>
-                    <span style='font-weight: 700;'>{b_info['name']}</span>
-                    <span class='badge-tag'>{b_info['status']}</span>
-                </div>
-                <div style='color: #94A3B8; font-size: 0.8rem; margin-bottom: 6px;'>
-                    🕒 Departure: <b>{b_info['departure']}</b> | Arrival(ETA): <b>{b_info['arrival']}</b>
-                </div>
-                <div style='font-size: 0.8rem;'><b>Driver:</b> {b_info['driver']} ({b_info['driver_phone']})</div>
-                <div style='font-size: 0.8rem;'><b>Helper:</b> {b_info['helper']} ({b_info['helper_phone']})</div>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        with st.expander("🗺 RouteMap Locations"):
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("➡️ Go to Page 2 (Alumni Network & More)", use_container_width=True):
+                st.session_state.active_tab = "Page2"
+                st.rerun()
+
+        elif st.session_state.active_tab == "Page2":
+            st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>PAGE 2: ALUMNI & COMMUNITY</div>", unsafe_allow_html=True)
+
+            if st.button("🎓  Alumni Network & Mentorship", use_container_width=True):
+                st.session_state.active_tab = "Alumni"
+                st.rerun()
+
+            if st.button("⚙️  Account Management", use_container_width=True):
+                st.session_state.active_tab = "Account"
+                st.rerun()
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("⬅️ Back to Page 1 (Home)", use_container_width=True):
+                st.session_state.active_tab = "Home"
+                st.rerun()
+
+        elif st.session_state.active_tab == "Account":
+            st.markdown("### ⚙ Account Management")
+            with st.form("update_account_form"):
+                new_name = st.text_input("Full Name", value=st.session_state.user_name)
+                new_dept = st.text_input("Department", value=st.session_state.user_dept)
+                new_univ = st.text_input("University", value=st.session_state.user_univ)
+                
+                if st.form_submit_button("Save Changes"):
+                    st.session_state.user_name = new_name
+                    st.session_state.user_dept = new_dept
+                    st.session_state.user_univ = new_univ
+                    
+                    if st.session_state.user_id in st.session_state.users_db:
+                        st.session_state.users_db[st.session_state.user_id]["name"] = new_name
+                        st.session_state.users_db[st.session_state.user_id]["dept"] = new_dept
+                        st.session_state.users_db[st.session_state.user_id]["univ"] = new_univ
+                        save_json_db(DB_FILE, st.session_state.users_db)
+
+                    st.success("✅ Account updated successfully!")
+                    time.sleep(0.5)
+                    st.rerun()
+            
+            if st.button("⬅️ Back to Home", use_container_width=True):
+                st.session_state.active_tab = "Home"
+                st.rerun()
+
+        elif st.session_state.active_tab == "SOS":
+            st.markdown("### 🚨 Emergency SOS & Hotline")
+            st.markdown("Tap any option below for instant emergency communication:")
+            
+            if st.button("1️⃣ Tap to 999", use_container_width=True):
+                st.success("🚨 Connecting to 999 National Emergency Service...")
+            if st.button("2️⃣ Tap to Close Friends", use_container_width=True):
+                st.success("📲 Alert sent to your designated Close Friends group!")
+            if st.button("3️⃣ Tap to Family", use_container_width=True):
+                st.success("📲 Emergency alert sent to your Family contacts!")
+            if st.button("4️⃣ Tap to University Authority", use_container_width=True):
+                st.success("🚨 Alert dispatched to IUBAT Campus Security & Proctor Office!")
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("⬅️ Back to Home", use_container_width=True):
+                st.session_state.active_tab = "Home"
+                st.rerun()
+
+        elif st.session_state.active_tab == "Faculty":
+            st.markdown("### 👨‍🏫 Faculty Directory & Consultations")
+            st.markdown("Showing faculty identity and university presence status (No external location tracking):")
+            
+            st.text_input("Search Faculty", placeholder="Search by name or department...")
+            
             st.markdown("""
-                <div class='route-stop'>📍 Campus</div>
-                <div class='route-stop'>📍 Tongi Station Road</div>
-                <div class='route-stop'>📍 Amtoly Mor</div>
-                <div class='route-stop'>📍 T & T Bazar</div>
-                <div class='route-stop'>📍 Shilmoon</div>
-                <div class='route-stop'>📍 Nimtoly Bridge</div>
-                <div class='route-stop'>📍 Majukhan Bazar</div>
-                <div class='route-stop'>📍 Koromtola</div>
-                <div class='route-stop'>📍 Talotia Pump</div>
-                <div class='route-stop'>📍 Mirer Bazar</div>
-                <div class='route-stop'>📍 Basugaon</div>
-            """, unsafe_allow_html=True)
-
-    elif not st.session_state.is_admin and st.session_state.active_tab == "Alumni":
-        st.markdown("### 🎓 Alumni Network & Mentorship")
-        st.markdown("Register below to join the alumni directory or connect with graduates:")
-        
-        with st.expander("📝 Register as Alumni"):
-            with st.form("alumni_reg_form"):
-                al_name = st.text_input("Full Name", placeholder="Your Name")
-                al_batch = st.text_input("Batch / Graduation Year", placeholder="e.g. Class of 2024")
-                al_role = st.text_input("Current Profession / Role", placeholder="e.g. Software Engineer at Grameenphone")
-                al_contact = st.text_input("Contact Info (Email / Phone)", placeholder="email or phone number")
-                
-                if st.form_submit_button("Submit Alumni Registration"):
-                    if al_name and al_batch and al_role and al_contact:
-                        new_alumnus = {
-                            "name": al_name,
-                            "batch": al_batch,
-                            "role": al_role,
-                            "contact": al_contact
-                        }
-                        st.session_state.alumni_db.append(new_alumnus)
-                        save_json_db(ALUMNI_DB_FILE, st.session_state.alumni_db)
-                        st.success("✅ Registered successfully in Alumni Network!")
-                        time.sleep(0.5)
-                        st.rerun()
-                    else:
-                        st.error("❌ Please fill in all alumni details.")
-
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
-        st.markdown("#### 🌟 Registered Alumni Directory")
-        
-        for alumni in st.session_state.alumni_db:
-            st.markdown(f"""
                 <div class='sched-card'>
-                    <b>{alumni['name']}</b><br>
-                    <span class='badge-tag'>{alumni['batch']}</span><br>
-                    💼 {alumni['role']}<br>
-                    📞 <b>Contact:</b> {alumni['contact']}
+                    <b>Prof. Dr. M. Ahmed</b><br>
+                    <span class='badge-tag'>EEE Department</span><br>
+                    📧 Email: m.ahmed@iubat.edu<br>
+                    🕒 Consultation: Sun-Tue (03:00 PM - 05:00 PM)<br>
+                    <span style='color: #22C55E; font-weight: 700;'>🟢 Active (Inside University Campus)</span>
+                </div>
+                <div class='sched-card'>
+                    <b>Dr. Selim Reza</b><br>
+                    <span class='badge-tag'>ECE Department</span><br>
+                    📧 Email: selim.reza@iubat.edu<br>
+                    🕒 Consultation: Mon-Wed (11:00 AM - 01:00 PM)<br>
+                    <span style='color: #94A3B8; font-weight: 700;'>🏠 Home (Outside University)</span>
                 </div>
             """, unsafe_allow_html=True)
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("⬅️ Back to Home", use_container_width=True):
+                st.session_state.active_tab = "Home"
+                st.rerun()
+
+        elif st.session_state.active_tab == "Bus":
+            st.markdown("### 🚌 Bus Schedule & Live Tracking")
+            st.markdown("Live institutional transport tracking (Uttara University style layout):")
+            
+            st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
+            b_info = st.session_state.bus_db[0] if st.session_state.bus_db else default_buses[0]
+            
+            st.markdown(f"""
+                <div class='sched-card' style='border: 1px solid #38BDF8;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;'>
+                        <span style='font-weight: 800; font-size: 1rem;'>{b_info['name']}</span>
+                        <span class='badge-tag' style='background: #22C55E; color: white;'>{b_info['status']}</span>
+                    </div>
+                    <div style='background: rgba(56, 189, 248, 0.1); padding: 8px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem;'>
+                        📍 <b>Current Next Stop ETA:</b> {b_info.get('next_stop', 'En route')}
+                    </div>
+                    <div style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'>
+                        🕒 Departure: <b>{b_info['departure']}</b> | Arrival(ETA): <b>{b_info['arrival']}</b>
+                    </div>
+                    <div style='font-size: 0.78rem;'><b>Driver:</b> {b_info['driver']} ({b_info['driver_phone']})</div>
+                    <div style='font-size: 0.78rem;'><b>Helper:</b> {b_info['helper']} ({b_info['helper_phone']})</div>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            with st.expander("🗺 Route Stops & Live Timeline"):
+                st.markdown("""
+                    <div class='route-stop'>📍 Campus (Departure Point)</div>
+                    <div class='route-stop'>📍 Tongi Station Road</div>
+                    <div class='route-stop'>📍 Amtoly Mor</div>
+                    <div class='route-stop'>📍 T & T Bazar</div>
+                    <div class='route-stop'>📍 Shilmoon</div>
+                    <div class='route-stop'>📍 Nimtoly Bridge</div>
+                    <div class='route-stop'>📍 Majukhan Bazar</div>
+                    <div class='route-stop'>📍 Koromtola</div>
+                    <div class='route-stop'>📍 Talotia Pump</div>
+                    <div class='route-stop'>📍 Mirer Bazar</div>
+                    <div class='route-stop'>📍 Basugaon (Terminal)</div>
+                """, unsafe_allow_html=True)
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("⬅️ Back to Home", use_container_width=True):
+                st.session_state.active_tab = "Home"
+                st.rerun()
+
+        elif st.session_state.active_tab == "Alumni":
+            st.markdown("### 🎓 Alumni Network & Mentorship")
+            st.markdown("1) Register in directory • 2) View all identities • 3) Contact anyone easily")
+            
+            with st.expander("📝 Register as Alumni"):
+                with st.form("alumni_reg_form"):
+                    al_name = st.text_input("Full Name", placeholder="Your Name")
+                    al_batch = st.text_input("Batch / Graduation Year", placeholder="e.g. Class of 2024")
+                    al_role = st.text_input("Current Profession / Role", placeholder="e.g. Software Engineer at Grameenphone")
+                    al_contact = st.text_input("Contact Info (Email / Phone)", placeholder="email or phone number")
+                    
+                    if st.form_submit_button("Submit Alumni Registration"):
+                        if al_name and al_batch and al_role and al_contact:
+                            new_alumnus = {
+                                "name": al_name,
+                                "batch": al_batch,
+                                "role": al_role,
+                                "contact": al_contact
+                            }
+                            st.session_state.alumni_db.append(new_alumnus)
+                            save_json_db(ALUMNI_DB_FILE, st.session_state.alumni_db)
+                            st.success("✅ Registered successfully in Alumni Network!")
+                            time.sleep(0.5)
+                            st.rerun()
+                        else:
+                            st.error("❌ Please fill in all alumni details.")
+
+            st.markdown("<hr style='border-color: rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
+            st.markdown("#### 🌟 Registered Alumni Directory & Contact Information")
+            
+            for alumni in st.session_state.alumni_db:
+                st.markdown(f"""
+                    <div class='sched-card'>
+                        <b>{alumni['name']}</b><br>
+                        <span class='badge-tag'>{alumni['batch']}</span><br>
+                        💼 {alumni['role']}<br>
+                        📞 <b>Direct Contact:</b> {alumni['contact']}
+                    </div>
+                """, unsafe_allow_html=True)
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("⬅️️ Back to Page 2", use_container_width=True):
+                st.session_state.active_tab = "Page2"
+                st.rerun()

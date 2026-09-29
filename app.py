@@ -37,7 +37,7 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS Matching Reference Design ---
+# --- Custom CSS Matching UU App Layout Style ---
 st.markdown(f"""
     <style>
     .stApp {{
@@ -61,7 +61,7 @@ st.markdown(f"""
     .phone-mockup {{
         background: #090D16;
         border-radius: 46px;
-        padding: 12px 12px 20px 12px;
+        padding: 14px;
         box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
         border: 4px solid #1E293B;
         overflow: hidden;
@@ -74,60 +74,59 @@ st.markdown(f"""
         color: #F8FAFC;
         font-size: 13px;
         font-weight: 600;
-        padding: 4px 16px 12px 16px;
+        padding: 2px 10px 10px 10px;
     }}
     
-    /* Top Edge-to-Edge Banner */
+    /* Top Large Edge-to-Edge Banner like UU app */
     .phone-banner {{
-        background: linear-gradient(rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.65)), url('{bg_image_data}');
+        background: linear-gradient(rgba(15, 23, 42, 0.15), rgba(15, 23, 42, 0.55)), url('{bg_image_data}');
         background-size: cover;
         background-position: center;
-        border-radius: 24px 24px 0 0;
-        padding: 40px 16px 50px 16px;
+        border-radius: 32px 32px 0 0;
+        padding: 65px 16px 85px 16px;
         text-align: center;
         color: white;
-        margin: -4px -4px 0 -4px;
+        margin: -14px -14px 0 -14px;
         position: relative;
     }}
     
     .banner-top-title {{
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #E2E8F0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #FFFFFF;
         letter-spacing: 0.5px;
-        margin-bottom: 25px;
-        text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        text-shadow: 0 2px 6px rgba(0,0,0,0.8);
     }}
     
-    /* Overlapping Crest/Logo Box Style matching reference */
+    /* Overlapping Crest/Logo Box Style matching UU reference */
     .crest-container {{
         display: flex;
         justify-content: center;
-        margin-top: -35px;
+        margin-top: -45px;
         position: relative;
         z-index: 10;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }}
     
     .crest-box {{
         background: #FFFFFF;
-        width: 64px;
-        height: 64px;
-        border-radius: 16px;
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-        border: 3px solid #FFFFFF;
-        font-size: 32px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        border: 4px solid #FFFFFF;
+        font-size: 36px;
     }}
     
     .university-heading {{
         text-align: center;
         color: #0F172A;
-        font-size: 1.4rem;
+        font-size: 1.45rem;
         font-weight: 800;
-        margin-top: 5px;
+        margin-top: 4px;
         letter-spacing: 0.3px;
     }}
     
@@ -144,8 +143,8 @@ st.markdown(f"""
     /* Modern Solid White Form Card */
     div[data-testid="stForm"] {{
         background: #FFFFFF !important;
-        padding: 10px 16px 20px 16px !important;
-        border-radius: 0 0 26px 26px !important;
+        padding: 8px 16px 20px 16px !important;
+        border-radius: 0 0 32px 32px !important;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important;
         border: none !important;
     }}
@@ -221,14 +220,14 @@ st.markdown("<div class='phone-mockup'>", unsafe_allow_html=True)
 # Status bar
 st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
 
-# Top Picture Banner Section (Edge-to-Edge)
+# Top Large Picture Banner Section (Edge-to-Edge)
 st.markdown("""
     <div class='phone-banner'>
         <div class='banner-top-title'>IUBAT Nexus</div>
     </div>
 """, unsafe_allow_html=True)
 
-# Overlapping Crest & University Info Box
+# Overlapping Crest & University Info Box (UU Style)
 st.markdown("""
     <div class='crest-container'>
         <div class='crest-box'>🎓</div>

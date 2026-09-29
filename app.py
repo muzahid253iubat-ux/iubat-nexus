@@ -55,6 +55,9 @@ st.markdown(f"""
     <style>
     .stApp {{
         background: #090D16;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }}
     
     /* IUBAT Campus Background Image with Perfect Full Fit */
@@ -79,9 +82,10 @@ st.markdown(f"""
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 11.5rem !important;
-        padding-bottom: 3rem !important;
-        max-width: 420px !important;
+        padding-top: 4rem !important;
+        padding-bottom: 2rem !important;
+        max-width: 380px !important; /* Box size aro choto kora holo */
+        margin: auto !important;
     }}
     
     #MainMenu, header, footer {{visibility: hidden;}}
@@ -91,8 +95,8 @@ st.markdown(f"""
         background: rgba(15, 23, 42, 0.88) !important;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border-radius: 22px !important;
-        padding: 32px 28px 28px 28px !important;
+        border-radius: 20px !important;
+        padding: 24px 22px 20px 22px !important;
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
     }}
@@ -105,18 +109,18 @@ st.markdown(f"""
     .card-crest-box {{
         display: flex;
         justify-content: center;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }}
     
     .card-crest {{
         background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 0 4px rgba(255, 255, 255, 0.1);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(255, 255, 255, 0.1);
         border: 2px solid rgba(255, 255, 255, 0.25);
         overflow: hidden;
     }}
@@ -130,7 +134,7 @@ st.markdown(f"""
     .card-title {{
         text-align: center;
         color: #FFFFFF !important;
-        font-size: 1.4rem;
+        font-size: 1.25rem;
         font-weight: 800;
         letter-spacing: 0.5px;
         margin-bottom: 2px;
@@ -139,11 +143,11 @@ st.markdown(f"""
     .card-subtitle {{
         text-align: center;
         color: #94A3B8 !important;
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         text-transform: uppercase;
-        letter-spacing: 1.2px;
+        letter-spacing: 1px;
         font-weight: 600;
-        margin-bottom: 24px;
+        margin-bottom: 18px;
     }}
     
     /* Input Fields Design */
@@ -151,10 +155,10 @@ st.markdown(f"""
         background-color: rgba(30, 41, 59, 0.75) !important;
         color: #F8FAFC !important;
         font-weight: 500;
-        border-radius: 10px;
+        border-radius: 9px;
         border: 1.5px solid rgba(255, 255, 255, 0.12);
-        padding: 11px 15px;
-        font-size: 0.9rem;
+        padding: 9px 13px;
+        font-size: 0.85rem;
     }}
     
     .stTextInput>div>div>input::placeholder {{
@@ -172,12 +176,12 @@ st.markdown(f"""
         display: block !important;
         color: #94A3B8 !important;
         font-weight: 500 !important;
-        font-size: 0.82rem !important;
+        font-size: 0.78rem !important;
     }}
     
     .forgot-pass {{
         color: #38BDF8;
-        font-size: 0.82rem;
+        font-size: 0.78rem;
         font-weight: 500;
         text-decoration: none;
         transition: color 0.2s;
@@ -194,37 +198,37 @@ st.markdown(f"""
         background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
         color: #FFFFFF !important;
         font-weight: 700 !important;
-        font-size: 0.95rem !important;
-        letter-spacing: 1.5px;
+        font-size: 0.9rem !important;
+        letter-spacing: 1.2px;
         border: none !important;
-        padding: 12px !important;
-        border-radius: 10px !important;
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4) !important;
-        margin-top: 8px !important;
+        padding: 10px !important;
+        border-radius: 9px !important;
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4) !important;
+        margin-top: 6px !important;
         transition: all 0.3s ease !important;
     }}
     
     .stFormSubmitButton>button:hover {{
         background: linear-gradient(135deg, #1D4ED8 100%, #1E40AF 100%) !important;
         transform: translateY(-1px);
-        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.6) !important;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.6) !important;
     }}
     
-    /* Enhanced Footer with Background Card for Clear Readability */
+    /* Footer */
     .portal-footer {{
         text-align: center;
         color: #CBD5E1;
-        font-size: 11.5px;
-        margin-top: 20px;
+        font-size: 11px;
+        margin-top: 14px;
         font-weight: 600;
         letter-spacing: 0.5px;
         background: rgba(15, 23, 42, 0.75);
-        padding: 8px 16px;
-        border-radius: 10px;
+        padding: 6px 14px;
+        border-radius: 8px;
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
         width: fit-content;
         margin-left: auto;
         margin-right: auto;
@@ -255,7 +259,7 @@ with st.form("login_form"):
     with col1:
         remember_me = st.checkbox("Remember me")
     with col2:
-        st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' class='forgot-pass'>Forgot Password?</a></div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' class='forgot-pass'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
     submit_btn = st.form_submit_button("Login")
     if submit_btn:

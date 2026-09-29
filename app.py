@@ -82,9 +82,9 @@ st.markdown(f"""
     .block-container {{
         position: relative;
         z-index: 1;
-        padding-top: 4rem !important;
-        padding-bottom: 2rem !important;
-        max-width: 380px !important; /* Box size aro choto kora holo */
+        padding-top: 3rem !important;
+        padding-bottom: 1.5rem !important;
+        max-width: 340px !important; /* Box size aro compact kora holo */
         margin: auto !important;
     }}
     
@@ -95,8 +95,8 @@ st.markdown(f"""
         background: rgba(15, 23, 42, 0.88) !important;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border-radius: 20px !important;
-        padding: 24px 22px 20px 22px !important;
+        border-radius: 18px !important;
+        padding: 20px 18px 16px 18px !important;
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
     }}
@@ -109,18 +109,18 @@ st.markdown(f"""
     .card-crest-box {{
         display: flex;
         justify-content: center;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }}
     
     .card-crest {{
         background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-        width: 60px;
-        height: 60px;
+        width: 52px;
+        height: 52px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(255, 255, 255, 0.1);
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(255, 255, 255, 0.1);
         border: 2px solid rgba(255, 255, 255, 0.25);
         overflow: hidden;
     }}
@@ -134,7 +134,7 @@ st.markdown(f"""
     .card-title {{
         text-align: center;
         color: #FFFFFF !important;
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         font-weight: 800;
         letter-spacing: 0.5px;
         margin-bottom: 2px;
@@ -143,11 +143,11 @@ st.markdown(f"""
     .card-subtitle {{
         text-align: center;
         color: #94A3B8 !important;
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         text-transform: uppercase;
         letter-spacing: 1px;
         font-weight: 600;
-        margin-bottom: 18px;
+        margin-bottom: 14px;
     }}
     
     /* Input Fields Design */
@@ -155,10 +155,10 @@ st.markdown(f"""
         background-color: rgba(30, 41, 59, 0.75) !important;
         color: #F8FAFC !important;
         font-weight: 500;
-        border-radius: 9px;
+        border-radius: 8px;
         border: 1.5px solid rgba(255, 255, 255, 0.12);
-        padding: 9px 13px;
-        font-size: 0.85rem;
+        padding: 8px 12px;
+        font-size: 0.82rem;
     }}
     
     .stTextInput>div>div>input::placeholder {{
@@ -176,12 +176,12 @@ st.markdown(f"""
         display: block !important;
         color: #94A3B8 !important;
         font-weight: 500 !important;
-        font-size: 0.78rem !important;
+        font-size: 0.74rem !important;
     }}
     
     .forgot-pass {{
         color: #38BDF8;
-        font-size: 0.78rem;
+        font-size: 0.74rem;
         font-weight: 500;
         text-decoration: none;
         transition: color 0.2s;
@@ -198,37 +198,37 @@ st.markdown(f"""
         background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
         color: #FFFFFF !important;
         font-weight: 700 !important;
-        font-size: 0.9rem !important;
+        font-size: 0.85rem !important;
         letter-spacing: 1.2px;
         border: none !important;
-        padding: 10px !important;
-        border-radius: 9px !important;
-        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4) !important;
-        margin-top: 6px !important;
+        padding: 8px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 5px 14px rgba(37, 99, 235, 0.4) !important;
+        margin-top: 4px !important;
         transition: all 0.3s ease !important;
     }}
     
     .stFormSubmitButton>button:hover {{
         background: linear-gradient(135deg, #1D4ED8 100%, #1E40AF 100%) !important;
         transform: translateY(-1px);
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.6) !important;
+        box-shadow: 0 7px 18px rgba(37, 99, 235, 0.6) !important;
     }}
     
     /* Footer */
     .portal-footer {{
         text-align: center;
         color: #CBD5E1;
-        font-size: 11px;
-        margin-top: 14px;
+        font-size: 10.5px;
+        margin-top: 12px;
         font-weight: 600;
         letter-spacing: 0.5px;
         background: rgba(15, 23, 42, 0.75);
-        padding: 6px 14px;
-        border-radius: 8px;
+        padding: 5px 12px;
+        border-radius: 7px;
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.4);
         width: fit-content;
         margin-left: auto;
         margin-right: auto;

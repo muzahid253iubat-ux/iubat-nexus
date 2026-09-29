@@ -103,23 +103,6 @@ default_buses = [
     }
 ]
 
-default_faculty = [
-    {
-        "name": "Prof. Dr. M. Ahmed",
-        "dept": "EEE Department",
-        "email": "m.ahmed@iubat.edu",
-        "consultation": "Sun-Tue (03:00 PM - 05:00 PM)",
-        "location_status": "Active (Inside University Campus)"
-    },
-    {
-        "name": "Dr. Selim Reza",
-        "dept": "ECE Department",
-        "email": "selim.reza@iubat.edu",
-        "consultation": "Mon-Wed (11:00 AM - 01:00 PM)",
-        "location_status": "Home (Outside University)"
-    }
-]
-
 if "users_db" not in st.session_state:
     st.session_state.users_db = load_json_db(DB_FILE, default_users)
 if "alumni_db" not in st.session_state:
@@ -431,11 +414,11 @@ else:
         # Regular Students only see their user navigation (NO admin tools whatsoever)
         col_t1, col_t2, col_t3 = st.columns(3)
         with col_t1:
-            if st.button("🏠 Home", use_container_width=True):
+            if st.button("🏠 Page 1", use_container_width=True):
                 st.session_state.active_tab = "Home"
                 st.rerun()
         with col_t2:
-            if st.button("📄 Page 2 (Services)", use_container_width=True):
+            if st.button("📄 Page 2", use_container_width=True):
                 st.session_state.active_tab = "Page2"
                 st.rerun()
         with col_t3:
@@ -467,7 +450,7 @@ else:
                         </div>
                     """, unsafe_allow_html=True)
                     
-                    if st.button(f"🗑️️ Delete Student ID {uid}", key=f"del_user_{uid}"):
+                    if st.button(f"🗑 Delete Student ID {uid}", key=f"del_user_{uid}"):
                         if uid in st.session_state.users_db:
                             del st.session_state.users_db[uid]
                             save_json_db(DB_FILE, st.session_state.users_db)
@@ -536,7 +519,7 @@ else:
         if st.session_state.active_tab == "Home":
             st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>PAGE 1: MAIN SERVICES</div>", unsafe_allow_html=True)
 
-            if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
+            if st.button("🚨  Emergency SOS & Hotline", use_container_width=True):
                 st.session_state.active_tab = "SOS"
                 st.rerun()
 
@@ -591,7 +574,7 @@ else:
                     time.sleep(0.5)
                     st.rerun()
             
-            if st.button("⬅️ Back to Home", use_container_width=True):
+            if st.button("⬅️️ Back to Home", use_container_width=True):
                 st.session_state.active_tab = "Home"
                 st.rerun()
 
@@ -726,6 +709,6 @@ else:
                 """, unsafe_allow_html=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("⬅️️ Back to Page 2", use_container_width=True):
+            if st.button("⬅ Back to Page 2", use_container_width=True):
                 st.session_state.active_tab = "Page2"
                 st.rerun()

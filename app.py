@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Bright Background & Clean Modern Typography ---
+# --- Custom CSS with Smooth Gradient Animation (No Brightness Blinking) ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.6)), 
+        background: linear-gradient(rgba(10, 15, 30, 0.55), rgba(10, 15, 30, 0.7)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -49,29 +49,39 @@ st.markdown(f"""
         background-repeat: no-repeat;
     }}
     
+    @keyframes smoothGradient {{
+        0% {{ background-position: 0% 50%; }}
+        50% {{ background-position: 100% 50%; }}
+        100% {{ background-position: 0% 50%; }}
+    }}
+    
     .main-title {{
         font-size: 2.8rem;
         font-weight: 800;
-        color: #FFFFFF;
         text-align: center;
         letter-spacing: 1px;
         margin-bottom: 0px;
-        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+        background: linear-gradient(270deg, #60A5FA, #38BDF8, #818CF8, #60A5FA);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: smoothGradient 10s ease infinite;
+        text-shadow: none;
     }}
     
     .sub-title {{
-        color: #E2E8F0 !important;
+        color: #CBD5E1 !important;
         text-align: center;
         font-size: 1.1rem;
         font-weight: 500;
         margin-top: 6px;
         margin-bottom: 30px;
         letter-spacing: 0.5px;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     }}
     
     .login-container {{
-        background: rgba(15, 23, 42, 0.75);
+        background: rgba(15, 23, 42, 0.82);
         padding: 40px;
         border-radius: 24px;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
@@ -145,6 +155,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # --- Main App Content ---
+st.markdown("<div class='main-title'>🎓 IUBAT Nexus</div>", unsafe_flag=True) if hasattr(st, 'markdown') else None
 st.markdown("<div class='main-title'>🎓 IUBAT Nexus</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>Your Smart University Companion Portal</div>", unsafe_allow_html=True)
 

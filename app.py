@@ -37,7 +37,7 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Unique & Modern UI ---
+# --- Custom CSS for Edge-to-Edge Banner & Bottom Spacing ---
 st.markdown(f"""
     <style>
     .stApp {{
@@ -77,35 +77,35 @@ st.markdown(f"""
         padding: 4px 16px 14px 16px;
     }}
     
-    /* Top Picture Banner with Luxury Overlay */
+    /* Expanded Edge-to-Edge Banner with Bottom Gap */
     .phone-banner {{
-        background: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.75)), url('{bg_image_data}');
+        background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.75)), url('{bg_image_data}');
         background-size: cover;
         background-position: center;
-        border-radius: 22px;
-        padding: 24px 16px;
+        border-radius: 20px;
+        padding: 38px 16px;
         text-align: center;
         color: white;
-        margin-bottom: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        margin: -4px -4px 22px -4px; /* Extends fully to the sides and adds space below */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
     }}
     
     .banner-icon {{
-        font-size: 28px;
+        font-size: 30px;
         background: rgba(255, 255, 255, 0.15);
-        width: 50px;
-        height: 50px;
+        width: 52px;
+        height: 52px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         backdrop-filter: blur(4px);
     }}
     
     .banner-title {{
-        font-size: 1.35rem;
+        font-size: 1.4rem;
         font-weight: 800;
         letter-spacing: 0.5px;
         margin-top: 2px;
@@ -113,9 +113,9 @@ st.markdown(f"""
     }}
     
     .banner-sub {{
-        font-size: 0.72rem;
+        font-size: 0.75rem;
         color: #CBD5E1;
-        margin-top: 3px;
+        margin-top: 4px;
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -202,7 +202,7 @@ st.markdown("<div class='phone-mockup'>", unsafe_allow_html=True)
 # Status bar
 st.markdown("<div class='status-bar'><span>4:51</span><span>📶 🔋 100%</span></div>", unsafe_allow_html=True)
 
-# Top Picture Banner Section with Icon
+# Top Picture Banner Section (Edge-to-Edge)
 st.markdown("""
     <div class='phone-banner'>
         <div class='banner-icon'>🎓</div>
@@ -211,7 +211,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Form Container acting as a clean solid white card
+# Form Container acting as a clean solid white card with spacing below banner
 with st.form("login_form"):
     user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
     password = st.text_input("Password *", type="password", placeholder="••••••••")

@@ -37,12 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Stacked Layout (Banner on top, Card below) ---
+# --- Custom CSS (Removed Blue Overlay, Clean Background & Fixed Inputs) ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95)), 
-                    url('{bg_image_data}');
+        background: url('{bg_image_data}');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -57,25 +56,24 @@ st.markdown(f"""
         max-width: 460px !important;
     }}
     
-    /* First Section: Banner Card (Image 1 style) */
+    /* First Section: Banner Card */
     .banner-card {{
-        background: linear-gradient(rgba(15, 23, 42, 0.35), rgba(15, 23, 42, 0.75)), url('{bg_image_data}');
-        background-size: cover;
-        background-position: center;
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         border-radius: 20px;
-        padding: 40px 20px;
+        padding: 35px 20px;
         text-align: center;
         color: white;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        margin-bottom: 28px; /* Gap between banner and login card */
-        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        margin-bottom: 24px;
     }}
     
     .banner-crest {{
-        background: rgba(15, 23, 42, 0.85);
-        width: 56px;
-        height: 56px;
+        background: #0F172A;
+        width: 54px;
+        height: 54px;
         border-radius: 50%;
         display: inline-flex;
         align-items: center;
@@ -83,18 +81,18 @@ st.markdown(f"""
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         border: 3px solid rgba(255, 255, 255, 0.9);
         font-size: 24px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }}
     
     .banner-title {{
-        font-size: 1.35rem;
+        font-size: 1.3rem;
         font-weight: 800;
         letter-spacing: 0.5px;
         text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
     }}
     
     .banner-subtitle {{
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         color: #CBD5E1;
         margin-top: 4px;
         text-transform: uppercase;
@@ -103,7 +101,7 @@ st.markdown(f"""
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
     }}
     
-    /* Second Section: Floating Login Card (Image 2 style) */
+    /* Second Section: Floating Login Card */
     .avatar-container {{
         display: flex;
         justify-content: center;
@@ -192,18 +190,19 @@ st.markdown(f"""
     
     .portal-footer {{
         text-align: center;
-        color: #94A3B8;
+        color: #E2E8F0;
         font-size: 11px;
         margin-top: 20px;
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: 0.3px;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }}
     </style>
 """, unsafe_allow_html=True)
 
 # --- UI Render ---
 
-# 1st Section: Banner Card (Image 1 style)
+# 1st Section: Banner Card
 st.markdown("""
     <div class='banner-card'>
         <div class='banner-crest'>🎓</div>
@@ -212,7 +211,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2nd Section: Floating Login Card (Image 2 style, placed nicely below)
+# 2nd Section: Floating Login Card
 st.markdown("""
     <div class='avatar-container'>
         <div class='avatar-circle'>👤</div>

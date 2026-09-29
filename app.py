@@ -37,36 +37,35 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS with Blurred Background & Perfect Layout ---
+# --- Custom CSS with Subtle Light Blur ---
 st.markdown(f"""
     <style>
     .stApp {{
         background: #0F172A;
     }}
     
-    /* Blurred Background Pseudo-element */
+    /* Subtle Light Blur Background (3px) */
     .stApp::before {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: url('{bg_image_data}') no-repeat center center fixed;
         background-size: cover;
-        filter: blur(8px);
-        -webkit-filter: blur(8px);
-        transform: scale(1.1);
+        filter: blur(3px);
+        -webkit-filter: blur(3px);
+        transform: scale(1.05);
         z-index: 0;
     }}
     
-    /* Dark overlay for contrast */
+    /* Very light contrast overlay */
     .stApp::after {{
         content: "";
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.55);
+        background: rgba(15, 23, 42, 0.35);
         z-index: 0;
     }}
     
-    /* Ensure content stays above background layers */
     .block-container {{
         position: relative;
         z-index: 1;

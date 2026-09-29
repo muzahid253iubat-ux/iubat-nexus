@@ -38,13 +38,19 @@ def get_fixed_background():
 bg_image_data = get_fixed_background()
 logo_image_data = get_asset_base64("logo.png")
 
-# --- Session Management ---
+# --- Persistent Session & Remember Me Check ---
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "user_id" not in st.session_state:
     st.session_state.user_id = ""
 if "active_tab" not in st.session_state:
     st.session_state.active_tab = "Home"
+
+# Check URL query params for persistent login (Remember Me functionality)
+query_params = st.query_params
+if not st.session_state.logged_in and "session_user" in query_params:
+    st.session_state.logged_in = True
+    st.session_state.user_id = query_params["session_user"]
 
 # --- Dynamic Styling Based on Login State ---
 if not st.session_state.logged_in:
@@ -144,21 +150,6 @@ else:
             justify-content: space-between;
             align-items: center;
         }
-        .menu-card {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-            border-radius: 16px;
-            padding: 18px;
-            color: #F8FAFC;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            margin-bottom: 12px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        .menu-card:hover {
-            border-color: #38BDF8;
-            transform: translateY(-2px);
-        }
         .sched-card {
             background: rgba(30, 41, 59, 0.75);
             border-radius: 14px;
@@ -198,7 +189,7 @@ if not st.session_state.logged_in:
 
         col1, col2 = st.columns([1.1, 1])
         with col1:
-            st.checkbox("Remember me")
+            remember_me = st.checkbox("Remember me")
         with col2:
             st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' style='color: #38BDF8; font-size: 0.72rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
@@ -207,6 +198,11 @@ if not st.session_state.logged_in:
                 st.session_state.logged_in = True
                 st.session_state.user_id = user_id
                 st.session_state.active_tab = "Home"
+                
+                # If Remember Me is checked, save login state in browser URL parameters
+                if remember_me:
+                    st.query_params["session_user"] = user_id
+                
                 st.rerun()
             else:
                 st.error("❌ Please enter both ID Number and Password.")
@@ -227,7 +223,6 @@ else:
     """, unsafe_allow_html=True)
 
     # Navigation handling inside dashboard
-    col_back = st.columns([1])
     if st.session_state.active_tab != "Home":
         if st.button("⬅️ Back to Dashboard"):
             st.session_state.active_tab = "Home"
@@ -237,22 +232,18 @@ else:
     if st.session_state.active_tab == "Home":
         st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 10px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
 
-        # Option 1: Emergency SOS
         if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
             st.session_state.active_tab = "SOS"
             st.rerun()
 
-        # Option 2: Faculty Directory
         if st.button("👨‍🏫  Faculty Directory & Consultations", use_container_width=True):
             st.session_state.active_tab = "Faculty"
             st.rerun()
 
-        # Option 3: Bus Schedule & Live Tracking
         if st.button("🚌  Bus Schedule & Live Tracking", use_container_width=True):
             st.session_state.active_tab = "Bus"
             st.rerun()
 
-        # Option 4: Alumni Network
         if st.button("🎓  Alumni Network & Mentorship", use_container_width=True):
             st.session_state.active_tab = "Alumni"
             st.rerun()
@@ -261,6 +252,8 @@ else:
         if st.button("🚪 Logout from Portal", use_container_width=True):
             st.session_state.logged_in = False
             st.session_state.active_tab = "Home"
+            if "session_user" in st.query_params:
+                del st.query_params["session_user"]
             st.rerun()
 
     # --- SUB-PAGE 1: EMERGENCY SOS ---
@@ -286,7 +279,7 @@ else:
     # --- SUB-PAGE 2: FACULTY DIRECTORY ---
     elif st.session_state.active_tab == "Faculty":
         st.markdown("### 👨‍🏫 Faculty Directory")
-        search_fac = st.text_input("Search Faculty", placeholder="Search by name or department...")
+        st.text_input("Search Faculty", placeholder="Search by name or department...")
         
         st.markdown("""
             <div class='sched-card'>
@@ -330,7 +323,7 @@ else:
                 <div class='route-stop'>📍 Nimtoly Bridge</div>
             """, unsafe_allow_html=True)
 
-    # --- SUB-PAGE 4: ALUMNI NETWORK ---
+    # --- SUB-PAGE/OPTION 4: ALUMNI NETWORK ---
     elif st.session_state.active_tab == "Alumni":
         st.markdown("### 🎓 Alumni Network & Mentorship")
         st.markdown("Connect with senior graduates working in top engineering firms globally and locally.")

@@ -101,7 +101,8 @@ st.markdown(f"""
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
     }}
     
-    div[data-testid="stForm"] label p {{
+    /* Hide Only Text Input Labels */
+    div[data-testid="stTextInput"] label {{
         display: none !important;
     }}
     
@@ -177,7 +178,6 @@ st.markdown(f"""
     }}
     
     .stCheckbox label p {{
-        display: block !important;
         color: #94A3B8 !important;
         font-weight: 500 !important;
         font-size: 0.72rem !important;

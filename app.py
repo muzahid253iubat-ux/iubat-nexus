@@ -10,12 +10,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- Session Management ---
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-if "user_id" not in st.session_state:
-    st.session_state.user_id = ""
-
 # --- Asset Readers ---
 def get_asset_base64(filename):
     assets_dir = os.path.join(os.getcwd(), "assets")
@@ -44,9 +38,17 @@ def get_fixed_background():
 bg_image_data = get_fixed_background()
 logo_image_data = get_asset_base64("logo.png")
 
-# --- Conditional Styling based on Login Status ---
+# --- Session Management ---
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if "user_id" not in st.session_state:
+    st.session_state.user_id = ""
+if "active_tab" not in st.session_state:
+    st.session_state.active_tab = "Home"
+
+# --- Dynamic Styling Based on Login State ---
 if not st.session_state.logged_in:
-    # Login Page Style (With Campus Background)
+    # Login Page Styling (With Campus Background)
     st.markdown(f"""
         <style>
         .stApp {{
@@ -112,12 +114,13 @@ if not st.session_state.logged_in:
         }}
         </style>
     """, unsafe_allow_html=True)
+
 else:
-    # Dashboard / App Page Style (Clean Light Mobile App Theme, No Background Image)
+    # App Dashboard Styling (Clean Mobile App Theme, No Campus Background)
     st.markdown("""
         <style>
         .stApp {
-            background: #F1F5F9 !important;
+            background: #0F172A !important;
         }
         .block-container {
             position: relative;
@@ -129,45 +132,62 @@ else:
         }
         #MainMenu, header, footer {visibility: hidden;}
 
-        .dashboard-header {
-            background: #FFFFFF;
+        .app-header {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
             padding: 14px 18px;
-            border-radius: 14px;
-            color: #0F172A;
-            margin-bottom: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            color: white;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .sched-card {
-            background: #FFFFFF;
+        .menu-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
             border-radius: 16px;
             padding: 18px;
-            color: #0F172A;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            margin-bottom: 14px;
+            color: #F8FAFC;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .menu-card:hover {
+            border-color: #38BDF8;
+            transform: translateY(-2px);
+        }
+        .sched-card {
+            background: rgba(30, 41, 59, 0.75);
+            border-radius: 14px;
+            padding: 14px;
+            color: #F8FAFC;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
         }
         .badge-tag {
-            background: #EFF6FF;
-            color: #2563EB;
-            padding: 4px 10px;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38BDF8;
+            padding: 3px 8px;
             border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 700;
+            font-size: 0.7rem;
+            font-weight: 600;
         }
         .route-stop {
-            padding: 8px 0;
-            border-left: 2px solid #2563EB;
-            padding-left: 14px;
+            padding: 6px 0;
+            border-left: 2px solid #38BDF8;
+            padding-left: 12px;
             margin-left: 6px;
-            font-size: 0.85rem;
-            color: #334155;
-            font-weight: 500;
+            font-size: 0.8rem;
+            color: #CBD5E1;
         }
         </style>
     """, unsafe_allow_html=True)
 
-# --- UI Render ---
+
+# --- UI Views Render ---
 logo_html = f"<div class='card-crest'><img src='{logo_image_data}' alt='Logo'></div>" if logo_image_data else "<div class='card-crest'>🎓</div>"
 
 if not st.session_state.logged_in:
@@ -186,51 +206,145 @@ if not st.session_state.logged_in:
             if user_id and password:
                 st.session_state.logged_in = True
                 st.session_state.user_id = user_id
+                st.session_state.active_tab = "Home"
                 st.rerun()
             else:
                 st.error("❌ Please enter both ID Number and Password.")
     st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 11px; margin-top: 15px;'>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
 
 else:
-    # --- Authenticated App Dashboard ---
+    # --- App Dashboard Header ---
     st.markdown(f"""
-        <div class='dashboard-header'>
-            <div style='font-size: 0.75rem; color: #64748B; font-weight: 600;'>📍 Location</div>
-            <div style='font-size: 1rem; font-weight: 800; color: #0F172A;'>Tongi Station Road / Uttara Campus</div>
+        <div class='app-header'>
+            <div>
+                <div style='font-size: 0.7rem; color: #94A3B8;'>Welcome back,</div>
+                <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>ID: {st.session_state.user_id}</div>
+            </div>
+            <div>
+                <span class='badge-tag'>🟢 Online</span>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h4 style='color: #0F172A; font-size: 1.1rem; margin-bottom: 10px;'>🚌 Your Schedule</h4>", unsafe_allow_html=True)
-    
-    st.markdown("""
-        <div class='sched-card'>
-            <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;'>
-                <span style='font-weight: 800; font-size: 0.95rem; color: #0F172A;'>Bus 02: Campus to Tongi & Gazipur</span>
-                <span class='badge-tag'>Upcoming</span>
-            </div>
-            <div style='display: flex; justify-content: space-between; color: #64748B; font-size: 0.82rem; margin-bottom: 14px;'>
-                <div>🕒 <b style='color: #0F172A;'>05:30 PM</b><br>Departure</div>
-                <div>➡️</div>
-                <div>🕒 <b style='color: #0F172A;'>07:30 PM</b><br>Arrival (ETA)</div>
-            </div>
-            <hr style='border-color: #E2E8F0; margin: 10px 0;'>
-            <div style='font-size: 0.85rem; margin-top: 8px; color: #334155;'><b>Driver:</b> Sobuj Hossain (📞 01621796157)</div>
-            <div style='font-size: 0.85rem; margin-top: 4px; color: #334155;'><b>Helper:</b> Ripon (📞 01861455868)</div>
-        </div>
-    """, unsafe_allow_html=True)
+    # Navigation handling inside dashboard
+    col_back = st.columns([1])
+    if st.session_state.active_tab != "Home":
+        if st.button("⬅️ Back to Dashboard"):
+            st.session_state.active_tab = "Home"
+            st.rerun()
 
-    with st.expander("🗺️ View Full Route Map Stoppages"):
+    # --- HOME DASHBOARD (4 OPTIONS) ---
+    if st.session_state.active_tab == "Home":
+        st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 10px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
+
+        # Option 1: Emergency SOS
+        if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
+            st.session_state.active_tab = "SOS"
+            st.rerun()
+
+        # Option 2: Faculty Directory
+        if st.button("👨‍🏫  Faculty Directory & Consultations", use_container_width=True):
+            st.session_state.active_tab = "Faculty"
+            st.rerun()
+
+        # Option 3: Bus Schedule & Live Tracking
+        if st.button("🚌  Bus Schedule & Live Tracking", use_container_width=True):
+            st.session_state.active_tab = "Bus"
+            st.rerun()
+
+        # Option 4: Alumni Network
+        if st.button("🎓  Alumni Network & Mentorship", use_container_width=True):
+            st.session_state.active_tab = "Alumni"
+            st.rerun()
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("🚪 Logout from Portal", use_container_width=True):
+            st.session_state.logged_in = False
+            st.session_state.active_tab = "Home"
+            st.rerun()
+
+    # --- SUB-PAGE 1: EMERGENCY SOS ---
+    elif st.session_state.active_tab == "SOS":
+        st.markdown("### 🚨 Emergency SOS & Hotline")
+        st.markdown("If you are facing an emergency on campus or around Tongi/Uttara, reach out immediately:")
+        
         st.markdown("""
-            <div class='route-stop'>📍 Campus (Uttara)</div>
-            <div class='route-stop'>📍 Tongi Station Road</div>
-            <div class='route-stop'>📍 Amtoly Mor</div>
-            <div class='route-stop'>📍 T & T Bazar</div>
-            <div class='route-stop'>📍 Shilmoon</div>
-            <div class='route-stop'>📍 Nimtoly Bridge</div>
-            <div class='route-stop'>📍 Majukhan Bazar</div>
-            <div class='route-stop'>📍 Gazipur Chowrasta / Basugaon</div>
+            <div class='sched-card' style='border-left: 4px solid #EF4444;'>
+                <b>Campus Security Control Room</b><br>
+                📞 Hotline: +880 1713-393291<br>
+                <span style='font-size: 0.75rem; color: #94A3B8;'>Available 24/7 for urgent assistance.</span>
+            </div>
+            <div class='sched-card' style='border-left: 4px solid #F59E0B;'>
+                <b>Medical Center Emergency</b><br>
+                📞 Ambulance: +880 1819-000000<br>
+                <span style='font-size: 0.75rem; color: #94A3B8;'>First aid and emergency evacuation.</span>
+            </div>
+        """, unsafe_allow_html=True)
+        if st.button("🚨 Trigger Panic Alert (Test)", type="primary", use_container_width=True):
+            st.error("⚠️ Emergency alert sent to security desk with your GPS location!")
+
+    # --- SUB-PAGE 2: FACULTY DIRECTORY ---
+    elif st.session_state.active_tab == "Faculty":
+        st.markdown("### 👨‍🏫 Faculty Directory")
+        search_fac = st.text_input("Search Faculty", placeholder="Search by name or department...")
+        
+        st.markdown("""
+            <div class='sched-card'>
+                <b>Prof. Dr. M. Ahmed</b><br>
+                <span class='badge-tag'>EEE Department</span><br>
+                📧 Email: m.ahmed@iubat.edu<br>
+                🕒 Consultation: Sun-Tue (03:00 PM - 05:00 PM)
+            </div>
+            <div class='sched-card'>
+                <b>Dr. Selim Reza</b><br>
+                <span class='badge-tag'>ECE Department</span><br>
+                📧 Email: selim.reza@iubat.edu<br>
+                🕒 Consultation: Mon-Wed (11:00 AM - 01:00 PM)
+            </div>
         """, unsafe_allow_html=True)
 
-    if st.button("🚪 Logout", use_container_width=True):
-        st.session_state.logged_in = False
-        st.rerun()
+    # --- SUB-PAGE 3: BUS SCHEDULE & LIVE TRACKING ---
+    elif st.session_state.active_tab == "Bus":
+        st.markdown("### 🚌 Bus Schedule & Live Tracking")
+        st.markdown("""
+            <div class='sched-card'>
+                <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;'>
+                    <span style='font-weight: 700;'>Bus 02: Campus to Tongi</span>
+                    <span class='badge-tag'>On Trip</span>
+                </div>
+                <div style='color: #94A3B8; font-size: 0.8rem; margin-bottom: 8px;'>
+                    🕒 Departure: <b>05:30 PM</b> | ETA: <b>07:30 PM</b>
+                </div>
+                <div style='font-size: 0.8rem;'><b>Driver:</b> Sobuj Hossain (01621796157)</div>
+                <div style='font-size: 0.8rem;'><b>Helper:</b> Ripon (01861455868)</div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        with st.expander("🗺️ Route Stoppages"):
+            st.markdown("""
+                <div class='route-stop'>📍 Campus (Uttara)</div>
+                <div class='route-stop'>📍 Tongi Station Road</div>
+                <div class='route-stop'>📍 Amtoly Mor</div>
+                <div class='route-stop'>📍 T & T Bazar</div>
+                <div class='route-stop'>📍 Shilmoon</div>
+                <div class='route-stop'>📍 Nimtoly Bridge</div>
+            """, unsafe_allow_html=True)
+
+    # --- SUB-PAGE 4: ALUMNI NETWORK ---
+    elif st.session_state.active_tab == "Alumni":
+        st.markdown("### 🎓 Alumni Network & Mentorship")
+        st.markdown("Connect with senior graduates working in top engineering firms globally and locally.")
+        st.markdown("""
+            <div class='sched-card'>
+                <b>Tanvir Ahmed, P.Eng</b><br>
+                <span class='badge-tag'>Class of 2021</span><br>
+                💼 Senior Electrical Engineer at Energypac<br>
+                🤝 Mentorship Focus: Power Systems & Substation Design
+            </div>
+            <div class='sched-card'>
+                <b>Nusrat Jahan</b><br>
+                <span class='badge-tag'>Class of 2023</span><br>
+                💻 Software Engineer at BJIT<br>
+                🤝 Mentorship Focus: Embedded C & Python
+            </div>
+        """, unsafe_allow_html=True)

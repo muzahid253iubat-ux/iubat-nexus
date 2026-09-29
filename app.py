@@ -47,7 +47,7 @@ if "logged_in" not in st.session_state:
 if "user_id" not in st.session_state:
     st.session_state.user_id = ""
 if "user_name" not in st.session_state:
-    st.session_state.user_name = "Abdullah Al Muzahid"
+    st.session_state.user_name = ""
 if "user_dept" not in st.session_state:
     st.session_state.user_dept = "Electrical & Electronic Engineering"
 if "active_tab" not in st.session_state:
@@ -61,6 +61,7 @@ query_params = st.query_params
 if not st.session_state.logged_in and "session_user" in query_params:
     st.session_state.logged_in = True
     st.session_state.user_id = query_params["session_user"]
+    st.session_state.user_name = f"Student ({st.session_state.user_id})"
 
 # --- 1-Second Splash Screen Logic for Logged-In Users ---
 if st.session_state.logged_in and not st.session_state.splash_shown:
@@ -105,7 +106,7 @@ if not st.session_state.logged_in:
         }}
         .stApp::after {{
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 13, 22, 0.50); z-index: 0;
+            background: rgba(9, 13, 22, 0.62); z-index: 0;
         }}
         
         /* Fixed True Global Header Bar */
@@ -301,6 +302,19 @@ if not st.session_state.logged_in:
                 if user_id and password:
                     st.session_state.logged_in = True
                     st.session_state.user_id = user_id
+                    
+                    # --- Dynamic User Recognition Based on ID ---
+                    if user_id == "25305025":
+                        st.session_state.user_name = "Md. Rakibul Islam"  # Tomar friend-er name ekhane dite paro
+                        st.session_state.user_dept = "Electrical & Electronic Engineering"
+                    elif user_id == "abdullah" or "muzahid" in user_id.lower():
+                        st.session_state.user_name = "Abdullah Al Muzahid"
+                        st.session_state.user_dept = "Electrical & Electronic Engineering"
+                    else:
+                        # Jekono onno ID-er jonno automatic dynamic name generate korbe
+                        st.session_state.user_name = f"Student [{user_id}]"
+                        st.session_state.user_dept = "IUBAT Student"
+                    
                     st.session_state.active_tab = "Home"
                     if remember_me:
                         st.query_params["session_user"] = user_id
@@ -433,7 +447,7 @@ else:
         with st.expander("🗺 Route Stoppages"):
             st.markdown("""
                 <div class='route-stop'>📍 Campus (Uttara)</div>
-                <div class='route-stop'>📍 Tongi Station Road</div>
+                <div class='route-stop'>📍 Tongi Station Road/div>
                 <div class='route-stop'>📍 Amtoly Mor</div>
                 <div class='route-stop'>📍 T & T Bazar</div>
                 <div class='route-stop'>📍 Shilmoon</div>

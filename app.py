@@ -37,11 +37,11 @@ def get_fixed_background():
 
 bg_image_data = get_fixed_background()
 
-# --- Custom CSS for Unique Modern Floating Card Design ---
+# --- Custom CSS Matching Reference Floating Minimal Card Style ---
 st.markdown(f"""
     <style>
     .stApp {{
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95)), 
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.95)), 
                     url('{bg_image_data}');
         background-size: cover;
         background-position: center;
@@ -52,91 +52,79 @@ st.markdown(f"""
     #MainMenu, header, footer {{visibility: hidden;}}
     
     .block-container {{
-        padding-top: 2rem !important;
+        padding-top: 4rem !important;
         padding-bottom: 2rem !important;
         max-width: 440px !important;
     }}
     
-    /* Unique Master Container Card */
-    .master-card {{
-        background: #FFFFFF;
-        border-radius: 28px;
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.15);
-        overflow: hidden;
-    }}
-    
-    /* Header Hero Section */
-    .hero-banner {{
-        background: linear-gradient(rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.75)), url('{bg_image_data}');
-        background-size: cover;
-        background-position: center;
-        padding: 50px 20px 40px 20px;
-        text-align: center;
-        color: white;
-    }}
-    
-    .hero-title {{
-        font-size: 1.4rem;
-        font-weight: 800;
-        letter-spacing: 0.5px;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-    }}
-    
-    .hero-subtitle {{
-        font-size: 0.75rem;
-        color: #CBD5E1;
-        margin-top: 4px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 600;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-    }}
-    
-    /* Floating Icon Badge */
-    .badge-wrapper {{
+    /* Floating Avatar Circle centered on top of card */
+    .avatar-container {{
         display: flex;
         justify-content: center;
-        margin-top: -30px;
+        margin-bottom: -40px;
         position: relative;
-        z-index: 5;
-        margin-bottom: 10px;
+        z-index: 10;
     }}
     
-    .badge-icon {{
+    .avatar-circle {{
         background: #0F172A;
-        color: #FFFFFF;
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.3);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35), 0 0 0 6px rgba(255, 255, 255, 0.2);
         border: 4px solid #FFFFFF;
-        font-size: 26px;
+        font-size: 36px;
     }}
     
-    /* Form Padding inside Master Card */
+    /* Main Floating Card */
+    .floating-card {{
+        background: #FFFFFF;
+        border-radius: 24px;
+        padding: 50px 30px 30px 30px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }}
+    
+    .card-heading {{
+        text-align: center;
+        color: #0F172A;
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin-bottom: 4px;
+    }}
+    
+    .card-subheading {{
+        text-align: center;
+        color: #64748B;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 24px;
+        font-weight: 600;
+    }}
+    
+    /* Form Styling */
     div[data-testid="stForm"] {{
-        background: #FFFFFF !important;
-        padding: 0px 28px 24px 28px !important;
+        background: transparent !important;
+        padding: 0px !important;
         border: none !important;
         box-shadow: none !important;
     }}
     
-    /* Label Styling */
+    /* Label hiding for clean minimal look */
     div[data-testid="stForm"] label p {{
-        color: #0F172A !important;
-        font-weight: 700 !important;
-        font-size: 0.85rem !important;
+        display: none !important;
     }}
     
-    /* Input Fields */
+    /* Input Fields Styling */
     .stTextInput>div>div>input {{
-        background-color: #F8FAFC !important;
+        background-color: #F1F5F9 !important;
         color: #0F172A !important;
         font-weight: 600;
-        border-radius: 12px;
+        border-radius: 10px;
         border: 1.5px solid #E2E8F0;
         padding: 11px 14px;
         font-size: 0.9rem;
@@ -145,85 +133,82 @@ st.markdown(f"""
     
     .stTextInput>div>div>input:focus {{
         background-color: #FFFFFF !important;
-        border-color: #0284C7;
-        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        border-color: #0F172A;
+        box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
     }}
     
-    /* Checkbox */
+    /* Checkbox Styling */
     .stCheckbox label p {{
-        color: #334155 !important;
+        display: block !important;
+        color: #475569 !important;
         font-weight: 600 !important;
         font-size: 0.85rem !important;
     }}
     
-    /* Submit Button */
+    /* Login Submit Button Matching Reference Style */
     .stFormSubmitButton>button {{
         width: 100% !important;
-        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
+        background: #0F172A !important;
         color: white !important;
         font-weight: 700 !important;
         font-size: 0.95rem !important;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
         border: none !important;
-        padding: 12px !important;
-        border-radius: 12px !important;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35) !important;
-        margin-top: 10px !important;
+        padding: 13px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.3) !important;
+        margin-top: 12px !important;
         transition: all 0.3s ease !important;
     }}
     
     .stFormSubmitButton>button:hover {{
-        background: linear-gradient(135deg, #1E293B 0%, #0284C7 100%) !important;
-        box-shadow: 0 8px 22px rgba(2, 132, 199, 0.4) !important;
+        background: #1E293B !important;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.4) !important;
         transform: translateY(-1px);
     }}
     
-    /* Seamless Footer inside Master Card */
-    .card-footer {{
+    .portal-footer {{
         text-align: center;
         color: #64748B;
         font-size: 11px;
-        padding: 0px 0px 24px 0px;
+        margin-top: 24px;
         font-weight: 500;
-        background: #FFFFFF;
         letter-spacing: 0.3px;
     }}
     </style>
 """, unsafe_allow_html=True)
 
 # --- UI Render ---
-st.markdown("<div class='master-card'>", unsafe_allow_html=True)
-
-# Hero Header with Banner Background
+# Floating Avatar Circle
 st.markdown("""
-    <div class='hero-banner'>
-        <div class='hero-title'>IUBAT Nexus</div>
-        <div class='hero-subtitle'>Excellence in Higher Education & Research</div>
+    <div class='avatar-container'>
+        <div class='avatar-circle'>👤</div>
     </div>
 """, unsafe_allow_html=True)
 
-# Floating Badge Icon
+# Floating Card Container
+st.markdown("<div class='floating-card'>", unsafe_allow_html=True)
+
 st.markdown("""
-    <div class='badge-wrapper'>
-        <div class='badge-icon'>🎓</div>
-    </div>
+    <div class='card-heading'>IUBAT Nexus</div>
+    <div class='card-subheading'>Portal Login</div>
 """, unsafe_allow_html=True)
 
 # Form
 with st.form("login_form"):
-    user_id = st.text_input("ID Number *", placeholder="e.g. 20103056")
-    password = st.text_input("Password *", type="password", placeholder="••••••••")
+    user_id = st.text_input("ID Number", placeholder="👤 ID Number")
+    password = st.text_input("Password", type="password", placeholder="🔒 Password")
 
     remember_me = st.checkbox("Remember me")
 
-    submit_btn = st.form_submit_button("Sign In")
+    submit_btn = st.form_submit_button("LOGIN")
     if submit_btn:
         if user_id and password:
             st.success(f"Welcome back, {user_id}!")
         else:
             st.error("❌ Please enter both ID Number and Password.")
 
-# Seamless Footer inside the same card
-st.markdown("<div class='card-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)
-
 st.markdown("</div>", unsafe_allow_html=True)
+
+# Footer
+st.markdown("<div class='portal-footer'>Version : 1.0.0 Beta<br>© 2026 IUBAT Nexus</div>", unsafe_allow_html=True)

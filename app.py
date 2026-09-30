@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Responsive Design & Secure Login Page
+# Custom CSS for Perfect First Page & Responsive Dashboard
 st.markdown("""
 <style>
     #MainMenu {visibility: hidden;}
@@ -21,17 +21,25 @@ st.markdown("""
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    /* RESTORED PERFECT FIRST PAGE (LOGIN CARD) */
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 20px;
+    }
     .auth-card {
         background: #111827;
-        padding: 40px;
-        border-radius: 20px;
+        padding: 35px;
+        border-radius: 16px;
         border: 1px solid #1f2937;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        max-width: 450px;
-        margin: 80px auto;
-        text-align: center;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        width: 100%;
+        max-width: 420px;
     }
 
+    /* RESPONSIVE DASHBOARD STYLING */
     @media (max-width: 768px) {
         .dashboard-container {
             max-width: 414px;
@@ -82,12 +90,12 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
 # ==========================================
-# LOCKED FIRST PAGE (LOGIN / SIGNUP)
+# LOCKED & RESTORED FIRST PAGE (LOGIN / SIGNUP)
 # ==========================================
 if not st.session_state.logged_in:
-    st.markdown('<div class="auth-card">', unsafe_allow_html=True)
-    st.markdown("<h2>🎓 IUBAT Nexus</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #9ca3af;'>Your Smart Student Portal</p>", unsafe_allow_html=True)
+    st.markdown('<div class="auth-wrapper"><div class="auth-card">', unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-bottom: 5px;'>🎓 IUBAT Nexus</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; margin-bottom: 25px;'>Your Smart Student Portal</p>", unsafe_allow_html=True)
     
     tab1, tab2 = st.tabs(["🔑 Login", "📝 Create Account"])
     
@@ -115,10 +123,10 @@ if not st.session_state.logged_in:
             else:
                 st.error("Please fill all fields!")
                 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
 # ==========================================
-# RESPONSIVE DASHBOARD (PC vs MOBILE VIEW)
+# RESPONSIVE DASHBOARD WITH LOGOUT BUTTON
 # ==========================================
 else:
     st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)
@@ -183,7 +191,7 @@ else:
     with nav_cols[0]:
         st.button("🚌 Shuttle")
     with nav_cols[1]:
-        st.button("👨‍🏫 Faculty")
+        st.button("👨‍‍🏫 Faculty")
     with nav_cols[2]:
         st.button("🗺️ Route")
     with nav_cols[3]:

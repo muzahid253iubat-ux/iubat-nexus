@@ -327,7 +327,10 @@ if not st.session_state.logged_in:
     
     logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
-    # Top Header Bar: Logo on Left
+    # Top Header Bar: Logo on Left & Language Toggle on Right
+    new_lang_top = "BN" if st.session_state.lang == "EN" else "EN"
+    btn_label_top = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
+    
     st.markdown(f"""
         <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 25px;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
@@ -352,16 +355,12 @@ if not st.session_state.logged_in:
         """, unsafe_allow_html=True)
 
     with col_right:
-        # Language Switch Button right above the card
-        lc1, lc2 = st.columns([2.5, 1.3])
-        with lc2:
-            new_lang = "BN" if st.session_state.lang == "EN" else "EN"
-            btn_label = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
-            if st.button(btn_label, key="lang_toggle_btn", use_container_width=True):
-                st.session_state.lang = new_lang
-                st.rerun()
+        # Language Switch Button right above the card (clean single column layout)
+        if st.button(btn_label_top, key="lang_toggle_btn", use_container_width=True):
+            st.session_state.lang = new_lang_top
+            st.rerun()
 
-        # Log in to IUBAT Nexus header banner inserted exactly in the target empty spot
+        # Log in to IUBAT Nexus header banner inserted cleanly
         st.markdown(f"""
             <div class="top-banner-pill">
                 🔒 {t[lang_key]["card_header"]}
@@ -456,7 +455,7 @@ if not st.session_state.logged_in:
     st.markdown(f"""
         <div class="fb-footer-box">
             <div style="color: #94A3B8; font-size: 0.95rem; margin-bottom: 6px;">
-                💡 <b>Tip:</b> Click the top-right button (<b>🇧🇩 বাংলা / 🇬🇧 English</b>) anytime to switch language instantly!
+                💡 <b>Tip:</b> Click the top button (<b>🇧🇩 বাংলা / 🇬🇧 English</b>) anytime to switch language instantly!
             </div>
             <div class="fb-copyright">
                 {t[lang_key]["footer"]}

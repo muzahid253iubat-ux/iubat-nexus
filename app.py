@@ -141,7 +141,6 @@ if not st.session_state.logged_in:
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
                 includedLanguages: 'en,bn,ar,hi,ne,id,zh-CN,fr',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                 autoDisplay: false
             }, 'google_translate_element');
         }
@@ -215,9 +214,9 @@ if not st.session_state.logged_in:
         }}
         .goog-te-combo {{
             background-color: #1E293B !important; color: #38BDF8 !important; border: 1px solid rgba(14, 165, 233, 0.4) !important;
-            padding: 8px 12px !important; border-radius: 8px !important; font-size: 0.9rem !important; outline: none !important; cursor: pointer;
+            padding: 8px 14px !important; border-radius: 8px !important; font-size: 0.95rem !important; outline: none !important; cursor: pointer; width: 220px; display: inline-block !important;
         }}
-        .goog-te-gadget {{ color: transparent !important; }}
+        .goog-te-gadget {{ color: transparent !important; font-size: 0px; }}
         .goog-te-gadget span {{ display: none !important; }}
         .goog-logo-link {{ display: none !important; }}
         #goog-gt-tt {{ display: none !important; }}
@@ -401,7 +400,7 @@ if not st.session_state.logged_in:
     st.markdown("""
         <div class="fb-footer-box">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
-                <div style="color: #94A3B8; font-size: 0.9rem; font-weight: 500;">
+                <div style="color: #94A3B8; font-size: 0.95rem; font-weight: 600;">
                     🌐 Select Language / ভাষা নির্বাচন করুন:
                 </div>
                 <div id="google_translate_element"></div>

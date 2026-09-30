@@ -19,17 +19,21 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
+    /* Mobile Bottom Navigation Bar (Hidden by default on PC) */
     .mobile-bottom-nav {
         display: none;
     }
 
+    /* Media Query for Mobile / iPhone View (< 768px) */
     @media (max-width: 768px) {
+        /* Completely hide PC buttons container on mobile */
         .pc-nav-container {
             display: none !important;
         }
         
+        /* Show Mobile Bottom Navigation Bar */
         .mobile-bottom-nav {
-            display: flex;
+            display: flex !important;
             position: fixed;
             bottom: 0;
             left: 0;
@@ -37,19 +41,25 @@ st.markdown("""
             background-color: #1e293b;
             border-top: 1px solid #334155;
             justify-content: space-around;
-            padding: 10px 0;
-            z-index: 9999;
+            padding: 12px 0;
+            z-index: 99999;
         }
         
         .mobile-nav-item {
             text-align: center;
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 11px;
             text-decoration: none;
+            font-weight: 500;
         }
         
+        .mobile-nav-item:hover, .mobile-nav-item.active {
+            color: #38bdf8;
+        }
+        
+        /* Add bottom padding to body so content isn't hidden behind the fixed bar */
         .block-container {
-            padding-bottom: 80px;
+            padding-bottom: 90px !important;
         }
     }
     </style>
@@ -75,7 +85,7 @@ st.write("")
 st.markdown("### Shuttle Bus Schedule")
 st.markdown("📅 Today Schedule")
 
-# Bus Card Container using Streamlit native container
+# Bus Card Container
 with st.container():
     st.markdown("""
         <div style="background-color: #111827; padding: 20px; border-radius: 15px; border: 1px solid #1f2937;">
@@ -110,25 +120,25 @@ if st.button("🗺️ Launch Live GPS Tracking", use_container_width=True):
 
 st.write("")
 
-# --- PC NAVIGATION BUTTONS (Visible on Laptop/PC) ---
+# --- PC NAVIGATION BUTTONS (Visible ONLY on Laptop/PC) ---
 st.markdown('<div class="pc-nav-container">', unsafe_allow_html=True)
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
-    st.button("🚌 Shuttle", use_container_width=True)
+    st.button("🚌 Shuttle", use_container_width=True, key="pc_btn_1")
 with col2:
-    st.button("👩‍🏫 Faculty", use_container_width=True)
+    st.button("👩‍🏫 Faculty", use_container_width=True, key="pc_btn_2")
 with col3:
-    st.button("🗺 Route", use_container_width=True)
+    st.button("🗺 Route", use_container_width=True, key="pc_btn_3")
 with col4:
-    st.button("🚨 SOS", use_container_width=True)
+    st.button("🚨 SOS", use_container_width=True, key="pc_btn_4")
 with col5:
-    st.button("⚙️️ Account", use_container_width=True)
+    st.button("⚙ Account", use_container_width=True, key="pc_btn_5")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# --- MOBILE BOTTOM NAVIGATION BAR ---
+# --- MOBILE BOTTOM NAVIGATION BAR (Visible ONLY on Mobile/iPhone) ---
 st.markdown("""
     <div class="mobile-bottom-nav">
-        <a href="#" class="mobile-nav-item" style="color: #38bdf8;">🏠<br>Home</a>
+        <a href="#" class="mobile-nav-item active">🏠<br>Home</a>
         <a href="#" class="mobile-nav-item">🚌<br>Shuttle</a>
         <a href="#" class="mobile-nav-item">🗺️<br>Route</a>
         <a href="#" class="mobile-nav-item">🚨<br>SOS</a>

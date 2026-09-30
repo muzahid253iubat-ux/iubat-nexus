@@ -192,14 +192,37 @@ if not st.session_state.logged_in:
             background-color: #36A420 !important;
         }}
 
-        /* Clean Footer Box */
+        /* Google Translate Footer Styling */
         .fb-footer-box {{
-            position: relative; margin-top: 70px; width: 100%; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; font-family: system-ui, -apple-system, sans-serif; z-index: 2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+            position: relative; margin-top: 70px; width: 100%; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; font-family: system-ui, -apple-system, sans-serif; z-index: 2;
         }}
         .fb-copyright {{
-            color: #737B83; font-size: 12px;
+            color: #737B83; font-size: 11px; margin-top: 15px;
         }}
+        /* Google Translate Widget Customizer */
+        .goog-te-combo {{
+            background-color: #1E293B !important; color: #38BDF8 !important; border: 1px solid rgba(14, 165, 233, 0.4) !important;
+            padding: 8px 12px !important; border-radius: 8px !important; font-size: 0.9rem !important; outline: none !important; cursor: pointer;
+        }}
+        .goog-te-gadget {{ color: transparent !important; }}
+        .goog-te-gadget span {{ display: none !important; }}
+        .goog-logo-link {{ display: none !important; }}
+        #goog-gt-tt {{ display: none !important; }}
+        .skiptranslate {{ color: #8A939B; font-size: 13px; }}
         </style>
+
+        <!-- Official Google Translate Element Script -->
+        <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,bn,ar,hi,ne,id,zh-CN,fr',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     """, unsafe_allow_html=True)
 else:
     st.markdown("""
@@ -379,23 +402,20 @@ if not st.session_state.logged_in:
             
             st.markdown("</div>", unsafe_allow_html=True)
 
-    # Clean Functional Footer with Working Language Selector
-    col_f1, col_f2 = st.columns([3, 1])
-    with col_f1:
-        st.markdown("""
-            <div class="fb-footer-box" style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px;">
-                <div class="fb-copyright">
-                    © 2026 IUBAT Nexus • Smart University Portal
+    # Functional Google Translate Widget Footer
+    st.markdown("""
+        <div class="fb-footer-box">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                <div style="color: #94A3B8; font-size: 0.9rem; font-weight: 500;">
+                    🌐 Select Language / ভাষা নির্বাচন করুন:
                 </div>
+                <div id="google_translate_element"></div>
             </div>
-        """, unsafe_allow_html=True)
-    with col_f2:
-        st.selectbox(
-            "Language",
-            ["English (UK)", "বাংলা", "हिन्दी", "العربية"],
-            label_visibility="collapsed",
-            key="footer_lang_select"
-        )
+            <div class="fb-copyright">
+                © 2026 IUBAT Nexus • Smart University Portal (Built for International Students)
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 else:
     photo_render = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}'>" if st.session_state.user_photo else "🎓"

@@ -133,19 +133,38 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
 def handle_create_acc():
     st.session_state.is_registering = True
 
-# --- Global Styling ---
-if not st.session_state.logged_in:
-    # Native Instant Google Translate JavaScript Engine
-    native_translate_script = """
-        <script type="text/javascript">
-        function triggerTranslate(langCode) {
-            if (!langCode) return;
+# --- Global Styling & Universal Google Translate Engine ---
+google_translate_engine = """
+    <div id="google_translate_element" style="display:none;"></div>
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'bn,en,ar,hi,ur,ne,zh-CN,es,fr,de,ja,ko,it,pt,ru,id,ms,tr,vi,th,fa,bn',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <script type="text/javascript">
+    function changeGlobalLanguage(selectObj) {
+        var langCode = selectObj.value;
+        var frame = document.querySelector('.goog-te-combo');
+        if (frame) {
+            frame.value = langCode;
+            frame.dispatchEvent(new Event('change'));
+        } else {
+            // Fallback cookie method
             document.cookie = "googtrans=/en/" + langCode + "; path=/;";
             location.reload();
         }
-        </script>
-    """
+    }
+    </script>
+"""
 
+if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
         .stApp {{ background: #070B14; }}
@@ -203,7 +222,7 @@ if not st.session_state.logged_in:
             background-color: #36A420 !important;
         }}
 
-        /* Enhanced High Z-Index Direct Language Selector Styling */
+        /* Universal Multi-Language Selector Box */
         .fb-footer-box {{
             position: relative; margin-top: 80px; width: 100%; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 25px; padding-bottom: 40px; font-family: system-ui, -apple-system, sans-serif; z-index: 99999 !important;
         }}
@@ -212,66 +231,79 @@ if not st.session_state.logged_in:
         }}
         .custom-lang-select {{
             background-color: #0F172A !important; color: #38BDF8 !important; border: 2px solid rgba(14, 165, 233, 0.6) !important;
-            padding: 12px 18px !important; border-radius: 10px !important; font-size: 1rem !important; outline: none !important; cursor: pointer; width: 260px; font-weight: 700; box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+            padding: 12px 18px !important; border-radius: 10px !important; font-size: 1rem !important; outline: none !important; cursor: pointer; width: 280px; font-weight: 700; box-shadow: 0 8px 25px rgba(0,0,0,0.8);
         }}
         .custom-lang-select option {{
             background-color: #0F172A; color: #F1F5F9; padding: 12px; font-size: 1rem;
         }}
+        /* Hide default google top banner */
+        .goog-te-banner-frame.skiptranslate {{ display: none !important; }}
+        body {{ top: 0px !important; }}
         </style>
-        {native_translate_script}
+        {google_translate_engine}
     """, unsafe_allow_html=True)
 else:
-    st.markdown("""
+    st.markdown(f"""
         <style>
-        .stApp { background: #080C15 !important; color: #F1F5F9 !important; }
-        .block-container { position: relative; z-index: 1; padding-top: 1.2rem !important; padding-bottom: 110px !important; max-width: 720px !important; margin: auto !important; }
-        #MainMenu, header, footer {visibility: hidden;}
+        .stApp {{ background: #080C15 !important; color: #F1F5F9 !important; }}
+        .block-container {{ position: relative; z-index: 1; padding-top: 1.2rem !important; padding-bottom: 130px !important; max-width: 720px !important; margin: auto !important; }}
+        #MainMenu, header, footer {{visibility: hidden;}}
 
-        .top-dash-header {
+        .top-dash-header {{
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(14, 165, 233, 0.2);
             border-radius: 18px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        .user-profile-pill {
+        }}
+        .user-profile-pill {{
             display: flex; align-items: center; gap: 12px;
-        }
-        .user-avatar-frame {
+        }}
+        .user-avatar-frame {{
             width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid #0EA5E9; background: #1E293B;
             display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-        }
-        .user-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
-        .location-badge-pro {
+        }}
+        .user-avatar-frame img {{ width: 100%; height: 100%; object-fit: cover; }}
+        .location-badge-pro {{
             background: rgba(30, 41, 59, 0.9); border: 1px solid rgba(14, 165, 233, 0.3); padding: 6px 14px; border-radius: 30px; font-size: 0.85rem; color: #E2E8F0; display: flex; align-items: center; gap: 8px; font-weight: 500;
-        }
-        .sched-main-card-pro {
+        }}
+        .sched-main-card-pro {{
             background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(16px); border-radius: 20px; padding: 22px; color: #F1F5F9;
             border: 1px solid rgba(14, 165, 233, 0.25); margin-bottom: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.4);
-        }
-        .badge-tag-pro {
+        }}
+        .badge-tag-pro {{
             background: rgba(14, 165, 233, 0.15); color: #38BDF8; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3px;
-        }
-        .route-stop-pro {
+        }}
+        .route-stop-pro {{
             padding: 8px 0; border-left: 3px solid #0EA5E9; padding-left: 14px; margin-left: 8px; font-size: 0.88rem; color: #CBD5E1; font-weight: 500;
-        }
+        }}
 
-        .bottom-nav-dock {
+        .bottom-nav-dock {{
             position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 650px;
             background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(20px);
             border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 24px;
             display: flex; justify-content: space-around; align-items: center; padding: 8px 12px; z-index: 99999;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-        }
-        .bottom-nav-dock div.stButton > button {
+        }}
+        .bottom-nav-dock div.stButton > button {{
             background: transparent !important; border: none !important; color: #94A3B8 !important;
             font-size: 0.85rem !important; font-weight: 600 !important; box-shadow: none !important;
             display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important;
             gap: 6px !important; padding: 6px 12px !important; min-height: 40px !important; border-radius: 12px !important;
             transition: all 0.2s ease-in-out; white-space: nowrap !important;
-        }
-        .bottom-nav-dock div.stButton > button:hover {
+        }}
+        .bottom-nav-dock div.stButton > button:hover {{
             color: #38BDF8 !important; background: rgba(14, 165, 233, 0.12) !important; transform: translateY(-2px);
-        }
+        }}
+        .custom-lang-select {{
+            background-color: #0F172A !important; color: #38BDF8 !important; border: 2px solid rgba(14, 165, 233, 0.6) !important;
+            padding: 10px 16px !important; border-radius: 10px !important; font-size: 0.95rem !important; outline: none !important; cursor: pointer; width: 100%; font-weight: 700;
+        }}
+        .custom-lang-select option {{
+            background-color: #0F172A; color: #F1F5F9; padding: 10px;
+        }}
+        .goog-te-banner-frame.skiptranslate {{ display: none !important; }}
+        body {{ top: 0px !important; }}
         </style>
+        {google_translate_engine}
     """, unsafe_allow_html=True)
 
 # --- Render Logic ---
@@ -393,22 +425,36 @@ if not st.session_state.logged_in:
             st.markdown("</div>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
 
+    # All World Languages Selection Dropdown
     st.markdown("""
         <div class="fb-footer-box">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
                 <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 700;">
-                    🌐 Select Language / ভাষা নির্বাচন করুন:
+                    🌐 Select Language / More Languages (ভাষা নির্বাচন করুন):
                 </div>
                 <div>
-                    <select class="custom-lang-select" onchange="triggerTranslate(this.value)">
-                        <option value="en">English</option>
+                    <select class="custom-lang-select" onchange="changeGlobalLanguage(this)">
+                        <option value="en">English (Default)</option>
                         <option value="bn">বাংলা (Bengali)</option>
                         <option value="ar">العربية (Arabic)</option>
                         <option value="hi">हिन्दी (Hindi)</option>
+                        <option value="ur">اردو (Urdu)</option>
                         <option value="ne">नेपाली (Nepali)</option>
-                        <option value="id">Bahasa Indonesia</option>
-                        <option value="zh-CN">中文 (Chinese)</option>
+                        <option value="zh-CN">中文 (Chinese - Simplified)</option>
+                        <option value="es">Español (Spanish)</option>
                         <option value="fr">Français (French)</option>
+                        <option value="de">Deutsch (German)</option>
+                        <option value="ja">日本語 (Japanese)</option>
+                        <option value="ko">한국어 (Korean)</option>
+                        <option value="it">Italiano (Italian)</option>
+                        <option value="pt">Português (Portuguese)</option>
+                        <option value="ru">Русский (Russian)</option>
+                        <option value="id">Bahasa Indonesia (Indonesian)</option>
+                        <option value="ms">Bahasa Melayu (Malay)</option>
+                        <option value="tr">Türkçe (Turkish)</option>
+                        <option value="vi">Tiếng Việt (Vietnamese)</option>
+                        <option value="th">ไทย (Thai)</option>
+                        <option value="fa">فارسی (Persian)</option>
                     </select>
                 </div>
             </div>
@@ -533,6 +579,37 @@ else:
 
     elif st.session_state.dashboard_view == "Account":
         st.markdown("<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>Student Account & Settings</div>", unsafe_allow_html=True)
+        
+        # In-dashboard Language Selector for logged-in users
+        st.markdown("""
+            <div class='sched-main-card-pro'>
+                <div style='font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; color: #F1F5F9;'>🌐 App Language / ভাষা পরিবর্তন করুন</div>
+                <select class="custom-lang-select" onchange="changeGlobalLanguage(this)">
+                    <option value="en">English (Default)</option>
+                    <option value="bn">বাংলা (Bengali)</option>
+                    <option value="ar">العربية (Arabic)</option>
+                    <option value="hi">हिन्दी (Hindi)</option>
+                    <option value="ur">اردو (Urdu)</option>
+                    <option value="ne">नेपाली (Nepali)</option>
+                    <option value="zh-CN">中文 (Chinese - Simplified)</option>
+                    <option value="es">Español (Spanish)</option>
+                    <option value="fr">Français (French)</option>
+                    <option value="de">Deutsch (German)</option>
+                    <option value="ja">日本語 (Japanese)</option>
+                    <option value="ko">한국어 (Korean)</option>
+                    <option value="it">Italiano (Italian)</option>
+                    <option value="pt">Português (Portuguese)</option>
+                    <option value="ru">Русский (Russian)</option>
+                    <option value="id">Bahasa Indonesia (Indonesian)</option>
+                    <option value="ms">Bahasa Melayu (Malay)</option>
+                    <option value="tr">Türkçe (Turkish)</option>
+                    <option value="vi">Tiếng Việt (Vietnamese)</option>
+                    <option value="th">ไทย (Thai)</option>
+                    <option value="fa">فارسی (Persian)</option>
+                </select>
+            </div>
+        """, unsafe_allow_html=True)
+
         with st.form("dash_acc_form"):
             up_name = st.text_input("Full Name", value=st.session_state.user_name)
             up_dept = st.text_input("Department", value=st.session_state.user_dept)

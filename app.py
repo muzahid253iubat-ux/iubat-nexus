@@ -147,7 +147,7 @@ if not st.session_state.logged_in:
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 30px !important; max-width: 1200px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 40px !important; padding-bottom: 80px !important; max-width: 1200px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
@@ -164,7 +164,7 @@ if not st.session_state.logged_in:
             background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
             border-radius: 14px !important; padding: 24px 24px 18px 24px !important;
             border: 1px solid rgba(14, 165, 233, 0.25) !important; box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-            width: 100%; max-width: 420px; margin-left: auto;
+            width: 100%; max-width: 390px; margin-left: auto; margin-top: 15px;
         }}
         .fb-title {{
             font-size: 1.35rem; font-weight: 700; color: #FFFFFF; margin-bottom: 14px; font-family: system-ui, -apple-system, sans-serif;
@@ -190,6 +190,24 @@ if not st.session_state.logged_in:
         }}
         .create-btn-container div.stButton > button:hover {{
             background-color: #36A420 !important;
+        }}
+
+        /* Facebook Style Footer */
+        .fb-footer-box {{
+            position: relative; margin-top: 70px; width: 100%; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; font-family: system-ui, -apple-system, sans-serif; z-index: 2;
+        }}
+        .fb-lang-row {{
+            display: flex; flex-wrap: wrap; gap: 16px 20px; color: #8A939B; font-size: 12.5px; margin-bottom: 12px; align-items: center;
+        }}
+        .fb-lang-row a {{ color: #8A939B; text-decoration: none; }}
+        .fb-lang-row a:hover {{ text-decoration: underline; }}
+        .fb-links-row {{
+            display: flex; flex-wrap: wrap; gap: 10px 16px; color: #737B83; font-size: 11.5px; margin-bottom: 12px;
+        }}
+        .fb-links-row a {{ color: #737B83; text-decoration: none; }}
+        .fb-links-row a:hover {{ text-decoration: underline; }}
+        .fb-copyright {{
+            color: #737B83; font-size: 11px; margin-top: 10px;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -254,7 +272,7 @@ if not st.session_state.logged_in:
     
     # Left Header Branding
     st.markdown(f"""
-        <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 35px;'>
+        <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 25px;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
                 {logo_html}
                 <span style='color: #FFFFFF; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
@@ -272,7 +290,7 @@ if not st.session_state.logged_in:
 
     with col_left:
         st.markdown("""
-            <div style='padding-top: 40px; padding-left: 10px;'>
+            <div style='padding-top: 30px; padding-left: 10px;'>
                 <h1 style='color: #FFFFFF; font-size: 3.2rem; font-weight: 800; margin: 0 0 15px 0; line-height: 1.15; letter-spacing: -1px;'>
                     All of IUBAT,<br>Working For You.
                 </h1>
@@ -370,7 +388,53 @@ if not st.session_state.logged_in:
             st.markdown("</div>", unsafe_allow_html=True)
             
             st.markdown("</div>", unsafe_allow_html=True)
-            st.markdown("<div style='text-align: center; color: #64748B; font-size: 11px; margin-top: 15px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
+
+    # Facebook Style Footer Added Exact Match Below
+    st.markdown("""
+        <div class="fb-footer-box">
+            <div class="fb-lang-row">
+                <a href="#">English (UK)</a>
+                <a href="#">বাংলা</a>
+                <a href="#">অসমীয়া</a>
+                <a href="#">हिन्दी</a>
+                <a href="#">नेपाली</a>
+                <a href="#">Bahasa Indonesia</a>
+                <a href="#">العربية</a>
+                <a href="#">More languages...</a>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.05); margin: 10px 0;"></div>
+            <div class="fb-links-row">
+                <a href="#">Sign up</a>
+                <a href="#">Log in</a>
+                <a href="#">Messenger</a>
+                <a href="#">Facebook Lite</a>
+                <a href="#">Video</a>
+                <a href="#">Meta Pay</a>
+                <a href="#">Meta Store</a>
+                <a href="#">Meta Quest</a>
+                <a href="#">Ray-Ban Meta</a>
+                <a href="#">Meta AI</a>
+                <a href="#">Muse</a>
+                <a href="#">Instagram</a>
+                <a href="#">Threads</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Privacy Centre</a>
+                <a href="#">About</a>
+                <a href="#">Create ad</a>
+                <a href="#">Create Page</a>
+                <a href="#">Developers</a>
+                <a href="#">Careers</a>
+                <a href="#">Cookies</a>
+                <a href="#">AdChoices</a>
+                <a href="#">Terms</a>
+                <a href="#">Help</a>
+                <a href="#">Contact uploading and non-users</a>
+            </div>
+            <div class="fb-copyright">
+                © 2026 IUBAT Nexus • Smart University Portal
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 else:
     photo_render = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}'>" if st.session_state.user_photo else "🎓"

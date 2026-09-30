@@ -8,7 +8,7 @@ import time
 st.set_page_config(
     page_title="IUBAT Nexus | Smart Portal",
     page_icon="🎓",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
@@ -216,23 +216,24 @@ if not st.session_state.logged_in:
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 10; padding-top: 25px !important; padding-bottom: 120px !important; max-width: 480px !important; margin: auto !important;
+            position: relative; z-index: 10; padding-top: 25px !important; padding-bottom: 120px !important; max-width: 1200px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
         .top-banner-pill {{
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px);
             border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 12px;
             padding: 12px 18px; color: #FFFFFF; font-size: 0.98rem; font-weight: 700;
             display: flex; align-items: center; justify-content: center; text-align: center;
-            margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            margin-bottom: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            letter-spacing: -0.2px;
         }}
 
         .fb-card {{
             background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
-            border-radius: 14px !important; padding: 22px 24px 18px 24px !important;
+            border-radius: 14px !important; padding: 20px 24px 18px 24px !important;
             border: 1px solid rgba(14, 165, 233, 0.25) !important; box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-            width: 100%; position: relative; z-index: 20;
+            width: 100%; max-width: 390px; margin-left: auto; position: relative; z-index: 20;
         }}
         .fb-title {{
             font-size: 1.35rem; font-weight: 700; color: #FFFFFF; margin-bottom: 14px; font-family: system-ui, -apple-system, sans-serif;
@@ -260,10 +261,10 @@ if not st.session_state.logged_in:
             background-color: #36A420 !important;
         }}
         .fb-footer-box {{
-            position: relative; margin-top: 40px; width: 100%; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 20px; padding-bottom: 40px; text-align: center; z-index: 20;
+            position: relative; margin-top: 60px; width: 100%; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 25px; padding-bottom: 40px; font-family: system-ui, -apple-system, sans-serif; z-index: 20;
         }}
         .fb-copyright {{
-            color: #737B83; font-size: 12px; margin-top: 10px;
+            color: #737B83; font-size: 12px; margin-top: 15px;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -326,121 +327,135 @@ if not st.session_state.logged_in:
     
     logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
-    # Top Bar: Logo on Left & Language Toggle on Right
+    # Top Header Bar: Logo on Left & Language Toggle on Right
     new_lang_top = "BN" if st.session_state.lang == "EN" else "EN"
     btn_label_top = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
     
-    col_top1, col_top2 = st.columns([4, 1])
-    with col_top1:
-        st.markdown(f"""
-            <div style='display: flex; align-items: center; gap: 10px; padding-top: 5px;'>
+    st.markdown(f"""
+        <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 25px;'>
+            <div style='display: flex; align-items: center; gap: 10px;'>
                 {logo_html}
                 <span style='color: #FFFFFF; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
             </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    col_left, col_right = st.columns([1.1, 0.9], gap="large")
+
+    with col_left:
+        st.markdown(f"""
+            <div style='padding-top: 20px; padding-left: 10px;'>
+                <h1 style='color: #FFFFFF; font-size: 3.1rem; font-weight: 800; margin: 0 0 15px 0; line-height: 1.15; letter-spacing: -1px;'>
+                    {t[lang_key]["title"]}
+                </h1>
+                <p style='color: #94A3B8; font-size: 1.1rem; line-height: 1.6; max-width: 480px;'>
+                    {t[lang_key]["subtitle"]}
+                </p>
+            </div>
         """, unsafe_allow_html=True)
-    with col_top2:
+
+    with col_right:
+        # Language Switch Button right above the card (clean single column layout)
         if st.button(btn_label_top, key="lang_toggle_btn", use_container_width=True):
             st.session_state.lang = new_lang_top
             st.rerun()
 
-    st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
+        # Log in to IUBAT Nexus header banner inserted cleanly
+        st.markdown(f"""
+            <div class="top-banner-pill">
+                🔒 {t[lang_key]["card_header"]}
+            </div>
+        """, unsafe_allow_html=True)
 
-    # Log in to IUBAT Nexus header banner
-    st.markdown(f"""
-        <div class="top-banner-pill">
-            🔒 {t[lang_key]["card_header"]}
-        </div>
-    """, unsafe_allow_html=True)
+        if st.session_state.is_registering:
+            st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
+            st.markdown(f"<div class='fb-title'>{t[lang_key]['create_title']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='color: #94A3B8; font-size: 0.88rem; margin-bottom: 14px;'>{t[lang_key]['create_subtitle']}</div>", unsafe_allow_html=True)
 
-    if st.session_state.is_registering:
-        st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
-        st.markdown(f"<div class='fb-title'>{t[lang_key]['create_title']}</div>", unsafe_allow_html=True)
-        st.markdown(f"<div style='color: #94A3B8; font-size: 0.88rem; margin-bottom: 14px;'>{t[lang_key]['create_subtitle']}</div>", unsafe_allow_html=True)
+            with st.form("register_form"):
+                reg_name = st.text_input("Full Name", placeholder=t[lang_key]["name_ph"])
+                reg_id = st.text_input("ID Number", placeholder=t[lang_key]["id_placeholder"])
+                reg_dept = st.text_input("Department", placeholder=t[lang_key]["dept_ph"])
+                reg_univ = st.text_input("University", placeholder=t[lang_key]["univ_ph"], value="IUBAT")
+                reg_pass = st.text_input("Password", type="password", placeholder=t[lang_key]["new_pass_ph"])
+                reg_photo = st.file_uploader(t[lang_key]["upload_ph"], type=["jpg", "png", "jpeg"])
 
-        with st.form("register_form"):
-            reg_name = st.text_input("Full Name", placeholder=t[lang_key]["name_ph"])
-            reg_id = st.text_input("ID Number", placeholder=t[lang_key]["id_placeholder"])
-            reg_dept = st.text_input("Department", placeholder=t[lang_key]["dept_ph"])
-            reg_univ = st.text_input("University", placeholder=t[lang_key]["univ_ph"], value="IUBAT")
-            reg_pass = st.text_input("Password", type="password", placeholder=t[lang_key]["new_pass_ph"])
-            reg_photo = st.file_uploader(t[lang_key]["upload_ph"], type=["jpg", "png", "jpeg"])
+                if st.form_submit_button(t[lang_key]["signup_btn"]):
+                    if reg_name and reg_id and reg_dept and reg_univ and reg_pass:
+                        photo_bytes = None
+                        if reg_photo is not None:
+                            photo_bytes = base64.b64encode(reg_photo.read()).decode()
 
-            if st.form_submit_button(t[lang_key]["signup_btn"]):
-                if reg_name and reg_id and reg_dept and reg_univ and reg_pass:
-                    photo_bytes = None
-                    if reg_photo is not None:
-                        photo_bytes = base64.b64encode(reg_photo.read()).decode()
+                        st.session_state.users_db[reg_id] = {
+                            "name": reg_name,
+                            "dept": reg_dept,
+                            "univ": reg_univ,
+                            "password": reg_pass,
+                            "photo": photo_bytes
+                        }
+                        save_users_db(st.session_state.users_db)
 
-                    st.session_state.users_db[reg_id] = {
-                        "name": reg_name,
-                        "dept": reg_dept,
-                        "univ": reg_univ,
-                        "password": reg_pass,
-                        "photo": photo_bytes
-                    }
-                    save_users_db(st.session_state.users_db)
-
-                    st.session_state.logged_in = True
-                    st.session_state.user_id = reg_id
-                    st.session_state.user_name = reg_name
-                    st.session_state.user_dept = reg_dept
-                    st.session_state.user_univ = reg_univ
-                    st.session_state.user_photo = photo_bytes
-                    st.session_state.dashboard_view = "Shuttle"
-                    st.query_params["session_user"] = reg_id
-                    st.rerun()
-                else:
-                    st.error("❌ Please fill in all required fields.")
-        
-        st.markdown("</div>", unsafe_allow_html=True)
-        
-        if st.button(t[lang_key]["back_login"]):
-            st.session_state.is_registering = False
-            st.rerun()
-
-    else:
-        st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
-        
-        with st.form("login_form"):
-            user_id = st.text_input("ID Number", placeholder=t[lang_key]["id_placeholder"])
-            password = st.text_input("Password", type="password", placeholder=t[lang_key]["pass_placeholder"])
-
-            remember_me = st.checkbox(t[lang_key]["remember"])
-
-            if st.form_submit_button(t[lang_key]["login_btn"]):
-                if user_id and password:
-                    st.session_state.users_db = load_users_db()
-                    if user_id in st.session_state.users_db:
-                        stored_pass = st.session_state.users_db[user_id].get("password")
-                        if stored_pass == password or password == "123":
-                            st.session_state.logged_in = True
-                            st.session_state.user_id = user_id
-                            st.session_state.user_name = st.session_state.users_db[user_id]["name"]
-                            st.session_state.user_dept = st.session_state.users_db[user_id]["dept"]
-                            st.session_state.user_univ = st.session_state.users_db[user_id].get("univ", "IUBAT")
-                            st.session_state.user_photo = st.session_state.users_db[user_id].get("photo")
-                            st.session_state.dashboard_view = "Shuttle"
-                            if remember_me:
-                                st.query_params["session_user"] = user_id
-                            st.rerun()
-                        else:
-                            st.error("❌ Incorrect password. Try '123'.")
+                        st.session_state.logged_in = True
+                        st.session_state.user_id = reg_id
+                        st.session_state.user_name = reg_name
+                        st.session_state.user_dept = reg_dept
+                        st.session_state.user_univ = reg_univ
+                        st.session_state.user_photo = photo_bytes
+                        st.session_state.dashboard_view = "Shuttle"
+                        st.query_params["session_user"] = reg_id
+                        st.rerun()
                     else:
-                        st.error("❌ Account not found! Please create an account first.")
-                else:
-                    st.error("❌ Please enter both Student ID and Password.")
+                        st.error("❌ Please fill in all required fields.")
+            
+            st.markdown("</div>", unsafe_allow_html=True)
+            
+            if st.button(t[lang_key]["back_login"]):
+                st.session_state.is_registering = False
+                st.rerun()
 
-        st.markdown(f"<div style='text-align: center; margin: 14px 0 4px 0;'><a href='#' style='color: #38BDF8; font-size: 0.85rem; text-decoration: none;'>{t[lang_key]['forgot']}</a></div>", unsafe_allow_html=True)
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 18px 0;'>", unsafe_allow_html=True)
-        st.markdown("<div class='create-btn-container'>", unsafe_allow_html=True)
-        st.button(t[lang_key]["create_btn"], key="btn_create_acc", on_click=handle_create_acc)
-        st.markdown("</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        else:
+            st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
+            
+            with st.form("login_form"):
+                user_id = st.text_input("ID Number", placeholder=t[lang_key]["id_placeholder"])
+                password = st.text_input("Password", type="password", placeholder=t[lang_key]["pass_placeholder"])
+
+                remember_me = st.checkbox(t[lang_key]["remember"])
+
+                if st.form_submit_button(t[lang_key]["login_btn"]):
+                    if user_id and password:
+                        st.session_state.users_db = load_users_db()
+                        if user_id in st.session_state.users_db:
+                            stored_pass = st.session_state.users_db[user_id].get("password")
+                            if stored_pass == password or password == "123":
+                                st.session_state.logged_in = True
+                                st.session_state.user_id = user_id
+                                st.session_state.user_name = st.session_state.users_db[user_id]["name"]
+                                st.session_state.user_dept = st.session_state.users_db[user_id]["dept"]
+                                st.session_state.user_univ = st.session_state.users_db[user_id].get("univ", "IUBAT")
+                                st.session_state.user_photo = st.session_state.users_db[user_id].get("photo")
+                                st.session_state.dashboard_view = "Shuttle"
+                                if remember_me:
+                                    st.query_params["session_user"] = user_id
+                                st.rerun()
+                            else:
+                                st.error("❌ Incorrect password. Try '123'.")
+                        else:
+                            st.error("❌ Account not found! Please create an account first.")
+                    else:
+                        st.error("❌ Please enter both Student ID and Password.")
+
+            st.markdown(f"<div style='text-align: center; margin: 14px 0 4px 0;'><a href='#' style='color: #38BDF8; font-size: 0.85rem; text-decoration: none;'>{t[lang_key]['forgot']}</a></div>", unsafe_allow_html=True)
+            st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 18px 0;'>", unsafe_allow_html=True)
+            st.markdown("<div class='create-btn-container'>", unsafe_allow_html=True)
+            st.button(t[lang_key]["create_btn"], key="btn_create_acc", on_click=handle_create_acc)
+            st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown(f"""
         <div class="fb-footer-box">
-            <div style="color: #94A3B8; font-size: 0.88rem; margin-bottom: 6px;">
-                💡 <b>Tip:</b> Click the top-right button anytime to switch language instantly!
+            <div style="color: #94A3B8; font-size: 0.95rem; margin-bottom: 6px;">
+                💡 <b>Tip:</b> Click the top button (<b>🇧🇩 বাংলা / 🇬🇧 English</b>) anytime to switch language instantly!
             </div>
             <div class="fb-copyright">
                 {t[lang_key]["footer"]}

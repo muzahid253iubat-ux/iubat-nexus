@@ -146,12 +146,8 @@ if not st.session_state.logged_in:
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
-        /* Make container full width for header pinning, but restrict login box width */
         .block-container {{
-            position: relative; z-index: 1; padding-top: 10px !important; max-width: 100% !important; padding-left: 20px !important; padding-right: 20px !important;
-        }}
-        .login-box-wrapper {{
-            max-width: 480px; margin: 20px auto 0 auto;
+            position: relative; z-index: 1; padding-top: 30px !important; max-width: 1200px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
@@ -166,20 +162,21 @@ if not st.session_state.logged_in:
 
         .fb-card {{
             background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
-            border-radius: 14px !important; padding: 26px 26px 20px 26px !important;
+            border-radius: 14px !important; padding: 24px 24px 18px 24px !important;
             border: 1px solid rgba(14, 165, 233, 0.25) !important; box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            width: 100%; max-width: 420px; margin-left: auto;
         }}
         .fb-title {{
-            font-size: 1.4rem; font-weight: 700; color: #FFFFFF; margin-bottom: 16px; font-family: system-ui, -apple-system, sans-serif;
+            font-size: 1.35rem; font-weight: 700; color: #FFFFFF; margin-bottom: 14px; font-family: system-ui, -apple-system, sans-serif;
         }}
         .stTextInput>div>div>input {{
             background-color: rgba(30, 41, 59, 0.75) !important; color: #F1F5F9 !important; border-radius: 6px !important;
-            border: 1px solid rgba(14, 165, 233, 0.3); padding: 12px 14px; font-size: 0.95rem;
+            border: 1px solid rgba(14, 165, 233, 0.3); padding: 10px 14px; font-size: 0.95rem;
         }}
         .stFormSubmitButton>button {{
             width: 100% !important; background-color: #0866FF !important; color: #FFFFFF !important;
             font-weight: 700 !important; border-radius: 6px !important; border: none !important;
-            padding: 12px !important; font-size: 1.05rem !important; margin-top: 6px;
+            padding: 11px !important; font-size: 1rem !important; margin-top: 4px;
             box-shadow: 0 4px 12px rgba(8, 102, 255, 0.3); transition: background 0.2s;
         }}
         .stFormSubmitButton>button:hover {{
@@ -188,7 +185,7 @@ if not st.session_state.logged_in:
         .create-btn-container div.stButton > button {{
             width: 100% !important; background-color: #42B72A !important; color: #FFFFFF !important;
             font-weight: 700 !important; border-radius: 6px !important; border: none !important;
-            padding: 12px !important; font-size: 1.05rem !important;
+            padding: 11px !important; font-size: 1rem !important;
             box-shadow: 0 4px 12px rgba(66, 183, 42, 0.3);
         }}
         .create-btn-container div.stButton > button:hover {{
@@ -253,117 +250,127 @@ else:
 # --- Render Logic ---
 if not st.session_state.logged_in:
     
-    logo_html = f"<img src='{logo_image_data}' style='width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
+    logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
-    # Top absolute left-aligned header bar
+    # Left Header Branding
     st.markdown(f"""
-        <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 5px 10px; margin-bottom: 25px;'>
+        <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 35px;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
                 {logo_html}
-                <span style='color: #FFFFFF; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
+                <span style='color: #FFFFFF; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
             </div>
             <div style='display: flex; gap: 8px;'>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>🚌</div>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.4s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>👨‍🏫</div>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.8s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>📍</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>🚌</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.4s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>👨‍🏫</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.8s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>📍</div>
             </div>
-        </div>
-        <div style='text-align: center; margin-bottom: 24px;'>
-            <h1 style='color: #FFFFFF; font-size: 2rem; font-weight: 800; margin: 0; letter-spacing: -0.5px;'>All of IUBAT, Working For You</h1>
-            <p style='color: #94A3B8; font-size: 0.88rem; margin-top: 6px;'>Sign in with your student ID and password to access smart shuttle schedules, faculty directories, and campus updates.</p>
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div class='login-box-wrapper'>", unsafe_allow_html=True)
-    if st.session_state.is_registering:
-        st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
-        st.markdown("<div class='fb-title'>Create a new account</div>", unsafe_allow_html=True)
-        st.markdown("<div style='color: #94A3B8; font-size: 0.88rem; margin-bottom: 16px;'>It's quick and easy.</div>", unsafe_allow_html=True)
+    # Facebook-style Desktop 2-Column Split Layout
+    col_left, col_right = st.columns([1.1, 0.9], gap="large")
 
-        with st.form("register_form"):
-            reg_name = st.text_input("Full Name", placeholder="Full Name")
-            reg_id = st.text_input("ID Number", placeholder="Student ID Number")
-            reg_dept = st.text_input("Department", placeholder="Department (e.g. EEE)")
-            reg_univ = st.text_input("University", placeholder="University Name", value="IUBAT")
-            reg_pass = st.text_input("Password", type="password", placeholder="New password")
-            reg_photo = st.file_uploader("Upload Profile Photo (Optional)", type=["jpg", "png", "jpeg"])
+    with col_left:
+        st.markdown("""
+            <div style='padding-top: 40px; padding-left: 10px;'>
+                <h1 style='color: #FFFFFF; font-size: 3.2rem; font-weight: 800; margin: 0 0 15px 0; line-height: 1.15; letter-spacing: -1px;'>
+                    All of IUBAT,<br>Working For You.
+                </h1>
+                <p style='color: #94A3B8; font-size: 1.1rem; line-height: 1.6; max-width: 480px;'>
+                    Sign in with your student ID and password to access smart shuttle schedules, live GPS tracking, faculty directories, and campus updates instantly.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
-            if st.form_submit_button("Sign Up"):
-                if reg_name and reg_id and reg_dept and reg_univ and reg_pass:
-                    photo_bytes = None
-                    if reg_photo is not None:
-                        photo_bytes = base64.b64encode(reg_photo.read()).decode()
+    with col_right:
+        if st.session_state.is_registering:
+            st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
+            st.markdown("<div class='fb-title'>Create a new account</div>", unsafe_allow_html=True)
+            st.markdown("<div style='color: #94A3B8; font-size: 0.88rem; margin-bottom: 14px;'>It's quick and easy.</div>", unsafe_allow_html=True)
 
-                    st.session_state.users_db[reg_id] = {
-                        "name": reg_name,
-                        "dept": reg_dept,
-                        "univ": reg_univ,
-                        "password": reg_pass,
-                        "photo": photo_bytes
-                    }
-                    save_users_db(st.session_state.users_db)
+            with st.form("register_form"):
+                reg_name = st.text_input("Full Name", placeholder="Full Name")
+                reg_id = st.text_input("ID Number", placeholder="Student ID Number")
+                reg_dept = st.text_input("Department", placeholder="Department (e.g. EEE)")
+                reg_univ = st.text_input("University", placeholder="University Name", value="IUBAT")
+                reg_pass = st.text_input("Password", type="password", placeholder="New password")
+                reg_photo = st.file_uploader("Upload Profile Photo (Optional)", type=["jpg", "png", "jpeg"])
 
-                    st.session_state.logged_in = True
-                    st.session_state.user_id = reg_id
-                    st.session_state.user_name = reg_name
-                    st.session_state.user_dept = reg_dept
-                    st.session_state.user_univ = reg_univ
-                    st.session_state.user_photo = photo_bytes
-                    st.session_state.dashboard_view = "Shuttle"
-                    st.query_params["session_user"] = reg_id
-                    st.rerun()
-                else:
-                    st.error("❌ Please fill in all required fields.")
-        
-        st.markdown("</div>", unsafe_allow_html=True)
-        
-        if st.button("⬅ Already have an account?"):
-            st.session_state.is_registering = False
-            st.rerun()
+                if st.form_submit_button("Sign Up"):
+                    if reg_name and reg_id and reg_dept and reg_univ and reg_pass:
+                        photo_bytes = None
+                        if reg_photo is not None:
+                            photo_bytes = base64.b64encode(reg_photo.read()).decode()
 
-    else:
-        st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
-        
-        with st.form("login_form"):
-            user_id = st.text_input("ID Number", placeholder="Student ID Number")
-            password = st.text_input("Password", type="password", placeholder="Password")
+                        st.session_state.users_db[reg_id] = {
+                            "name": reg_name,
+                            "dept": reg_dept,
+                            "univ": reg_univ,
+                            "password": reg_pass,
+                            "photo": photo_bytes
+                        }
+                        save_users_db(st.session_state.users_db)
 
-            remember_me = st.checkbox("Remember session")
-
-            if st.form_submit_button("Log in"):
-                if user_id and password:
-                    st.session_state.users_db = load_users_db()
-                    if user_id in st.session_state.users_db:
-                        stored_pass = st.session_state.users_db[user_id].get("password")
-                        if stored_pass == password or password == "123":
-                            st.session_state.logged_in = True
-                            st.session_state.user_id = user_id
-                            st.session_state.user_name = st.session_state.users_db[user_id]["name"]
-                            st.session_state.user_dept = st.session_state.users_db[user_id]["dept"]
-                            st.session_state.user_univ = st.session_state.users_db[user_id].get("univ", "IUBAT")
-                            st.session_state.user_photo = st.session_state.users_db[user_id].get("photo")
-                            st.session_state.dashboard_view = "Shuttle"
-                            if remember_me:
-                                st.query_params["session_user"] = user_id
-                            st.rerun()
-                        else:
-                            st.error("❌ Incorrect password. Try '123'.")
+                        st.session_state.logged_in = True
+                        st.session_state.user_id = reg_id
+                        st.session_state.user_name = reg_name
+                        st.session_state.user_dept = reg_dept
+                        st.session_state.user_univ = reg_univ
+                        st.session_state.user_photo = photo_bytes
+                        st.session_state.dashboard_view = "Shuttle"
+                        st.query_params["session_user"] = reg_id
+                        st.rerun()
                     else:
-                        st.error("❌ Account not found! Please create an account first.")
-                else:
-                    st.error("❌ Please enter both Student ID and Password.")
+                        st.error("❌ Please fill in all required fields.")
+            
+            st.markdown("</div>", unsafe_allow_html=True)
+            
+            if st.button("⬅ Already have an account?"):
+                st.session_state.is_registering = False
+                st.rerun()
 
-        st.markdown("<div style='text-align: center; margin: 16px 0 6px 0;'><a href='#' style='color: #38BDF8; font-size: 0.88rem; text-decoration: none;'>Forgotten password?</a></div>", unsafe_allow_html=True)
-        
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 20px 0;'>", unsafe_allow_html=True)
-        
-        st.markdown("<div class='create-btn-container'>", unsafe_allow_html=True)
-        st.button("Create new account", key="btn_create_acc", on_click=handle_create_acc)
-        st.markdown("</div>", unsafe_allow_html=True)
-        
-        st.markdown("</div>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align: center; color: #64748B; font-size: 12px; margin-top: 20px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+        else:
+            st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
+            
+            with st.form("login_form"):
+                user_id = st.text_input("ID Number", placeholder="Student ID Number")
+                password = st.text_input("Password", type="password", placeholder="Password")
+
+                remember_me = st.checkbox("Remember session")
+
+                if st.form_submit_button("Log in"):
+                    if user_id and password:
+                        st.session_state.users_db = load_users_db()
+                        if user_id in st.session_state.users_db:
+                            stored_pass = st.session_state.users_db[user_id].get("password")
+                            if stored_pass == password or password == "123":
+                                st.session_state.logged_in = True
+                                st.session_state.user_id = user_id
+                                st.session_state.user_name = st.session_state.users_db[user_id]["name"]
+                                st.session_state.user_dept = st.session_state.users_db[user_id]["dept"]
+                                st.session_state.user_univ = st.session_state.users_db[user_id].get("univ", "IUBAT")
+                                st.session_state.user_photo = st.session_state.users_db[user_id].get("photo")
+                                st.session_state.dashboard_view = "Shuttle"
+                                if remember_me:
+                                    st.query_params["session_user"] = user_id
+                                st.rerun()
+                            else:
+                                st.error("❌ Incorrect password. Try '123'.")
+                        else:
+                            st.error("❌ Account not found! Please create an account first.")
+                    else:
+                        st.error("❌ Please enter both Student ID and Password.")
+
+            st.markdown("<div style='text-align: center; margin: 14px 0 4px 0;'><a href='#' style='color: #38BDF8; font-size: 0.85rem; text-decoration: none;'>Forgotten password?</a></div>", unsafe_allow_html=True)
+            
+            st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 18px 0;'>", unsafe_allow_html=True)
+            
+            st.markdown("<div class='create-btn-container'>", unsafe_allow_html=True)
+            st.button("Create new account", key="btn_create_acc", on_click=handle_create_acc)
+            st.markdown("</div>", unsafe_allow_html=True)
+            
+            st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: center; color: #64748B; font-size: 11px; margin-top: 15px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
 
 else:
     photo_render = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}'>" if st.session_state.user_photo else "🎓"
@@ -507,7 +514,7 @@ else:
             st.session_state.dashboard_view = "Shuttle"
             st.rerun()
     with c2:
-        if st.button("👨‍‍🏫 Faculty", key="nav_faculty"):
+        if st.button("👨‍🏫 Faculty", key="nav_faculty"):
             st.session_state.dashboard_view = "Faculty"
             st.rerun()
     with c3:

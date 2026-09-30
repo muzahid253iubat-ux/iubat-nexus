@@ -289,11 +289,11 @@ if not st.session_state.logged_in:
         """, unsafe_allow_html=True)
 
         with st.form("register_form"):
-            reg_name = st.text_input("Full Name", placeholder="Full Name *")
-            reg_id = st.text_input("ID Number", placeholder="Student ID Number *")
-            reg_dept = st.text_input("Department", placeholder="Department (e.g. EEE) *")
-            reg_univ = st.text_input("University", placeholder="University Name *", value="IUBAT")
-            reg_pass = st.text_input("Password", type="password", placeholder="Create Password *")
+            reg_name = st.text_input("Full Name", placeholder="Full Name")
+            reg_id = st.text_input("ID Number", placeholder="Student ID Number")
+            reg_dept = st.text_input("Department", placeholder="Department (e.g. EEE)")
+            reg_univ = st.text_input("University", placeholder="University Name", value="IUBAT")
+            reg_pass = st.text_input("Password", type="password", placeholder="Create Password")
             reg_photo = st.file_uploader("Upload Profile Photo (Optional)", type=["jpg", "png", "jpeg"])
 
             if st.form_submit_button("Complete Registration & Enter Portal"):
@@ -341,8 +341,8 @@ if not st.session_state.logged_in:
         """, unsafe_allow_html=True)
 
         with st.form("login_form"):
-            user_id = st.text_input("ID Number", placeholder="Student ID Number (e.g. 25305025)")
-            password = st.text_input("Password", type="password", placeholder="Password (default: 123)")
+            user_id = st.text_input("ID Number", placeholder="Student ID Number")
+            password = st.text_input("Password", type="password", placeholder="Password")
 
             col1, col2 = st.columns([1.2, 1])
             with col1:

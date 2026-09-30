@@ -192,17 +192,12 @@ if not st.session_state.logged_in:
             background-color: #36A420 !important;
         }}
 
-        /* Facebook Style Footer */
+        /* Clean Footer Box */
         .fb-footer-box {{
-            position: relative; margin-top: 70px; width: 100%; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; font-family: system-ui, -apple-system, sans-serif; z-index: 2;
+            position: relative; margin-top: 70px; width: 100%; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; font-family: system-ui, -apple-system, sans-serif; z-index: 2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
         }}
-        .fb-lang-row {{
-            display: flex; flex-wrap: wrap; gap: 16px 20px; color: #8A939B; font-size: 12.5px; margin-bottom: 12px; align-items: center;
-        }}
-        .fb-lang-row a {{ color: #8A939B; text-decoration: none; }}
-        .fb-lang-row a:hover {{ text-decoration: underline; }}
         .fb-copyright {{
-            color: #737B83; font-size: 11px; margin-top: 10px;
+            color: #737B83; font-size: 12px;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -384,24 +379,23 @@ if not st.session_state.logged_in:
             
             st.markdown("</div>", unsafe_allow_html=True)
 
-    # Clean Language Footer Only
-    st.markdown("""
-        <div class="fb-footer-box">
-            <div class="fb-lang-row">
-                <a href="#">English (UK)</a>
-                <a href="#">বাংলা</a>
-                <a href="#">অসমীয়া</a>
-                <a href="#">हिन्दी</a>
-                <a href="#">नेपाली</a>
-                <a href="#">Bahasa Indonesia</a>
-                <a href="#">العربية</a>
-                <a href="#">More languages...</a>
+    # Clean Functional Footer with Working Language Selector
+    col_f1, col_f2 = st.columns([3, 1])
+    with col_f1:
+        st.markdown("""
+            <div class="fb-footer-box" style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px;">
+                <div class="fb-copyright">
+                    © 2026 IUBAT Nexus • Smart University Portal
+                </div>
             </div>
-            <div class="fb-copyright">
-                © 2026 IUBAT Nexus • Smart University Portal
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    with col_f2:
+        st.selectbox(
+            "Language",
+            ["English (UK)", "বাংলা", "हिन्दी", "العربية"],
+            label_visibility="collapsed",
+            key="footer_lang_select"
+        )
 
 else:
     photo_render = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}'>" if st.session_state.user_photo else "🎓"
@@ -438,7 +432,7 @@ else:
                         <span style='font-weight: 800; font-size: 1.15rem;'>Bus 02</span>
                         <span class='badge-tag-pro' style='background: rgba(239, 68, 68, 0.2); color: #F87171;'>Down Time</span>
                     </div>
-                    <span style='font-size: 1.4rem;'>🗺️️</span>
+                    <span style='font-size: 1.4rem;'>🗺</span>
                 </div>
                 <div style='font-size: 0.92rem; color: #94A3B8; margin-bottom: 16px; font-weight: 500;'>
                     🚏 Route: Campus to Narshingdi

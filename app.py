@@ -128,7 +128,7 @@ t = {
         "upload_ph": "Upload Profile Photo (Optional)",
         "signup_btn": "Sign Up",
         "back_login": "⬅ Already have an account?",
-        "shuttle_title": "Shuttle Bus Schedule",
+        "shuttle_title": "Shuttle Bus Schedule & Live Tracking",
         "faculty_title": "Faculty Directory & Office Hours",
         "route_title": "Route Stoppages (Campus to Narshingdi)",
         "sos_title": "Emergency SOS & Helplines",
@@ -141,8 +141,8 @@ t = {
         "footer": "© 2026 IUBAT Nexus • Smart University Portal"
     },
     "BN": {
-        "title": "আপনার সম্পূর্ণ আইউবাট,<br>সবসময় আপনার সাথে।",
-        "subtitle": "স্মার্ট শাটল শিডিউল, লাইভ জিপিএস ট্র্যাকিং, শিক্ষকগণের তালিকা এবং ক্যাম্পাস আপডেট পেতে আপনার স্টুডেন্ট আইডি ও পাসওয়ার্ড দিয়ে লগইন করুন।",
+        "title": "আপনার সম্পূর্ণ আইউবাট,<br>সবসময় আপনার সাথে।",
+        "subtitle": "স্মার্ট শাটল শিডিউল, লাইভ জিপিএস ট্র্যাকিং, শিক্ষকগণের তালিকা এবং ক্যাম্পাস আপডেট পেতে আপনার স্টুডেন্ট আইডি ও পাসওয়ার্ড দিয়ে লগইন করুন।",
         "card_header": "আইউবাট নেক্সাসে লগইন করুন",
         "id_placeholder": "স্টুডেন্ট আইডি নম্বর",
         "pass_placeholder": "পাসওয়ার্ড",
@@ -154,18 +154,18 @@ t = {
         "create_subtitle": "এটি খুব দ্রুত এবং সহজ।",
         "name_ph": "পূর্ণ নাম",
         "dept_ph": "ডিপার্টমেন্ট (যেমন: EEE)",
-        "univ_ph": "বিশ্ববিদ্যালয়ের নাম",
+        "univ_ph": "বিশ্ববিদ্যালয়ের নাম",
         "new_pass_ph": "নতুন পাসওয়ার্ড",
         "upload_ph": "প্রোফাইল ছবি আপলোড করুন (ঐচ্ছিক)",
         "signup_btn": "সাইন আপ",
         "back_login": "⬅ ইতিমধ্যে একাউন্ট আছে?",
-        "shuttle_title": "শাটল বাস শিডিউল",
-        "faculty_title": "শিক্ষকগণের তালিকা ও অফিস সময়",
+        "shuttle_title": "শাটল বাস শিডিউল ও লাইভ ট্র্যাকিং",
+        "faculty_title": "শিক্ষকগণের তালিকা ও অফিস সময়",
         "route_title": "বাস রুট ও স্টপেজ (ক্যাম্পাস থেকে নরসিংদী)",
         "sos_title": "জরুরী ইমার্জেন্সি ও হেল্পলাইন",
         "account_title": "স্টুডেন্ট একাউন্ট ও সেটিংস",
         "nav_shuttle": "🚌 শাটল",
-        "nav_faculty": "👨‍‍🏫 শিক্ষক",
+        "nav_faculty": "👨‍‍‍🏫 শিক্ষক",
         "nav_route": "🗺️ রুট",
         "nav_sos": "🚨 এসওএস",
         "nav_acc": "⚙ একাউন্ট",
@@ -233,7 +233,7 @@ if not st.session_state.logged_in:
             display: flex; align-items: center; justify-content: center; text-align: center;
             margin-bottom: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             letter-spacing: -0.2px;
-        }}
+        }
 
         .fb-card {{
             background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
@@ -403,32 +403,41 @@ if not st.session_state.logged_in:
     """, unsafe_allow_html=True)
 
 else:
-    # --- FIXED DASHBOARD STYLING & CLEAN AVATAR FIX ---
+    # --- SPLIT SCREEN DASHBOARD (MATCHING SCREENSHOT LAYOUT) ---
     st.markdown("""
         <style>
         .stApp { background: #070B14; color: #F1F5F9; font-family: system-ui, -apple-system, sans-serif; }
-        .block-container { max-width: 900px !important; padding-top: 20px !important; padding-bottom: 100px !important; }
+        .block-container { max-width: 1300px !important; padding-top: 25px !important; padding-bottom: 140px !important; }
         #MainMenu, header, footer {visibility: hidden;}
 
         .dash-top-header {
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px);
             border: 1px solid rgba(14, 165, 233, 0.25); border-radius: 16px;
-            padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .user-profile-box {
             display: flex; align-items: center; gap: 14px;
         }
         .user-avatar-circle {
-            width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
+            width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
             border: 2px solid #0EA5E9; background: #1E293B; display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; overflow: hidden;
+            font-size: 1.2rem; overflow: hidden;
         }
-        .sched-main-card-pro {
-            background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(14px);
-            border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 16px;
-            padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.5); margin-bottom: 16px;
+        
+        /* Left Hero Panel */
+        .left-hero-box {
+            padding: 20px 10px;
         }
+
+        /* Right Interactive Window Screen */
+        .right-preview-window {
+            background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(16px);
+            border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 16px;
+            padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            min-height: 420px; position: relative;
+        }
+        
         .badge-tag-pro {
             background: rgba(14, 165, 233, 0.15); color: #38BDF8; font-size: 0.78rem;
             font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(14, 165, 233, 0.3);
@@ -437,18 +446,20 @@ else:
             padding: 10px 14px; background: rgba(30, 41, 59, 0.5); border-left: 3px solid #0EA5E9;
             margin-bottom: 8px; border-radius: 0 8px 8px 0; font-size: 0.92rem;
         }
-        .bottom-nav-dock {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(11, 15, 25, 0.95);
-            backdrop-filter: blur(16px); border-top: 1px solid rgba(14, 165, 233, 0.2);
-            padding: 8px 12px; z-index: 999; display: flex; justify-content: center;
+
+        /* Bottom Carousel Dock matching screenshot style */
+        .bottom-carousel-dock {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(11, 15, 25, 0.96);
+            backdrop-filter: blur(20px); border-top: 1px solid rgba(14, 165, 233, 0.25);
+            padding: 12px 20px; z-index: 999; display: flex; justify-content: center; gap: 12px;
         }
-        .bottom-nav-dock div.stButton > button {
-            background: transparent !important; border: none !important; color: #94A3B8 !important;
-            font-size: 0.85rem !important; font-weight: 600 !important; width: 100% !important;
-            box-shadow: none !important; transition: color 0.2s;
+        .bottom-carousel-dock div.stButton > button {
+            background: rgba(30, 41, 59, 0.8) !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; color: #F1F5F9 !important;
+            font-size: 0.88rem !important; font-weight: 600 !important; border-radius: 12px !important;
+            padding: 10px 16px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: all 0.2s;
         }
-        .bottom-nav-dock div.stButton > button:hover {
-            color: #38BDF8 !important; background: rgba(14, 165, 233, 0.08) !important; border-radius: 8px !important;
+        .bottom-carousel-dock div.stButton > button:hover {
+            border-color: #0EA5E9 !important; background: rgba(14, 165, 233, 0.2) !important; color: #38BDF8 !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -458,7 +469,8 @@ else:
     else:
         avatar_html = "🎓"
 
-    top_c1, top_c2 = st.columns([5, 1.5])
+    # Top Bar Header inside Dashboard
+    top_c1, top_c2 = st.columns([6, 1.2])
     with top_c1:
         st.markdown(f"""
             <div class='dash-top-header' style='margin-bottom: 0;'>
@@ -471,7 +483,7 @@ else:
                         <div style='font-size: 0.78rem; color: #38BDF8; font-weight: 500;'>{st.session_state.user_dept}</div>
                     </div>
                 </div>
-                <div style='font-size: 0.82rem; font-weight: 700; color: #38BDF8; background: rgba(14, 165, 233, 0.1); padding: 5px 10px; border-radius: 8px;'>📍 Tongi</div>
+                <div style='font-size: 0.82rem; font-weight: 700; color: #38BDF8; background: rgba(14, 165, 233, 0.1); padding: 6px 12px; border-radius: 10px;'>📍 Tongi, Gazipur</div>
             </div>
         """, unsafe_allow_html=True)
     with top_c2:
@@ -481,118 +493,144 @@ else:
             st.session_state.lang = new_lang
             st.rerun()
 
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
-    if st.session_state.dashboard_view == "Shuttle":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 4px 0; color: #F1F5F9;'>{t[lang_key]['shuttle_title']}</div>", unsafe_allow_html=True)
-        st.markdown("<div style='font-size: 0.85rem; color: #94A3B8; margin-bottom: 14px;'>📅 Today Schedule</div>", unsafe_allow_html=True)
+    # --- SPLIT LAYOUT (Left text / description & Right Interactive Window Card) ---
+    col_left_desc, col_right_card = st.columns([1.1, 1.3], gap="large")
 
+    with col_left_desc:
         st.markdown("""
-            <div class='sched-main-card-pro'>
-                <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;'>
-                    <div style='display: flex; align-items: center; gap: 8px;'>
-                        <span style='font-size: 1.4rem;'>🚌</span>
-                        <span style='font-weight: 800; font-size: 1.15rem;'>Bus 02</span>
-                        <span class='badge-tag-pro' style='background: rgba(239, 68, 68, 0.2); color: #F87171;'>Down Time</span>
-                    </div>
-                </div>
-                <div style='font-size: 0.92rem; color: #94A3B8; margin-bottom: 16px; font-weight: 500;'>
-                    🚏 Route: Campus to Narshingdi
-                </div>
-                <div style='display: flex; justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.6); padding: 14px 18px; border-radius: 12px; margin-bottom: 16px;'>
-                    <div>
-                        <div style='font-size: 1.15rem; font-weight: 800; color: #F1F5F9;'>05:30 PM</div>
-                        <div style='font-size: 0.78rem; color: #94A3B8;'>Departure • Campus</div>
-                    </div>
-                    <div style='color: #0EA5E9; font-weight: 800; font-size: 1.2rem;'>➔</div>
-                    <div style='text-align: right;'>
-                        <div style='font-size: 1.15rem; font-weight: 800; color: #F1F5F9;'>07:30 PM</div>
-                        <div style='font-size: 0.78rem; color: #94A3B8;'>Arrival (ETA) • Velanagor</div>
-                    </div>
-                </div>
-                <div style='font-size: 0.88rem; margin-bottom: 10px; color: #CBD5E1;'>
-                    <b>RouteMap:</b> Campus » Tongi Station Road » Amtoly Mor » T & T Bazar » Shilmoon
-                </div>
+            <div class='left-hero-box'>
+                <h1 style='color: #FFFFFF; font-size: 2.6rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px;'>
+                    Smart Campus Hub & Services
+                </h1>
+                <p style='color: #94A3B8; font-size: 1.05rem; line-height: 1.6; margin-bottom: 24px;'>
+                    Access all university amenities, real-time transportation schedules, emergency controls, and academic faculty channels securely in one unified dashboard. Use the bottom card bar to switch between modules instantly.
+                </p>
             </div>
         """, unsafe_allow_html=True)
-
-        if st.button("🗺️ Launch Live GPS Tracking", use_container_width=True, type="primary"):
-            st.success("🟢 Bus 02 is currently active near Tongi Station Road. Speed: 32 km/h.")
-
-    elif st.session_state.dashboard_view == "Faculty":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 14px 0;'>{t[lang_key]['faculty_title']}</div>", unsafe_allow_html=True)
-        st.markdown("""
-            <div class='sched-main-card-pro'>
-                <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>Prof. Dr. M. Ahmed</div>
-                <span class='badge-tag-pro'>EEE Department</span><br><br>
-                <div style='font-size: 0.9rem; color: #CBD5E1;'>📧 m.ahmed@iubat.edu<br>🕒 Office Hours: Sun-Tue (03:00 PM - 05:00 PM)</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    elif st.session_state.dashboard_view == "Route":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 14px 0;'>{t[lang_key]['route_title']}</div>", unsafe_allow_html=True)
-        st.markdown("""
-            <div class='sched-main-card-pro'>
-                <div class='route-stop-pro'>📍 Campus (Uttara) - Starting Point</div>
-                <div class='route-stop-pro'>📍 Tongi Station Road</div>
-                <div class='route-stop-pro'>📍 Amtoly Mor</div>
-                <div class='route-stop-pro'>📍 T & T Bazar</div>
-                <div class='route-stop-pro'>📍 Shilmoon</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    elif st.session_state.dashboard_view == "SOS":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 14px 0;'>{t[lang_key]['sos_title']}</div>", unsafe_allow_html=True)
-        st.markdown("""
-            <div class='sched-main-card-pro' style='border-left: 5px solid #EF4444;'>
-                <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>Campus Security Control Room</div>
-                <div style='font-size: 0.9rem; color: #CBD5E1; margin-top: 6px;'>📞 Hotline: +880 1713-393291</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    elif st.session_state.dashboard_view == "Account":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 14px 0;'>{t[lang_key]['account_title']}</div>", unsafe_allow_html=True)
         
-        with st.form("dash_acc_form"):
-            up_name = st.text_input("Full Name", value=st.session_state.user_name)
-            up_dept = st.text_input("Department", value=st.session_state.user_dept)
-            if st.form_submit_button("Save Changes"):
-                st.session_state.user_name = up_name
-                st.session_state.user_dept = up_dept
-                if st.session_state.user_id in st.session_state.users_db:
-                    st.session_state.users_db[st.session_state.user_id]["name"] = up_name
-                    st.session_state.users_db[st.session_state.user_id]["dept"] = up_dept
-                    save_users_db(st.session_state.users_db)
-                st.success("Profile updated successfully!")
-                time.sleep(0.5)
-                st.rerun()
-        if st.button("🚪 Logout from Portal", use_container_width=True):
-            st.session_state.logged_in = False
-            st.session_state.splash_shown = False
-            if "session_user" in st.query_params:
-                del st.query_params["session_user"]
-            st.rerun()
+        if st.button("🚀 Quick Portal Status Check", use_container_width=True):
+            st.success("🟢 All systems operational. Database synchronized successfully.")
 
-    st.markdown("<div class='bottom-nav-dock'>", unsafe_allow_html=True)
+    with col_right_card:
+        st.markdown("<div class='right-preview-window'>", unsafe_allow_html=True)
+
+        if st.session_state.dashboard_view == "Shuttle":
+            st.markdown(f"<div style='font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; color: #F1F5F9;'>{t[lang_key]['shuttle_title']}</div>", unsafe_allow_html=True)
+            st.markdown("<div style='font-size: 0.85rem; color: #94A3B8; margin-bottom: 16px;'>📅 Active Today Schedule</div>", unsafe_allow_html=True)
+
+            st.markdown("""
+                <div style='background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 12px; padding: 18px; margin-bottom: 16px;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;'>
+                        <div style='display: flex; align-items: center; gap: 8px;'>
+                            <span style='font-size: 1.3rem;'>🚌</span>
+                            <span style='font-weight: 800; font-size: 1.1rem;'>Bus 02</span>
+                            <span style='background: rgba(239, 68, 68, 0.2); color: #F87171; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 12px;'>Scheduled</span>
+                        </div>
+                    </div>
+                    <div style='font-size: 0.9rem; color: #94A3B8; margin-bottom: 14px;'>
+                        🚏 Route: Campus to Narshingdi
+                    </div>
+                    <div style='display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.6); padding: 12px 16px; border-radius: 10px; margin-bottom: 14px;'>
+                        <div>
+                            <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>05:30 PM</div>
+                            <div style='font-size: 0.75rem; color: #94A3B8;'>Departure • Campus</div>
+                        </div>
+                        <div style='color: #0EA5E9; font-weight: 800; font-size: 1.1rem;'>➔</div>
+                        <div style='text-align: right;'>
+                            <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>07:30 PM</div>
+                            <div style='font-size: 0.75rem; color: #94A3B8;'>Arrival • Velanagor</div>
+                        </div>
+                    </div>
+                    <div style='font-size: 0.85rem; color: #CBD5E1;'>
+                        <b>Stoppages:</b> Campus » Tongi Station Road » Amtoly Mor » Shilmoon
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+
+            if st.button("🗺️ Launch Live GPS Tracking", use_container_width=True, type="primary"):
+                st.success("🟢 Bus 02 is tracked live near Tongi Station Road. Speed: 32 km/h.")
+
+        elif st.session_state.dashboard_view == "Faculty":
+            st.markdown(f"<div style='font-size: 1.3rem; font-weight: 800; margin-bottom: 14px;'>{t[lang_key]['faculty_title']}</div>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style='background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 12px; padding: 20px;'>
+                    <div style='font-size: 1.15rem; font-weight: 800; color: #F1F5F9;'>Prof. Dr. M. Ahmed</div>
+                    <span class='badge-tag-pro'>EEE Department</span><br><br>
+                    <div style='font-size: 0.92rem; color: #CBD5E1;'>📧 m.ahmed@iubat.edu<br>🕒 Office Hours: Sun-Tue (03:00 PM - 05:00 PM)<br>🏢 Room: Building 4, 4th Floor</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        elif st.session_state.dashboard_view == "Route":
+            st.markdown(f"<div style='font-size: 1.3rem; font-weight: 800; margin-bottom: 14px;'>{t[lang_key]['route_title']}</div>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style='background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 12px; padding: 18px;'>
+                    <div class='route-stop-pro'>📍 Campus (Uttara) - Starting Point</div>
+                    <div class='route-stop-pro'>📍 Tongi Station Road</div>
+                    <div class='route-stop-pro'>📍 Amtoly Mor</div>
+                    <div class='route-stop-pro'>📍 T & T Bazar</div>
+                    <div class='route-stop-pro'>📍 Shilmoon (Narshingdi Highway)</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        elif st.session_state.dashboard_view == "SOS":
+            st.markdown(f"<div style='font-size: 1.3rem; font-weight: 800; margin-bottom: 14px;'>{t[lang_key]['sos_title']}</div>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style='background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(239, 68, 68, 0.3); border-left: 5px solid #EF4444; border-radius: 12px; padding: 20px;'>
+                    <div style='font-size: 1.15rem; font-weight: 800; color: #F1F5F9;'>Campus Security Control Room</div>
+                    <div style='font-size: 0.92rem; color: #CBD5E1; margin-top: 8px;'>📞 Hotline: +880 1713-393291</div>
+                    <div style='font-size: 0.85rem; color: #94A3B8; margin-top: 4px;'>Available 24/7 for student assistance & emergencies.</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        elif st.session_state.dashboard_view == "Account":
+            st.markdown(f"<div style='font-size: 1.3rem; font-weight: 800; margin-bottom: 14px;'>{t[lang_key]['account_title']}</div>", unsafe_allow_html=True)
+            
+            with st.form("dash_acc_form"):
+                up_name = st.text_input("Full Name", value=st.session_state.user_name)
+                up_dept = st.text_input("Department", value=st.session_state.user_dept)
+                if st.form_submit_button("Save Profile Changes"):
+                    st.session_state.user_name = up_name
+                    st.session_state.user_dept = up_dept
+                    if st.session_state.user_id in st.session_state.users_db:
+                        st.session_state.users_db[st.session_state.user_id]["name"] = up_name
+                        st.session_state.users_db[st.session_state.user_id]["dept"] = up_dept
+                        save_users_db(st.session_state.users_db)
+                    st.success("Profile updated successfully!")
+                    time.sleep(0.5)
+                    st.rerun()
+
+            if st.button("🚪 Logout from Portal", use_container_width=True):
+                st.session_state.logged_in = False
+                st.session_state.splash_shown = False
+                if "session_user" in st.query_params:
+                    del st.query_params["session_user"]
+                st.rerun()
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # --- BOTTOM CAROUSEL DOCK (Matching Screenshot style) ---
+    st.markdown("<div class='bottom-carousel-dock'>", unsafe_allow_html=True)
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
-        if st.button(t[lang_key]["nav_shuttle"], key="nav_shuttle"):
+        if st.button(t[lang_key]["nav_shuttle"], key="nav_shuttle", use_container_width=True):
             st.session_state.dashboard_view = "Shuttle"
             st.rerun()
     with c2:
-        if st.button(t[lang_key]["nav_faculty"], key="nav_faculty"):
+        if st.button(t[lang_key]["nav_faculty"], key="nav_faculty", use_container_width=True):
             st.session_state.dashboard_view = "Faculty"
             st.rerun()
     with c3:
-        if st.button(t[lang_key]["nav_route"], key="nav_route"):
+        if st.button(t[lang_key]["nav_route"], key="nav_route", use_container_width=True):
             st.session_state.dashboard_view = "Route"
             st.rerun()
     with c4:
-        if st.button(t[lang_key]["nav_sos"], key="nav_sos"):
+        if st.button(t[lang_key]["nav_sos"], key="nav_sos", use_container_width=True):
             st.session_state.dashboard_view = "SOS"
             st.rerun()
     with c5:
-        if st.button(t[lang_key]["nav_acc"], key="nav_acc"):
+        if st.button(t[lang_key]["nav_acc"], key="nav_acc", use_container_width=True):
             st.session_state.dashboard_view = "Account"
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)

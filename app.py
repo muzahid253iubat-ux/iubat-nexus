@@ -26,15 +26,8 @@ st.markdown("""
 
     /* Media Query for Mobile / iPhone View (< 768px) */
     @media (max-width: 768px) {
-        /* Hide the entire PC navigation section using stElement selector or direct layout */
-        div[data-testid="column"] {
-            width: 100% !important;
-            flex: 100% !important;
-            min-width: 100% !important;
-        }
-        
-        /* Specifically target the PC nav buttons container by hiding element with buttons */
-        .pc-nav-area {
+        /* Completely hide PC navigation container on mobile */
+        .pc-nav-container {
             display: none !important;
         }
         
@@ -121,26 +114,22 @@ with st.container():
 
 st.write("")
 
-# GPS Tracking Button
+# GPS Tracking Button (Native Streamlit button)
 if st.button("🗺️ Launch Live GPS Tracking", use_container_width=True):
     st.success("GPS Tracking initiated...")
 
 st.write("")
 
-# --- PC NAVIGATION BUTTONS (Wrapped in a special div to hide on mobile) ---
-st.markdown('<div class="pc-nav-area">', unsafe_allow_html=True)
-col1, col2, col3, col4, col5 = st.columns(5)
-with col1:
-    st.button("🚌 Shuttle", use_container_width=True, key="pc_btn_1")
-with col2:
-    st.button("👩‍🏫 Faculty", use_container_width=True, key="pc_btn_2")
-with col3:
-    st.button("🗺 Route", use_container_width=True, key="pc_btn_3")
-with col4:
-    st.button("🚨 SOS", use_container_width=True, key="pc_btn_4")
-with col5:
-    st.button("⚙ Account", use_container_width=True, key="pc_btn_5")
-st.markdown('</div>', unsafe_allow_html=True)
+# --- PC NAVIGATION BUTTONS (Pure HTML Container - Hidden Automatically on Mobile) ---
+st.markdown("""
+    <div class="pc-nav-container" style="display: flex; gap: 10px; justify-content: space-between; margin-top: 10px;">
+        <div style="flex: 1; text-align: center; background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #334155; font-size: 14px; cursor: pointer;">🚌 Shuttle</div>
+        <div style="flex: 1; text-align: center; background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #334155; font-size: 14px; cursor: pointer;">👩‍🏫 Faculty</div>
+        <div style="flex: 1; text-align: center; background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #334155; font-size: 14px; cursor: pointer;">🗺 Route</div>
+        <div style="flex: 1; text-align: center; background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #334155; font-size: 14px; cursor: pointer;">🚨 SOS</div>
+        <div style="flex: 1; text-align: center; background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #334155; font-size: 14px; cursor: pointer;">⚙ Account</div>
+    </div>
+""", unsafe_allow_html=True)
 
 # --- MOBILE BOTTOM NAVIGATION BAR (Visible ONLY on Mobile/iPhone) ---
 st.markdown("""

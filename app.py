@@ -150,9 +150,20 @@ if not st.session_state.logged_in:
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 35px !important; max-width: 500px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 25px !important; max-width: 540px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
+        
+        /* Floating Animation for Header Icons */
+        @keyframes float-slow {{
+            0% {{ transform: translateY(0px); }}
+            50% {{ transform: translateY(-8px); }}
+            100% {{ transform: translateY(0px); }}
+        }}
+        .floating-icon {{
+            animation: float-slow 3s ease-in-out infinite;
+        }}
+
         .fb-card {{
             background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
             border-radius: 14px !important; padding: 26px 26px 20px 26px !important;
@@ -243,16 +254,24 @@ else:
 # --- Render Logic ---
 if not st.session_state.logged_in:
     
-    # Original Branding Header & Logo
-    logo_html = f"<img src='{logo_image_data}' style='width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #0EA5E9; box-shadow: 0 4px 15px rgba(14,165,233,0.4);'>" if logo_image_data else "<span style='font-size: 3rem;'>🎓</span>"
+    # Top Bar with Left Logo & "IUBAT Nexus" Name + Animated Feature Icons in the Center
+    logo_html = f"<img src='{logo_image_data}' style='width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
     st.markdown(f"""
-        <div style='text-align: center; margin-bottom: 22px;'>
-            <div style='display: flex; justify-content: center; align-items: center; margin-bottom: 10px;'>
+        <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding: 0 4px;'>
+            <div style='display: flex; align-items: center; gap: 10px;'>
                 {logo_html}
+                <span style='color: #FFFFFF; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
             </div>
-            <h1 style='color: #FFFFFF; font-size: 2.1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px;'>All of IUBAT, Working For You</h1>
-            <p style='color: #94A3B8; font-size: 0.9rem; margin-top: 6px;'>Sign in with your student ID and password to access smart shuttle schedules, faculty directories, and campus updates.</p>
+            <div style='display: flex; gap: 10px;'>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.8); border: 1px solid rgba(14,165,233,0.3); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem;'>🚌</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.8); border: 1px solid rgba(14,165,233,0.3); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.5s;'>👨‍🏫</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.8); border: 1px solid rgba(14,165,233,0.3); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 1s;'>📍</div>
+            </div>
+        </div>
+        <div style='text-align: center; margin-bottom: 20px;'>
+            <h1 style='color: #FFFFFF; font-size: 1.9rem; font-weight: 800; margin: 0; letter-spacing: -0.5px;'>All of IUBAT, Working For You</h1>
+            <p style='color: #94A3B8; font-size: 0.88rem; margin-top: 6px;'>Sign in with your student ID and password to access smart shuttle schedules, faculty directories, and campus updates.</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -300,7 +319,7 @@ if not st.session_state.logged_in:
         
         col_back, _ = st.columns([1, 1])
         with col_back:
-            if st.button("⬅️ Already have an account?"):
+            if st.button("⬅️️ Already have an account?"):
                 st.session_state.is_registering = False
                 st.rerun()
 
@@ -345,7 +364,7 @@ if not st.session_state.logged_in:
         st.markdown("</div>", unsafe_allow_html=True)
         
         st.markdown("</div>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align: center; color: #64748B; font-size: 12px; margin-top: 22px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: #64748B; font-size: 12px; margin-top: 20px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
 
 else:
     # --- PRO FULL-WIDTH DASHBOARD ---

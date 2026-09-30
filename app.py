@@ -26,8 +26,15 @@ st.markdown("""
 
     /* Media Query for Mobile / iPhone View (< 768px) */
     @media (max-width: 768px) {
-        /* Completely hide PC buttons container on mobile */
-        .pc-nav-container {
+        /* Hide the entire PC navigation section using stElement selector or direct layout */
+        div[data-testid="column"] {
+            width: 100% !important;
+            flex: 100% !important;
+            min-width: 100% !important;
+        }
+        
+        /* Specifically target the PC nav buttons container by hiding element with buttons */
+        .pc-nav-area {
             display: none !important;
         }
         
@@ -120,8 +127,8 @@ if st.button("🗺️ Launch Live GPS Tracking", use_container_width=True):
 
 st.write("")
 
-# --- PC NAVIGATION BUTTONS (Visible ONLY on Laptop/PC) ---
-st.markdown('<div class="pc-nav-container">', unsafe_allow_html=True)
+# --- PC NAVIGATION BUTTONS (Wrapped in a special div to hide on mobile) ---
+st.markdown('<div class="pc-nav-area">', unsafe_allow_html=True)
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     st.button("🚌 Shuttle", use_container_width=True, key="pc_btn_1")

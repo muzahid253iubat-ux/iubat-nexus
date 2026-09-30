@@ -147,60 +147,41 @@ if not st.session_state.logged_in:
         }}
         .stApp::after {{
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(7, 11, 20, 0.82); z-index: 0;
-        }}
-        .global-header {{
-            position: fixed; top: 0; left: 0; width: 100%; height: 65px;
-            background: rgba(11, 17, 32, 0.9); backdrop-filter: blur(12px);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 35px; z-index: 99999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
-        }}
-        .nav-brand {{
-            display: flex; align-items: center; gap: 12px; color: #FFFFFF; font-weight: 800; font-size: 1.3rem; text-decoration: none;
-        }}
-        .nav-brand img {{ width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9; }}
-        .header-actions-container {{
-            position: fixed; top: 14px; right: 35px; z-index: 100000;
-            display: flex; align-items: center; gap: 12px;
-        }}
-        .header-actions-container div.stButton > button {{
-            border-radius: 8px !important; padding: 6px 18px !important; font-size: 0.82rem !important;
-            font-weight: 600 !important; background-color: rgba(30, 41, 59, 0.95) !important; color: #F1F5F9 !important;
-            border: 1px solid rgba(14, 165, 233, 0.35) !important; transition: all 0.3s ease;
+            background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 90px !important; max-width: 650px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 35px !important; max-width: 500px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
-        .hero-container {{ width: 100%; margin: 0 auto; padding: 10px 20px; }}
-        .hero-showcase {{ display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 15px; }}
-        .floating-badge {{
-            width: 58px; height: 58px; background: rgba(15, 23, 42, 0.9); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            border: 2px solid rgba(14, 165, 233, 0.3); font-size: 1.7rem; animation: float 3s ease-in-out infinite;
+        .fb-card {{
+            background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
+            border-radius: 14px !important; padding: 26px 26px 20px 26px !important;
+            border: 1px solid rgba(14, 165, 233, 0.25) !important; box-shadow: 0 15px 40px rgba(0,0,0,0.7);
         }}
-        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-6px); }} }}
-        .central-avatar {{
-            width: 90px; height: 90px; background: linear-gradient(135deg, #0B1120 0%, #070B14 100%);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4); border: 3px solid rgba(14, 165, 233, 0.8); overflow: hidden;
-        }}
-        .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
-        .hero-title {{ text-align: center; color: #FFFFFF !important; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.5px; }}
-        .hero-subtitle {{ text-align: center; color: #94A3B8 !important; font-size: 0.9rem; margin-bottom: 22px; line-height: 1.4; }}
-        div[data-testid="stForm"] {{
-            background: rgba(15, 23, 42, 0.88) !important; backdrop-filter: blur(16px);
-            border-radius: 16px !important; padding: 24px 28px !important;
-            border: 1px solid rgba(14, 165, 233, 0.2) !important; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        .fb-title {{
+            font-size: 1.4rem; font-weight: 700; color: #FFFFFF; margin-bottom: 16px; font-family: system-ui, -apple-system, sans-serif;
         }}
         .stTextInput>div>div>input {{
-            background-color: rgba(30, 41, 59, 0.7) !important; color: #F1F5F9 !important; border-radius: 8px;
-            border: 1px solid rgba(14, 165, 233, 0.25); padding: 10px 14px; font-size: 0.92rem;
+            background-color: rgba(30, 41, 59, 0.75) !important; color: #F1F5F9 !important; border-radius: 6px !important;
+            border: 1px solid rgba(14, 165, 233, 0.3); padding: 12px 14px; font-size: 0.95rem;
         }}
         .stFormSubmitButton>button {{
-            width: 100% !important; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
-            color: #FFFFFF !important; font-weight: 700; border-radius: 8px; border: none; padding: 11px; font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+            width: 100% !important; background-color: #0866FF !important; color: #FFFFFF !important;
+            font-weight: 700 !important; border-radius: 6px !important; border: none !important;
+            padding: 12px !important; font-size: 1.05rem !important; margin-top: 6px;
+            box-shadow: 0 4px 12px rgba(8, 102, 255, 0.3); transition: background 0.2s;
+        }}
+        .stFormSubmitButton>button:hover {{
+            background-color: #1877F2 !important;
+        }}
+        .create-btn-container div.stButton > button {{
+            width: 100% !important; background-color: #42B72A !important; color: #FFFFFF !important;
+            font-weight: 700 !important; border-radius: 6px !important; border: none !important;
+            padding: 12px !important; font-size: 1.05rem !important;
+            box-shadow: 0 4px 12px rgba(66, 183, 42, 0.3);
+        }}
+        .create-btn-container div.stButton > button:hover {{
+            background-color: #36A420 !important;
         }}
         </style>
     """, unsafe_allow_html=True)
@@ -238,7 +219,7 @@ else:
             padding: 8px 0; border-left: 3px solid #0EA5E9; padding-left: 14px; margin-left: 8px; font-size: 0.88rem; color: #CBD5E1; font-weight: 500;
         }
 
-        /* --- Unique Floating Bottom Navigation Dock (Horizontal 1 Line) --- */
+        /* --- Floating Bottom Navigation Dock (Horizontal 1 Line) --- */
         .bottom-nav-dock {
             position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 650px;
             background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(20px);
@@ -260,43 +241,35 @@ else:
     """, unsafe_allow_html=True)
 
 # --- Render Logic ---
-avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Logo'></div>" if logo_image_data else "<div class='central-avatar'>🎓</div>"
-logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
-
 if not st.session_state.logged_in:
+    
+    # Original Branding Header & Logo
+    logo_html = f"<img src='{logo_image_data}' style='width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #0EA5E9; box-shadow: 0 4px 15px rgba(14,165,233,0.4);'>" if logo_image_data else "<span style='font-size: 3rem;'>🎓</span>"
+    
     st.markdown(f"""
-        <div class="global-header">
-            <div class="nav-brand">
-                {logo_small} IUBAT Nexus
+        <div style='text-align: center; margin-bottom: 22px;'>
+            <div style='display: flex; justify-content: center; align-items: center; margin-bottom: 10px;'>
+                {logo_html}
             </div>
+            <h1 style='color: #FFFFFF; font-size: 2.1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px;'>All of IUBAT, Working For You</h1>
+            <p style='color: #94A3B8; font-size: 0.9rem; margin-top: 6px;'>Sign in with your student ID and password to access smart shuttle schedules, faculty directories, and campus updates.</p>
         </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("<div class='header-actions-container'>", unsafe_allow_html=True)
-    col_b1, col_b2 = st.columns(2)
-    with col_b1:
-        st.button("Create Account", key="btn_create_acc", on_click=handle_create_acc)
-    with col_b2:
-        st.button("Sign In", key="btn_goto_acc", on_click=handle_goto_acc)
-    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
-    
     if st.session_state.is_registering:
-        st.markdown("""
-            <div class="hero-title">Create IUBAT Account</div>
-            <div class="hero-subtitle">Enter your details below to register your student portal profile.</div>
-        """, unsafe_allow_html=True)
+        st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
+        st.markdown("<div class='fb-title'>Create a new account</div>", unsafe_allow_html=True)
+        st.markdown("<div style='color: #94A3B8; font-size: 0.88rem; margin-bottom: 16px;'>It's quick and easy.</div>", unsafe_allow_html=True)
 
         with st.form("register_form"):
             reg_name = st.text_input("Full Name", placeholder="Full Name")
             reg_id = st.text_input("ID Number", placeholder="Student ID Number")
             reg_dept = st.text_input("Department", placeholder="Department (e.g. EEE)")
             reg_univ = st.text_input("University", placeholder="University Name", value="IUBAT")
-            reg_pass = st.text_input("Password", type="password", placeholder="Create Password")
+            reg_pass = st.text_input("Password", type="password", placeholder="New password")
             reg_photo = st.file_uploader("Upload Profile Photo (Optional)", type=["jpg", "png", "jpeg"])
 
-            if st.form_submit_button("Complete Registration & Enter Portal"):
+            if st.form_submit_button("Sign Up"):
                 if reg_name and reg_id and reg_dept and reg_univ and reg_pass:
                     photo_bytes = None
                     if reg_photo is not None:
@@ -323,34 +296,24 @@ if not st.session_state.logged_in:
                 else:
                     st.error("❌ Please fill in all required fields.")
         
-        if st.button("⬅️ Already have an account? Sign In", use_container_width=True):
-            st.session_state.is_registering = False
-            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        col_back, _ = st.columns([1, 1])
+        with col_back:
+            if st.button("⬅️ Already have an account?"):
+                st.session_state.is_registering = False
+                st.rerun()
 
     else:
-        st.markdown(f"""
-            <div class="hero-showcase">
-                <div class="floating-badge">🚨</div>
-                <div class="floating-badge">👨‍🏫</div>
-                {avatar_html}
-                <div class="floating-badge">🚌</div>
-                <div class="floating-badge">🎓</div>
-            </div>
-            <div class="hero-title">All of IUBAT,<br>Working For You</div>
-            <div class="hero-subtitle">Sign in with your student ID and password to access smart shuttle schedules, faculty directories, and campus updates.</div>
-        """, unsafe_allow_html=True)
-
+        st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
+        
         with st.form("login_form"):
             user_id = st.text_input("ID Number", placeholder="Student ID Number")
             password = st.text_input("Password", type="password", placeholder="Password")
 
-            col1, col2 = st.columns([1.2, 1])
-            with col1:
-                remember_me = st.checkbox("Remember session")
-            with col2:
-                st.markdown("<div style='text-align: right; padding-top: 4px;'><a href='#' style='color: #38BDF8; font-size: 0.8rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
+            remember_me = st.checkbox("Remember session")
 
-            if st.form_submit_button("Sign In to Portal"):
+            if st.form_submit_button("Log in"):
                 if user_id and password:
                     st.session_state.users_db = load_users_db()
                     if user_id in st.session_state.users_db:
@@ -373,8 +336,16 @@ if not st.session_state.logged_in:
                 else:
                     st.error("❌ Please enter both Student ID and Password.")
 
-    st.markdown("<div style='text-align: center; color: #64748B; font-size: 12px; margin-top: 20px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; margin: 16px 0 6px 0;'><a href='#' style='color: #38BDF8; font-size: 0.88rem; text-decoration: none;'>Forgotten password?</a></div>", unsafe_allow_html=True)
+        
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 20px 0;'>", unsafe_allow_html=True)
+        
+        st.markdown("<div class='create-btn-container'>", unsafe_allow_html=True)
+        st.button("Create new account", key="btn_create_acc", on_click=handle_create_acc)
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: #64748B; font-size: 12px; margin-top: 22px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
 
 else:
     # --- PRO FULL-WIDTH DASHBOARD ---

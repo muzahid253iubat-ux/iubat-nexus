@@ -150,7 +150,7 @@ if not st.session_state.logged_in:
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 25px !important; max-width: 540px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 15px !important; max-width: 540px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
@@ -230,7 +230,6 @@ else:
             padding: 8px 0; border-left: 3px solid #0EA5E9; padding-left: 14px; margin-left: 8px; font-size: 0.88rem; color: #CBD5E1; font-weight: 500;
         }
 
-        /* --- Floating Bottom Navigation Dock (Horizontal 1 Line) --- */
         .bottom-nav-dock {
             position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 650px;
             background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(20px);
@@ -254,19 +253,19 @@ else:
 # --- Render Logic ---
 if not st.session_state.logged_in:
     
-    # Top Bar with Left Logo & "IUBAT Nexus" Name + Animated Feature Icons in the Center
-    logo_html = f"<img src='{logo_image_data}' style='width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
+    # Left aligned IUBAT Nexus branding with Logo and Floating Icons on the right
+    logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
     st.markdown(f"""
-        <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding: 0 4px;'>
+        <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; padding: 0 2px; width: 100%;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
                 {logo_html}
-                <span style='color: #FFFFFF; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
+                <span style='color: #FFFFFF; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
             </div>
-            <div style='display: flex; gap: 10px;'>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.8); border: 1px solid rgba(14,165,233,0.3); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem;'>🚌</div>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.8); border: 1px solid rgba(14,165,233,0.3); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.5s;'>👨‍🏫</div>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.8); border: 1px solid rgba(14,165,233,0.3); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 1s;'>📍</div>
+            <div style='display: flex; gap: 8px;'>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.85); border: 1px solid rgba(14,165,233,0.35); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);'>🚌</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.85); border: 1px solid rgba(14,165,233,0.35); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.5s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);'>👨‍🏫</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.85); border: 1px solid rgba(14,165,233,0.35); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 1s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);'>📍</div>
             </div>
         </div>
         <div style='text-align: center; margin-bottom: 20px;'>
@@ -319,7 +318,7 @@ if not st.session_state.logged_in:
         
         col_back, _ = st.columns([1, 1])
         with col_back:
-            if st.button("⬅️️ Already have an account?"):
+            if st.button("⬅ Already have an account?"):
                 st.session_state.is_registering = False
                 st.rerun()
 
@@ -367,7 +366,6 @@ if not st.session_state.logged_in:
         st.markdown("<div style='text-align: center; color: #64748B; font-size: 12px; margin-top: 20px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
 
 else:
-    # --- PRO FULL-WIDTH DASHBOARD ---
     photo_render = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}'>" if st.session_state.user_photo else "🎓"
     
     st.markdown(f"""
@@ -502,7 +500,6 @@ else:
                 del st.query_params["session_user"]
             st.rerun()
 
-    # --- Floating Bottom Navigation Dock (1-line horizontal style) ---
     st.markdown("<div class='bottom-nav-dock'>", unsafe_allow_html=True)
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1:

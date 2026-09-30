@@ -69,7 +69,7 @@ def get_fixed_background_cached():
 bg_image_data = get_fixed_background_cached()
 logo_image_data = get_asset_base64_cached("logo.png")
 
-# --- Persistent Session Management & Load DB ---
+# --- Persistent Session Management & Language State ---
 if "users_db" not in st.session_state:
     st.session_state.users_db = load_users_db()
 
@@ -91,6 +91,8 @@ if "splash_shown" not in st.session_state:
     st.session_state.splash_shown = False
 if "dashboard_view" not in st.session_state:
     st.session_state.dashboard_view = "Shuttle"
+if "lang" not in st.session_state:
+    st.session_state.lang = "EN"  # EN or BN
 
 st.session_state.users_db = load_users_db()
 
@@ -104,6 +106,72 @@ if not st.session_state.logged_in and "session_user" in query_params:
         st.session_state.user_dept = st.session_state.users_db[uid]["dept"]
         st.session_state.user_univ = st.session_state.users_db[uid]["univ"]
         st.session_state.user_photo = st.session_state.users_db[uid]["photo"]
+
+# --- Dictionary for Multilingual Text ---
+t = {
+    "EN": {
+        "title": "All of IUBAT,<br>Working For You.",
+        "subtitle": "Sign in with your student ID and password to access smart shuttle schedules, live GPS tracking, faculty directories, and campus updates instantly.",
+        "id_placeholder": "Student ID Number",
+        "pass_placeholder": "Password",
+        "remember": "Remember session",
+        "login_btn": "Log in",
+        "forgot": "Forgotten password?",
+        "create_btn": "Create new account",
+        "create_title": "Create a new account",
+        "create_subtitle": "It's quick and easy.",
+        "name_ph": "Full Name",
+        "dept_ph": "Department (e.g. EEE)",
+        "univ_ph": "University Name",
+        "new_pass_ph": "New password",
+        "upload_ph": "Upload Profile Photo (Optional)",
+        "signup_btn": "Sign Up",
+        "back_login": "⬅ Already have an account?",
+        "shuttle_title": "Shuttle Bus Schedule",
+        "faculty_title": "Faculty Directory & Office Hours",
+        "route_title": "Route Stoppages (Campus to Narshingdi)",
+        "sos_title": "Emergency SOS & Helplines",
+        "account_title": "Student Account & Settings",
+        "nav_shuttle": "🚌 Shuttle",
+        "nav_faculty": "👨‍🏫 Faculty",
+        "nav_route": "🗺️ Route",
+        "nav_sos": "🚨 SOS",
+        "nav_acc": "⚙️ Account",
+        "footer": "© 2026 IUBAT Nexus • Smart University Portal (Built for International Students)"
+    },
+    "BN": {
+        "title": "আপনার সম্পূর্ণ আইউবাট,<br>সবসময় আপনার সাথে।",
+        "subtitle": "স্মার্ট শাটল শিডিউল, লাইভ জিপিএস ট্র্যাকিং, শিক্ষকগণের তালিকা এবং ক্যাম্পাস আপডেট পেতে আপনার স্টুডেন্ট আইডি ও পাসওয়ার্ড দিয়ে লগইন করুন।",
+        "id_placeholder": "স্টুডেন্ট আইডি নম্বর",
+        "pass_placeholder": "পাসওয়ার্ড",
+        "remember": "লগইন মনে রাখুন",
+        "login_btn": "লগইন করুন",
+        "forgot": "পাসওয়ার্ড ভুলে গেছেন?",
+        "create_btn": "নতুন একাউন্ট তৈরি করুন",
+        "create_title": "নতুন একাউন্ট তৈরি করুন",
+        "create_subtitle": "এটি খুব দ্রুত এবং সহজ।",
+        "name_ph": "পূর্ণ নাম",
+        "dept_ph": "ডিপার্টমেন্ট (যেমন: EEE)",
+        "univ_ph": "বিশ্ববিদ্যালয়ের নাম",
+        "new_pass_ph": "নতুন পাসওয়ার্ড",
+        "upload_ph": "প্রোফাইল ছবি আপলোড করুন (ঐচ্ছিক)",
+        "signup_btn": "সাইন আপ",
+        "back_login": "⬅ ইতিমধ্যে একাউন্ট আছে?",
+        "shuttle_title": "শাটল বাস শিডিউল",
+        "faculty_title": "শিক্ষকগণের তালিকা ও অফিস সময়",
+        "route_title": "বাস রুট ও স্টপেজ (ক্যাম্পাস থেকে নরসিংদী)",
+        "sos_title": "জরুরী ইমার্জেন্সি ও হেল্পলাইন",
+        "account_title": "স্টুডেন্ট একাউন্ট ও সেটিংস",
+        "nav_shuttle": "🚌 শাটল",
+        "nav_faculty": "👨‍🏫 শিক্ষক",
+        "nav_route": "🗺️ রুট",
+        "nav_sos": "🚨 এসওএস",
+        "nav_acc": "⚙️️ একাউন্ট",
+        "footer": "© ২০২৬ আইউবাট নেক্সাস • স্মার্ট ইউনিভার্সিটি পোর্টাল"
+    }
+}
+
+lang_key = st.session_state.lang
 
 # --- Splash Screen Logic ---
 if st.session_state.logged_in and not st.session_state.splash_shown:
@@ -133,56 +201,6 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
 def handle_create_acc():
     st.session_state.is_registering = True
 
-# --- Bulletproof Google Translate Integration ---
-google_translate_engine = """
-    <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 999999; background: #0F172A; padding: 8px 12px; border-radius: 12px; border: 2px solid rgba(14, 165, 233, 0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.8);"></div>
-    
-    <script type="text/javascript">
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'bn,en,ar,hi,ur,ne,zh-CN,es,fr,de,ja,ko,it,pt,ru,id,ms,tr,vi,th,fa',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false
-        }, 'google_translate_element');
-    }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    
-    <style>
-    /* Style Google Translate Widget nicely */
-    .goog-te-gadget {
-        font-family: system-ui, -apple-system, sans-serif !important;
-        font-size: 0px !important;
-        color: #38BDF8 !important;
-    }
-    .goog-te-gadget span a {
-        display: none !important;
-    }
-    .goog-te-combo {
-        background-color: #0F172A !important;
-        color: #38BDF8 !important;
-        border: 1px solid rgba(14, 165, 233, 0.6) !important;
-        padding: 8px 12px !important;
-        border-radius: 8px !important;
-        font-size: 0.95rem !important;
-        font-weight: 700 !important;
-        outline: none !important;
-        cursor: pointer !important;
-    }
-    .goog-te-combo option {
-        background-color: #0F172A !important;
-        color: #F1F5F9 !important;
-        padding: 8px !important;
-    }
-    /* Hide top Google banner frame */
-    .goog-te-banner-frame.skiptranslate { display: none !important; }
-    body { top: 0px !important; }
-    .goog-logo-link { display: none !important; }
-    .goog-te-gadget { color: transparent !important; }
-    </style>
-"""
-
 if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
@@ -196,7 +214,7 @@ if not st.session_state.logged_in:
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 10; padding-top: 40px !important; padding-bottom: 120px !important; max-width: 1200px !important; margin: auto !important;
+            position: relative; z-index: 10; padding-top: 30px !important; padding-bottom: 120px !important; max-width: 1200px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
@@ -241,13 +259,12 @@ if not st.session_state.logged_in:
             background-color: #36A420 !important;
         }}
         .fb-footer-box {{
-            position: relative; margin-top: 80px; width: 100%; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 25px; padding-bottom: 40px; font-family: system-ui, -apple-system, sans-serif; z-index: 20;
+            position: relative; margin-top: 60px; width: 100%; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 25px; padding-bottom: 40px; font-family: system-ui, -apple-system, sans-serif; z-index: 20;
         }}
         .fb-copyright {{
             color: #737B83; font-size: 12px; margin-top: 15px;
         }}
         </style>
-        {google_translate_engine}
     """, unsafe_allow_html=True)
 else:
     st.markdown(f"""
@@ -301,7 +318,6 @@ else:
             color: #38BDF8 !important; background: rgba(14, 165, 233, 0.12) !important; transform: translateY(-2px);
         }}
         </style>
-        {google_translate_engine}
     """, unsafe_allow_html=True)
 
 # --- Render Logic ---
@@ -309,30 +325,33 @@ if not st.session_state.logged_in:
     
     logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
-    st.markdown(f"""
-        <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 25px;'>
+    # Top Bar with Language Switcher Button
+    top_c1, top_c2 = st.columns([6, 1.8])
+    with top_c1:
+        st.markdown(f"""
             <div style='display: flex; align-items: center; gap: 10px;'>
                 {logo_html}
                 <span style='color: #FFFFFF; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
             </div>
-            <div style='display: flex; gap: 8px;'>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>🚌</div>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.4s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>👨‍🏫</div>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.8s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>📍</div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    with top_c2:
+        # Language Switch Toggle Button
+        new_lang = "BN" if st.session_state.lang == "EN" else "EN"
+        btn_label = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
+        if st.button(btn_label, key="lang_toggle_btn", use_container_width=True):
+            st.session_state.lang = new_lang
+            st.rerun()
 
     col_left, col_right = st.columns([1.1, 0.9], gap="large")
 
     with col_left:
-        st.markdown("""
+        st.markdown(f"""
             <div style='padding-top: 30px; padding-left: 10px;'>
-                <h1 style='color: #FFFFFF; font-size: 3.2rem; font-weight: 800; margin: 0 0 15px 0; line-height: 1.15; letter-spacing: -1px;'>
-                    All of IUBAT,<br>Working For You.
+                <h1 style='color: #FFFFFF; font-size: 3.1rem; font-weight: 800; margin: 0 0 15px 0; line-height: 1.15; letter-spacing: -1px;'>
+                    {t[lang_key]["title"]}
                 </h1>
                 <p style='color: #94A3B8; font-size: 1.1rem; line-height: 1.6; max-width: 480px;'>
-                    Sign in with your student ID and password to access smart shuttle schedules, live GPS tracking, faculty directories, and campus updates instantly.
+                    {t[lang_key]["subtitle"]}
                 </p>
             </div>
         """, unsafe_allow_html=True)
@@ -340,18 +359,18 @@ if not st.session_state.logged_in:
     with col_right:
         if st.session_state.is_registering:
             st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
-            st.markdown("<div class='fb-title'>Create a new account</div>", unsafe_allow_html=True)
-            st.markdown("<div style='color: #94A3B8; font-size: 0.88rem; margin-bottom: 14px;'>It's quick and easy.</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='fb-title'>{t[lang_key]['create_title']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='color: #94A3B8; font-size: 0.88rem; margin-bottom: 14px;'>{t[lang_key]['create_subtitle']}</div>", unsafe_allow_html=True)
 
             with st.form("register_form"):
-                reg_name = st.text_input("Full Name", placeholder="Full Name")
-                reg_id = st.text_input("ID Number", placeholder="Student ID Number")
-                reg_dept = st.text_input("Department", placeholder="Department (e.g. EEE)")
-                reg_univ = st.text_input("University", placeholder="University Name", value="IUBAT")
-                reg_pass = st.text_input("Password", type="password", placeholder="New password")
-                reg_photo = st.file_uploader("Upload Profile Photo (Optional)", type=["jpg", "png", "jpeg"])
+                reg_name = st.text_input("Full Name", placeholder=t[lang_key]["name_ph"])
+                reg_id = st.text_input("ID Number", placeholder=t[lang_key]["id_placeholder"])
+                reg_dept = st.text_input("Department", placeholder=t[lang_key]["dept_ph"])
+                reg_univ = st.text_input("University", placeholder=t[lang_key]["univ_ph"], value="IUBAT")
+                reg_pass = st.text_input("Password", type="password", placeholder=t[lang_key]["new_pass_ph"])
+                reg_photo = st.file_uploader(t[lang_key]["upload_ph"], type=["jpg", "png", "jpeg"])
 
-                if st.form_submit_button("Sign Up"):
+                if st.form_submit_button(t[lang_key]["signup_btn"]):
                     if reg_name and reg_id and reg_dept and reg_univ and reg_pass:
                         photo_bytes = None
                         if reg_photo is not None:
@@ -380,7 +399,7 @@ if not st.session_state.logged_in:
             
             st.markdown("</div>", unsafe_allow_html=True)
             
-            if st.button("⬅ Already have an account?"):
+            if st.button(t[lang_key]["back_login"]):
                 st.session_state.is_registering = False
                 st.rerun()
 
@@ -388,12 +407,12 @@ if not st.session_state.logged_in:
             st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
             
             with st.form("login_form"):
-                user_id = st.text_input("ID Number", placeholder="Student ID Number")
-                password = st.text_input("Password", type="password", placeholder="Password")
+                user_id = st.text_input("ID Number", placeholder=t[lang_key]["id_placeholder"])
+                password = st.text_input("Password", type="password", placeholder=t[lang_key]["pass_placeholder"])
 
-                remember_me = st.checkbox("Remember session")
+                remember_me = st.checkbox(t[lang_key]["remember"])
 
-                if st.form_submit_button("Log in"):
+                if st.form_submit_button(t[lang_key]["login_btn"]):
                     if user_id and password:
                         st.session_state.users_db = load_users_db()
                         if user_id in st.session_state.users_db:
@@ -416,23 +435,20 @@ if not st.session_state.logged_in:
                     else:
                         st.error("❌ Please enter both Student ID and Password.")
 
-            st.markdown("<div style='text-align: center; margin: 14px 0 4px 0;'><a href='#' style='color: #38BDF8; font-size: 0.85rem; text-decoration: none;'>Forgotten password?</a></div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='text-align: center; margin: 14px 0 4px 0;'><a href='#' style='color: #38BDF8; font-size: 0.85rem; text-decoration: none;'>{t[lang_key]['forgot']}</a></div>", unsafe_allow_html=True)
             st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 18px 0;'>", unsafe_allow_html=True)
             st.markdown("<div class='create-btn-container'>", unsafe_allow_html=True)
-            st.button("Create new account", key="btn_create_acc", on_click=handle_create_acc)
+            st.button(t[lang_key]["create_btn"], key="btn_create_acc", on_click=handle_create_acc)
             st.markdown("</div>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("""
+    st.markdown(f"""
         <div class="fb-footer-box">
-            <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;">
-                🌐 Select Language / ভাষা নির্বাচন করুন (Bottom Right Corner):
-            </div>
-            <div style="color: #94A3B8; font-size: 0.9rem;">
-                Screen-er dan pashe niche ekta <b>Select Language</b> dropdown dekhbe. Sekhan theke 'Bengali' ba onno jekono vasha select korlei pura website instant translate hoye jabe!
+            <div style="color: #94A3B8; font-size: 0.95rem; margin-bottom: 6px;">
+                💡 <b>Tip:</b> Click the top-right button (<b>🇧🇩 বাংলা / 🇬🇧 English</b>) anytime to switch language instantly!
             </div>
             <div class="fb-copyright">
-                © 2026 IUBAT Nexus • Smart University Portal (Built for International Students)
+                {t[lang_key]["footer"]}
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -440,29 +456,32 @@ if not st.session_state.logged_in:
 else:
     photo_render = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}'>" if st.session_state.user_photo else "🎓"
     
-    st.markdown(f"""
-        <div class='top-dash-header'>
-            <div class='user-profile-pill'>
-                <div class='user-avatar-frame'>
-                    {photo_render}
+    top_c1, top_c2 = st.columns([5, 1.8])
+    with top_c1:
+        st.markdown(f"""
+            <div class='top-dash-header'>
+                <div class='user-profile-pill'>
+                    <div class='user-avatar-frame'>
+                        {photo_render}
+                    </div>
+                    <div>
+                        <div style='font-size: 0.95rem; font-weight: 800; color: #F1F5F9;'>{st.session_state.user_name}</div>
+                        <div style='font-size: 0.72rem; color: #38BDF8;'>{st.session_state.user_dept}</div>
+                    </div>
                 </div>
-                <div>
-                    <div style='font-size: 0.95rem; font-weight: 800; color: #F1F5F9;'>{st.session_state.user_name}</div>
-                    <div style='font-size: 0.72rem; color: #38BDF8;'>{st.session_state.user_dept}</div>
-                </div>
+                <div class='location-badge-pro'>📍 Tongi</div>
             </div>
-            <div class='location-badge-pro'>
-                📍 Tongi Station Road
-            </div>
-            <div style='font-size: 1.3rem; cursor: pointer;'>🔔</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    search_q = st.text_input("Search buses, routes, or faculty...", placeholder="🔍 Search campus transport or faculty...", label_visibility="collapsed")
+        """, unsafe_allow_html=True)
+    with top_c2:
+        new_lang = "BN" if st.session_state.lang == "EN" else "EN"
+        btn_label = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
+        if st.button(btn_label, key="dash_lang_btn", use_container_width=True):
+            st.session_state.lang = new_lang
+            st.rerun()
 
     if st.session_state.dashboard_view == "Shuttle":
-        st.markdown("<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0 6px 0; color: #F1F5F9;'>Shuttle Bus Schedule</div>", unsafe_allow_html=True)
-        st.markdown("<div style='font-size: 0.85rem; color: #94A3B8; margin-bottom: 14px;'>📅 Today Schedule • <span style='color: #38BDF8; cursor: pointer;'>View full timetable</span></div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0 6px 0; color: #F1F5F9;'>{t[lang_key]['shuttle_title']}</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 0.85rem; color: #94A3B8; margin-bottom: 14px;'>📅 Today Schedule</div>", unsafe_allow_html=True)
 
         st.markdown("""
             <div class='sched-main-card-pro'>
@@ -472,7 +491,6 @@ else:
                         <span style='font-weight: 800; font-size: 1.15rem;'>Bus 02</span>
                         <span class='badge-tag-pro' style='background: rgba(239, 68, 68, 0.2); color: #F87171;'>Down Time</span>
                     </div>
-                    <span style='font-size: 1.4rem;'>🗺</span>
                 </div>
                 <div style='font-size: 0.92rem; color: #94A3B8; margin-bottom: 16px; font-weight: 500;'>
                     🚏 Route: Campus to Narshingdi
@@ -491,15 +509,6 @@ else:
                 <div style='font-size: 0.88rem; margin-bottom: 10px; color: #CBD5E1;'>
                     <b>RouteMap:</b> Campus » Tongi Station Road » Amtoly Mor » T & T Bazar » Shilmoon
                 </div>
-                <hr style='border-color: rgba(255,255,255,0.08); margin: 14px 0;'>
-                <div style='display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;'>
-                    <div><b>Driver:</b> Sobuj Hossain <br><span style='color: #94A3B8; font-size: 0.8rem;'>📞 01621796157</span></div>
-                    <span style='background: rgba(14, 165, 233, 0.2); padding: 8px 14px; border-radius: 10px; color: #38BDF8; font-weight: 600;'>Call Driver</span>
-                </div>
-                <div style='display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-top: 12px;'>
-                    <div><b>Helper:</b> Ripon <br><span style='color: #94A3B8; font-size: 0.8rem;'>📞 01861455868</span></div>
-                    <span style='background: rgba(14, 165, 233, 0.2); padding: 8px 14px; border-radius: 10px; color: #38BDF8; font-weight: 600;'>Call Helper</span>
-                </div>
             </div>
         """, unsafe_allow_html=True)
 
@@ -507,22 +516,17 @@ else:
             st.success("🟢 Bus 02 is currently active near Tongi Station Road. Speed: 32 km/h.")
 
     elif st.session_state.dashboard_view == "Faculty":
-        st.markdown("<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>Faculty Directory & Office Hours</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>{t[lang_key]['faculty_title']}</div>", unsafe_allow_html=True)
         st.markdown("""
             <div class='sched-main-card-pro'>
                 <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>Prof. Dr. M. Ahmed</div>
                 <span class='badge-tag-pro'>EEE Department</span><br><br>
                 <div style='font-size: 0.9rem; color: #CBD5E1;'>📧 m.ahmed@iubat.edu<br>🕒 Office Hours: Sun-Tue (03:00 PM - 05:00 PM)</div>
             </div>
-            <div class='sched-main-card-pro'>
-                <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>Dr. Selim Reza</div>
-                <span class='badge-tag-pro'>ECE Department</span><br><br>
-                <div style='font-size: 0.9rem; color: #CBD5E1;'>📧 selim.reza@iubat.edu<br>🕒 Office Hours: Mon-Wed (11:00 AM - 01:00 PM)</div>
-            </div>
         """, unsafe_allow_html=True)
 
     elif st.session_state.dashboard_view == "Route":
-        st.markdown("<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>Route Stoppages (Campus to Narshingdi)</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>{t[lang_key]['route_title']}</div>", unsafe_allow_html=True)
         st.markdown("""
             <div class='sched-main-card-pro'>
                 <div class='route-stop-pro'>📍 Campus (Uttara) - Starting Point</div>
@@ -530,28 +534,20 @@ else:
                 <div class='route-stop-pro'>📍 Amtoly Mor</div>
                 <div class='route-stop-pro'>📍 T & T Bazar</div>
                 <div class='route-stop-pro'>📍 Shilmoon</div>
-                <div class='route-stop-pro'>📍 Nimtoly Bridge</div>
-                <div class='route-stop-pro'>📍 Majukhan Bazar</div>
-                <div class='route-stop-pro'>📍 Koromtola</div>
-                <div class='route-stop-pro'>📍 Talotia Pump (Destination)</div>
             </div>
         """, unsafe_allow_html=True)
 
     elif st.session_state.dashboard_view == "SOS":
-        st.markdown("<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>Emergency SOS & Helplines</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>{t[lang_key]['sos_title']}</div>", unsafe_allow_html=True)
         st.markdown("""
             <div class='sched-main-card-pro' style='border-left: 5px solid #EF4444;'>
                 <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>Campus Security Control Room</div>
                 <div style='font-size: 0.9rem; color: #CBD5E1; margin-top: 6px;'>📞 Hotline: +880 1713-393291</div>
             </div>
-            <div class='sched-main-card-pro' style='border-left: 5px solid #F59E0B;'>
-                <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>Medical Center Emergency</div>
-                <div style='font-size: 0.9rem; color: #CBD5E1; margin-top: 6px;'>📞 Ambulance: +880 1819-000000</div>
-            </div>
         """, unsafe_allow_html=True)
 
     elif st.session_state.dashboard_view == "Account":
-        st.markdown("<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>Student Account & Settings</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>{t[lang_key]['account_title']}</div>", unsafe_allow_html=True)
         
         with st.form("dash_acc_form"):
             up_name = st.text_input("Full Name", value=st.session_state.user_name)
@@ -576,23 +572,23 @@ else:
     st.markdown("<div class='bottom-nav-dock'>", unsafe_allow_html=True)
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
-        if st.button("🚌 Shuttle", key="nav_shuttle"):
+        if st.button(t[lang_key]["nav_shuttle"], key="nav_shuttle"):
             st.session_state.dashboard_view = "Shuttle"
             st.rerun()
     with c2:
-        if st.button("👨‍‍🏫 Faculty", key="nav_faculty"):
+        if st.button(t[lang_key]["nav_faculty"], key="nav_faculty"):
             st.session_state.dashboard_view = "Faculty"
             st.rerun()
     with c3:
-        if st.button("🗺️ Route", key="nav_route"):
+        if st.button(t[lang_key]["nav_route"], key="nav_route"):
             st.session_state.dashboard_view = "Route"
             st.rerun()
     with c4:
-        if st.button("🚨 SOS", key="nav_sos"):
+        if st.button(t[lang_key]["nav_sos"], key="nav_sos"):
             st.session_state.dashboard_view = "SOS"
             st.rerun()
     with c5:
-        if st.button("⚙️ Account", key="nav_acc"):
+        if st.button(t[lang_key]["nav_acc"], key="nav_acc"):
             st.session_state.dashboard_view = "Account"
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)

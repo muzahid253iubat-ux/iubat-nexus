@@ -238,23 +238,23 @@ else:
             padding: 8px 0; border-left: 3px solid #0EA5E9; padding-left: 14px; margin-left: 8px; font-size: 0.88rem; color: #CBD5E1; font-weight: 500;
         }
 
-        /* --- Unique Floating Bottom Navigation Dock --- */
+        /* --- Unique Floating Bottom Navigation Dock (Horizontal 1 Line) --- */
         .bottom-nav-dock {
-            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 600px;
-            background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(20px);
-            border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 24px;
-            display: flex; justify-content: space-around; align-items: center; padding: 10px 12px; z-index: 99999;
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 650px;
+            background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(20px);
+            border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 24px;
+            display: flex; justify-content: space-around; align-items: center; padding: 8px 12px; z-index: 99999;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
         .bottom-nav-dock div.stButton > button {
             background: transparent !important; border: none !important; color: #94A3B8 !important;
-            font-size: 0.8rem !important; font-weight: 600 !important; box-shadow: none !important;
-            display: flex !important; flex-direction: column !important; align-items: center !important;
-            padding: 4px 8px !important; min-height: 48px !important; border-radius: 12px !important;
-            transition: all 0.2s ease-in-out;
+            font-size: 0.85rem !important; font-weight: 600 !important; box-shadow: none !important;
+            display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important;
+            gap: 6px !important; padding: 6px 12px !important; min-height: 40px !important; border-radius: 12px !important;
+            transition: all 0.2s ease-in-out; white-space: nowrap !important;
         }
         .bottom-nav-dock div.stButton > button:hover {
-            color: #38BDF8 !important; background: rgba(14, 165, 233, 0.1) !important; transform: translateY(-2px);
+            color: #38BDF8 !important; background: rgba(14, 165, 233, 0.12) !important; transform: translateY(-2px);
         }
         </style>
     """, unsafe_allow_html=True)
@@ -512,27 +512,27 @@ else:
                 del st.query_params["session_user"]
             st.rerun()
 
-    # --- Unique Floating Bottom Navigation Dock ---
+    # --- Floating Bottom Navigation Dock (1-line horizontal style) ---
     st.markdown("<div class='bottom-nav-dock'>", unsafe_allow_html=True)
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
-        if st.button("🚌\nShuttle", key="nav_shuttle"):
+        if st.button("🚌 Shuttle", key="nav_shuttle"):
             st.session_state.dashboard_view = "Shuttle"
             st.rerun()
     with c2:
-        if st.button("👨‍🏫\nFaculty", key="nav_faculty"):
+        if st.button("👨‍🏫 Faculty", key="nav_faculty"):
             st.session_state.dashboard_view = "Faculty"
             st.rerun()
     with c3:
-        if st.button("🗺️\nRoute", key="nav_route"):
+        if st.button("🗺️ Route", key="nav_route"):
             st.session_state.dashboard_view = "Route"
             st.rerun()
     with c4:
-        if st.button("🚨\nSOS", key="nav_sos"):
+        if st.button("🚨 SOS", key="nav_sos"):
             st.session_state.dashboard_view = "SOS"
             st.rerun()
     with c5:
-        if st.button("⚙️\nAccount", key="nav_acc"):
+        if st.button("⚙️ Account", key="nav_acc"):
             st.session_state.dashboard_view = "Account"
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)

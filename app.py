@@ -166,7 +166,7 @@ t = {
         "nav_faculty": "👨‍🏫 শিক্ষক",
         "nav_route": "🗺️ রুট",
         "nav_sos": "🚨 এসওএস",
-        "nav_acc": "⚙️️ একাউন্ট",
+        "nav_acc": "⚙ একাউন্ট",
         "footer": "© ২০২৬ আইউবাট নেক্সাস • স্মার্ট ইউনিভার্সিটি পোর্টাল"
     }
 }
@@ -214,7 +214,7 @@ if not st.session_state.logged_in:
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 10; padding-top: 30px !important; padding-bottom: 120px !important; max-width: 1200px !important; margin: auto !important;
+            position: relative; z-index: 10; padding-top: 25px !important; padding-bottom: 120px !important; max-width: 1200px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
@@ -231,7 +231,7 @@ if not st.session_state.logged_in:
             background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
             border-radius: 14px !important; padding: 24px 24px 18px 24px !important;
             border: 1px solid rgba(14, 165, 233, 0.25) !important; box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-            width: 100%; max-width: 390px; margin-left: auto; margin-top: 15px; position: relative; z-index: 20;
+            width: 100%; max-width: 390px; margin-left: auto; margin-top: 10px; position: relative; z-index: 20;
         }}
         .fb-title {{
             font-size: 1.35rem; font-weight: 700; color: #FFFFFF; margin-bottom: 14px; font-family: system-ui, -apple-system, sans-serif;
@@ -325,28 +325,22 @@ if not st.session_state.logged_in:
     
     logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
-    # Top Bar with Language Switcher Button
-    top_c1, top_c2 = st.columns([6, 1.8])
-    with top_c1:
-        st.markdown(f"""
+    # Top Header Bar: Logo on Left, Language Toggle on Right
+    st.markdown(f"""
+        <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 25px;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
                 {logo_html}
                 <span style='color: #FFFFFF; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
             </div>
-        """, unsafe_allow_html=True)
-    with top_c2:
-        # Language Switch Toggle Button
-        new_lang = "BN" if st.session_state.lang == "EN" else "EN"
-        btn_label = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
-        if st.button(btn_label, key="lang_toggle_btn", use_container_width=True):
-            st.session_state.lang = new_lang
-            st.rerun()
+        </div>
+    """, unsafe_allow_html=True)
 
+    # Place Language toggle cleanly right above the login card or alongside header columns
     col_left, col_right = st.columns([1.1, 0.9], gap="large")
 
     with col_left:
         st.markdown(f"""
-            <div style='padding-top: 30px; padding-left: 10px;'>
+            <div style='padding-top: 20px; padding-left: 10px;'>
                 <h1 style='color: #FFFFFF; font-size: 3.1rem; font-weight: 800; margin: 0 0 15px 0; line-height: 1.15; letter-spacing: -1px;'>
                     {t[lang_key]["title"]}
                 </h1>
@@ -357,6 +351,15 @@ if not st.session_state.logged_in:
         """, unsafe_allow_html=True)
 
     with col_right:
+        # Language Switch Button inside a clean container above the login card
+        lc1, lc2 = st.columns([2.5, 1.3])
+        with lc2:
+            new_lang = "BN" if st.session_state.lang == "EN" else "EN"
+            btn_label = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
+            if st.button(btn_label, key="lang_toggle_btn", use_container_width=True):
+                st.session_state.lang = new_lang
+                st.rerun()
+
         if st.session_state.is_registering:
             st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
             st.markdown(f"<div class='fb-title'>{t[lang_key]['create_title']}</div>", unsafe_allow_html=True)
@@ -445,7 +448,7 @@ if not st.session_state.logged_in:
     st.markdown(f"""
         <div class="fb-footer-box">
             <div style="color: #94A3B8; font-size: 0.95rem; margin-bottom: 6px;">
-                💡 <b>Tip:</b> Click the top-right button (<b>🇧🇩 বাংলা / 🇬🇧 English</b>) anytime to switch language instantly!
+                💡 <b>Tip:</b> Click the top button (<b>🇧🇩 বাংলা / 🇬🇧 English</b>) anytime to switch language instantly!
             </div>
             <div class="fb-copyright">
                 {t[lang_key]["footer"]}

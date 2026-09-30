@@ -1,48 +1,29 @@
 import streamlit as st
 import os
 import base64
-import json
 import time
 
 # --- App Setup ---
 st.set_page_config(
-    page_title="IUBAT Nexus | Campus Connect",
+    page_title="IUBAT Nexus | Smart Portal",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- Persistent JSON Database Functions ---
-DB_FILE = "users_db.json"
-ALUMNI_DB_FILE = "alumni_db.json"
-BUS_DB_FILE = "bus_db.json"
-
-def load_json_db(filename, default_data):
-    if os.path.exists(filename):
-        try:
-            with open(filename, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return default_data
-
-def save_json_db(filename, data):
-    try:
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
-    except Exception as e:
-        st.error(f"Database save error: {e}")
-
+# --- Ultra-Fast Cached Asset Reader ---
 @st.cache_data(show_spinner=False)
 def get_asset_base64_cached(filename):
     assets_dir = os.path.join(os.getcwd(), "assets")
     target_path = os.path.join(assets_dir, filename)
+    
     if not os.path.exists(target_path) and os.path.exists(assets_dir):
         exts = ('.png', '.jpg', '.jpeg', '.webp')
         for f in sorted(os.listdir(assets_dir)):
             if f.lower().endswith(exts) and (filename.split('.')[0] in f.lower()):
                 target_path = os.path.join(assets_dir, f)
                 break
+                
     if os.path.exists(target_path):
         with open(target_path, "rb") as file:
             encoded = base64.b64encode(file.read()).decode()
@@ -60,366 +41,417 @@ def get_fixed_background_cached():
 bg_image_data = get_fixed_background_cached()
 logo_image_data = get_asset_base64_cached("logo.png")
 
-# --- Default Databases ---
-default_users = {
-    "25305025": {
-        "name": "Abdullah Al Muzahid",
-        "dept": "Electrical & Electronic Engineering",
-        "univ": "IUBAT",
-        "password": "123",
-        "photo": None
-    }
-}
-
-default_alumni = [
-    {
-        "name": "Tanvir Ahmed, P.Eng",
-        "batch": "Class of 2021",
-        "role": "Senior Electrical Engineer at Energypac",
-        "contact": "tanvir.ahmed@energypac.com / +8801711223344"
-    },
-    {
-        "name": "Nusrat Jahan",
-        "batch": "Class of 2023",
-        "role": "Software Engineer at BJIT",
-        "contact": "nusrat.jahan@bjitgroup.com / +8801811556677"
-    }
-]
-
-default_buses = [
-    {
-        "name": "Bus 02: Campus to Narshingdi",
-        "status": "On Trip (Live)",
-        "departure": "05:30 PM",
-        "arrival": "07:30 PM",
-        "next_stop": "Tongi Station Road",
-        "driver": "Sobuj Hossain",
-        "driver_phone": "01621796157",
-        "helper": "Ripon",
-        "helper_phone": "01861455868"
-    }
-]
-
-if "users_db" not in st.session_state:
-    st.session_state.users_db = load_json_db(DB_FILE, default_users)
-if "alumni_db" not in st.session_state:
-    st.session_state.alumni_db = load_json_db(ALUMNI_DB_FILE, default_alumni)
-if "bus_db" not in st.session_state:
-    st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
-
+# --- Persistent Session Management ---
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "user_id" not in st.session_state:
     st.session_state.user_id = ""
 if "user_name" not in st.session_state:
-    st.session_state.user_name = ""
+    st.session_state.user_name = "Abdullah Al Muzahid"
 if "user_dept" not in st.session_state:
-    st.session_state.user_dept = ""
-if "user_univ" not in st.session_state:
-    st.session_state.user_univ = "IUBAT"
-if "user_photo" not in st.session_state:
-    st.session_state.user_photo = None
-if "selected_service" not in st.session_state:
-    st.session_state.selected_service = "Dashboard"
+    st.session_state.user_dept = "Electrical & Electronic Engineering"
+if "active_tab" not in st.session_state:
+    st.session_state.active_tab = "Home"
+if "is_registering" not in st.session_state:
+    st.session_state.is_registering = False
+if "splash_shown" not in st.session_state:
+    st.session_state.splash_shown = False
 
 query_params = st.query_params
 if not st.session_state.logged_in and "session_user" in query_params:
-    uid = query_params["session_user"]
-    if uid in st.session_state.users_db:
-        st.session_state.logged_in = True
-        st.session_state.user_id = uid
-        st.session_state.user_name = st.session_state.users_db[uid]["name"]
-        st.session_state.user_dept = st.session_state.users_db[uid]["dept"]
-        st.session_state.user_univ = st.session_state.users_db[uid]["univ"]
-        st.session_state.user_photo = st.session_state.users_db[uid]["photo"]
+    st.session_state.logged_in = True
+    st.session_state.user_id = query_params["session_user"]
 
-st.session_state.users_db = load_json_db(DB_FILE, default_users)
+# --- 1-Second Splash Screen Logic for Logged-In Users ---
+if st.session_state.logged_in and not st.session_state.splash_shown:
+    st.markdown("""
+        <style>
+        .stApp { background: #090D16; }
+        .splash-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 80vh; color: white; font-family: sans-serif;
+        }
+        .spinner-ring {
+            width: 50px; height: 50px; border: 4px solid rgba(56, 189, 248, 0.2);
+            border-top: 4px solid #38BDF8; border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        </style>
+        <div class="splash-container">
+            <div class="spinner-ring"></div>
+            <h2 style='font-size: 1.2rem; font-weight: 600; color: #F8FAFC;'>Loading IUBAT Nexus...</h2>
+        </div>
+    """, unsafe_allow_html=True)
+    time.sleep(1)
+    st.session_state.splash_shown = True
+    st.rerun()
 
-# --- Styling ---
+# --- Google-Inspired Styling & True Header Setup ---
 if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
         .stApp {{ background: #090D16; }}
-        .stApp::before {{ content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('{bg_image_data}') no-repeat center center fixed; background-size: cover; z-index: 0; }}
-        .stApp::after {{ content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.62); z-index: 0; }}
-        .block-container {{ position: relative; z-index: 1; padding-top: 35px !important; max-width: 480px !important; margin: auto !important; }}
+        .stApp::before {{
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('{bg_image_data}') no-repeat center center fixed; background-size: cover; z-index: 0;
+        }}
+        .stApp::after {{
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(9, 13, 22, 0.84); z-index: 0;
+        }}
+        
+        /* Fixed True Global Header Bar */
+        .global-header {{
+            position: fixed; top: 0; left: 0; width: 100%; height: 56px;
+            background: rgba(11, 18, 33, 0.92); backdrop-filter: blur(12px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; z-index: 99999; border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+        }}
+        .nav-brand {{
+            display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 800; font-size: 1.15rem; text-decoration: none; white-space: nowrap;
+        }}
+        .nav-brand img {{ width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #38BDF8; }}
+
+        .nav-right-buttons {{
+            display: flex; align-items: center; gap: 10px;
+        }}
+        
+        /* Streamlit button overrides inside header */
+        .nav-right-buttons div.stButton > button {{
+            border-radius: 6px !important;
+            padding: 4px 12px !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            min-height: 32px !important;
+            height: 32px !important;
+        }}
+
+        .block-container {{
+            position: relative; z-index: 1; padding-top: 75px !important; max-width: 560px !important; margin: auto !important;
+        }}
         #MainMenu, header, footer {{visibility: hidden;}}
-        div[data-testid="stForm"] {{ background: rgba(11, 18, 33, 0.88) !important; backdrop-filter: blur(10px); border-radius: 14px !important; padding: 16px !important; border: 1px solid rgba(56, 189, 248, 0.2) !important; }}
-        .stTextInput>div>div>input {{ background-color: rgba(15, 23, 42, 0.85) !important; color: #F8FAFC !important; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3); }}
-        .stFormSubmitButton>button {{ width: 100% !important; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important; color: #FFFFFF !important; font-weight: 700; border-radius: 8px; }}
+
+        /* Hero Section */
+        .hero-container {{
+            width: 100%; margin: 0 auto;
+        }}
+        .hero-showcase {{
+            display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 10px;
+        }}
+        .floating-badge {{
+            width: 64px; height: 64px; background: rgba(11, 18, 33, 0.88); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+            border: 2px solid rgba(56, 189, 248, 0.35); font-size: 1.9rem; animation: float 3s ease-in-out infinite;
+        }}
+        .floating-badge:nth-child(even) {{ animation-delay: 1.5s; }}
+        @keyframes float {{ 0%, 100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-5px); }} }}
+
+        .central-avatar {{
+            width: 85px; height: 85px; background: linear-gradient(135deg, #0B1221 0%, #090D16 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45); border: 3px solid rgba(56, 189, 248, 0.7); overflow: hidden;
+        }}
+        .central-avatar img {{ width: 100%; height: 100%; object-fit: cover; }}
+
+        .hero-title {{
+            text-align: center; color: #F8FAFC !important; font-size: 1.3rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px;
+        }}
+        .hero-subtitle {{
+            text-align: center; color: #94A3B8 !important; font-size: 0.75rem; line-height: 1.3; margin-bottom: 8px; padding: 0 2px;
+        }}
+
+        /* Compact ID/Pass Box */
+        div[data-testid="stForm"] {{
+            background: rgba(11, 18, 33, 0.9) !important; backdrop-filter: blur(14px);
+            border-radius: 12px !important; padding: 12px 14px 8px 14px !important;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55) !important; border: 1px solid rgba(56, 189, 248, 0.15) !important;
+        }}
+        div[data-testid="stTextInput"] label {{ display: none !important; }}
+        .stTextInput>div>div>input {{
+            background-color: rgba(15, 23, 42, 0.75) !important; color: #F8FAFC !important; border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2); padding: 7px 10px; font-size: 0.8rem;
+        }}
+        .stFormSubmitButton>button {{
+            width: 100% !important; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+            color: #FFFFFF !important; font-weight: 700; border-radius: 6px; border: none; padding: 7px; font-size: 0.8rem;
+        }}
         </style>
     """, unsafe_allow_html=True)
+
 else:
     st.markdown("""
         <style>
         .stApp { background: #0F172A !important; }
-        .block-container { position: relative; z-index: 1; padding-top: 0.8rem !important; padding-bottom: 5rem !important; max-width: 460px !important; margin: auto !important; }
+        .block-container { position: relative; z-index: 1; padding-top: 1rem !important; padding-bottom: 2rem !important; max-width: 520px !important; margin: auto !important; }
         #MainMenu, header, footer {visibility: hidden;}
-        .app-header { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); padding: 12px 16px; border-radius: 14px; color: white; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
-        .sched-card { background: rgba(30, 41, 59, 0.8); border-radius: 14px; padding: 14px; color: #F8FAFC; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .badge-tag { background: rgba(56, 189, 248, 0.15); color: #38BDF8; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; }
-        .route-stop { padding: 8px 0; border-left: 2px solid #38BDF8; padding-left: 14px; margin-left: 8px; font-size: 0.82rem; color: #CBD5E1; font-weight: 500; }
+
+        .app-header {
+            background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); padding: 12px 16px;
+            border-radius: 14px; color: white; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .sched-card {
+            background: rgba(30, 41, 59, 0.75); border-radius: 12px; padding: 12px; color: #F8FAFC;
+            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 8px;
+        }
+        .badge-tag {
+            background: rgba(56, 189, 248, 0.15); color: #38BDF8; padding: 2px 6px; border-radius: 6px; font-size: 0.68rem; font-weight: 600;
+        }
+        .route-stop {
+            padding: 5px 0; border-left: 2px solid #38BDF8; padding-left: 10px; margin-left: 6px; font-size: 0.78rem; color: #CBD5E1;
+        }
         </style>
     """, unsafe_allow_html=True)
 
-logo_small = f"<img src='{logo_image_data}' style='width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid #38BDF8;'>" if logo_image_data else "🎓"
 
-# --- Authentication Screen ---
+# --- UI Render Logic ---
+avatar_html = f"<div class='central-avatar'><img src='{logo_image_data}' alt='Logo'></div>" if logo_image_data else "<div class='central-avatar'>🎓</div>"
+logo_small = f"<img src='{logo_image_data}' alt='Logo'>" if logo_image_data else "🎓"
+
 if not st.session_state.logged_in:
-    st.markdown(f"""
-        <div style='text-align: center; margin-bottom: 12px;'>
-            <div style='font-size: 2.2rem; margin-bottom: 5px;'>{logo_small}</div>
-            <h1 style='color: white; font-size: 1.3rem; font-weight: 800;'>IUBAT Campus Connect</h1>
-            <p style='color: #94A3B8; font-size: 0.78rem;'>Sign in with your student ID & password</p>
-        </div>
+    # True unified global header bar with brand on left and action buttons on right
+    header_col1, header_col2 = st.columns([4, 2])
+    with header_col1:
+        st.markdown(f"""
+            <div class="global-header">
+                <div class="nav-brand">
+                    {logo_small} IUBAT Nexus
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    # We render buttons inside a custom aligned layout matching the right corner of the header
+    st.markdown("""
+        <style>
+        .header-btn-wrapper {
+            position: fixed; top: 11px; right: 20px; z-index: 100000; display: flex; gap: 8px; align-items: center;
+        }
+        </style>
+        <div class="header-btn-wrapper" id="header-buttons"></div>
     """, unsafe_allow_html=True)
 
-    # Shudhu Sign In ebong Register tab rakha holo
-    tab_signin, tab_register = st.tabs(["🔐 Sign In", "📝 Register"])
+    # Use standard Streamlit buttons placed via container positioning
+    col_spacer, col_b1, col_b2 = st.columns([4.2, 1.1, 1.1])
+    with col_b1:
+        if st.button("Create an account", key="btn_create_acc"):
+            st.session_state.is_registering = True
+            st.rerun()
+    with col_b2:
+        if st.button("Go to Account", type="primary", key="btn_goto_acc"):
+            st.session_state.is_registering = False
+            st.rerun()
 
-    with tab_signin:
+    st.markdown("<div class='hero-container'>", unsafe_allow_html=True)
+    if st.session_state.is_registering:
+        st.markdown("""
+            <div class="hero-title" style="font-size: 1.15rem; margin-top: 4px;">Create your IUBAT Account</div>
+            <div class="hero-subtitle">Access campus services and student portals instantly.</div>
+        """, unsafe_allow_html=True)
+
+        with st.form("register_form"):
+            reg_name = st.text_input("Full Name", placeholder="Full Name *")
+            reg_id = st.text_input("ID Number", placeholder="Student ID Number *")
+            reg_dept = st.text_input("Department", placeholder="e.g. Electrical & Electronic Engineering")
+            reg_pass = st.text_input("Password", type="password", placeholder="Create Password *")
+
+            if st.form_submit_button("Complete Registration & Sign In"):
+                if reg_name and reg_id and reg_pass:
+                    st.session_state.logged_in = True
+                    st.session_state.user_id = reg_id
+                    st.session_state.user_name = reg_name
+                    if reg_dept:
+                        st.session_state.user_dept = reg_dept
+                    st.session_state.active_tab = "Home"
+                    st.query_params["session_user"] = reg_id
+                    st.rerun()
+                else:
+                    st.error("❌ Please fill in all required fields.")
+        
+        if st.button("⬅️ Already have an account? Sign In", use_container_width=True):
+            st.session_state.is_registering = False
+            st.rerun()
+
+    else:
+        st.markdown(f"""
+            <div class="hero-showcase" style="margin-top: 4px;">
+                <div class="floating-badge">🚨</div>
+                <div class="floating-badge">👨‍🏫</div>
+                {avatar_html}
+                <div class="floating-badge">🚌</div>
+                <div class="floating-badge">🎓</div>
+            </div>
+            <div class="hero-title">All of IUBAT,<br>working for you</div>
+            <div class="hero-subtitle">Sign in to your Student Portal for seamless access to campus services.</div>
+        """, unsafe_allow_html=True)
+
         with st.form("login_form"):
-            user_id = st.text_input("ID Number", placeholder="Student ID (e.g., 25305025)")
-            password = st.text_input("Password", type="password", placeholder="Password")
-            remember_me = st.checkbox("Remember me")
+            user_id = st.text_input("ID Number", placeholder="Your ID Number *")
+            password = st.text_input("Password", type="password", placeholder="Password *")
+
+            col1, col2 = st.columns([1.1, 1])
+            with col1:
+                remember_me = st.checkbox("Remember me")
+            with col2:
+                st.markdown("<div style='text-align: right; padding-top: 2px;'><a href='#' style='color: #38BDF8; font-size: 0.7rem; text-decoration: none;'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
             if st.form_submit_button("Sign In"):
                 if user_id and password:
-                    st.session_state.users_db = load_json_db(DB_FILE, default_users)
-                    if user_id in st.session_state.users_db:
-                        stored_pass = st.session_state.users_db[user_id].get("password")
-                        if stored_pass == password or password == "123":
-                            st.session_state.logged_in = True
-                            st.session_state.user_id = user_id
-                            st.session_state.user_name = st.session_state.users_db[user_id]["name"]
-                            st.session_state.user_dept = st.session_state.users_db[user_id]["dept"]
-                            st.session_state.user_univ = st.session_state.users_db[user_id].get("univ", "IUBAT")
-                            st.session_state.user_photo = st.session_state.users_db[user_id].get("photo")
-                            if remember_me:
-                                st.query_params["session_user"] = user_id
-                            st.rerun()
-                        else:
-                            st.error("❌ Incorrect password.")
-                    else:
-                        st.error("❌ Account not found. Default ID: 25305025 / Pass: 123")
+                    st.session_state.logged_in = True
+                    st.session_state.user_id = user_id
+                    st.session_state.active_tab = "Home"
+                    if remember_me:
+                        st.query_params["session_user"] = user_id
+                    st.rerun()
                 else:
-                    st.error("❌ Please fill in all fields.")
+                    st.error("❌ Please enter both ID Number and Password.")
 
-    with tab_register:
-        with st.form("register_form"):
-            new_id = st.text_input("Student ID", placeholder="e.g., 25305026")
-            new_name = st.text_input("Full Name", placeholder="Your Full Name")
-            new_dept = st.text_input("Department", placeholder="e.g., EEE")
-            new_univ = st.text_input("University", value="IUBAT")
-            new_pass = st.text_input("Password", type="password", placeholder="Create Password")
-            
-            if st.form_submit_button("Create Account"):
-                if new_id and new_name and new_pass:
-                    st.session_state.users_db = load_json_db(DB_FILE, default_users)
-                    if new_id in st.session_state.users_db:
-                        st.error("❌ ID already exists! Please Sign In.")
-                    else:
-                        st.session_state.users_db[new_id] = {
-                            "name": new_name,
-                            "dept": new_dept,
-                            "univ": new_univ,
-                            "password": new_pass,
-                            "photo": None
-                        }
-                        save_json_db(DB_FILE, st.session_state.users_db)
-                        st.success("✅ Account created successfully! Please switch to Sign In.")
-                else:
-                    st.error("❌ Please fill in all required fields.")
+    st.markdown("<div style='text-align: center; color: #94A3B8; font-size: 10px; margin-top: 10px;'>© 2026 IUBAT Nexus • Secure Portal</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 else:
-    # --- LOGGED IN REGULAR STUDENT DASHBOARD ---
-    profile_avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.user_photo else logo_small
-    
-    col_h1, col_h2 = st.columns([4, 1])
-    with col_h1:
-        st.markdown(f"""
-            <div class='app-header' style='margin-bottom:0;'>
-                <div style='display: flex; align-items: center; gap: 10px;'>
-                    <div style='width: 38px; height: 38px; border-radius: 50%; overflow: hidden; border: 2px solid #38BDF8; background: #0B1221; display: flex; align-items: center; justify-content: center;'>
-                        {profile_avatar_html}
-                    </div>
-                    <div>
-                        <div style='font-size: 0.9rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
-                        <div style='font-size: 0.68rem; color: #38BDF8;'>{st.session_state.user_univ} • ID: {st.session_state.user_id}</div>
-                    </div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-    with col_h2:
-        if st.button("🚪 Logout", use_container_width=True):
-            st.session_state.logged_in = False
-            st.session_state.user_id = ""
-            st.query_params.clear()
-            st.rerun()
-
-    st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
-
-    # --- TOP LOCATION BAR ---
     st.markdown(f"""
-        <div style='background: rgba(30, 41, 59, 0.6); padding: 8px 14px; border-radius: 10px; font-size: 0.78rem; color: #94A3B8; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(56,189,248,0.15);'>
-            <span>📍 Location: <b style='color: #F8FAFC;'>Tongi Station Road</b></span>
-            <span style='color: #38BDF8; font-weight: 700;'>Live Connected</span>
+        <div class='app-header'>
+            <div>
+                <div style='font-size: 0.7rem; color: #94A3B8;'>Welcome back,</div>
+                <div style='font-size: 1.05rem; font-weight: 800; color: #F8FAFC;'>{st.session_state.user_name}</div>
+                <div style='font-size: 0.7rem; color: #38BDF8;'>ID: {st.session_state.user_id}</div>
+            </div>
+            <div>
+                <span class='badge-tag'>🟢 Online</span>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # --- NAVIGATION VIEW ROUTING (Banking App Style Grid Selector) ---
-    if st.session_state.selected_service != "Dashboard":
-        if st.button("← Back to Service Grid"):
-            st.session_state.selected_service = "Dashboard"
+    col_t1, col_t2, col_t3 = st.columns(3)
+    with col_t1:
+        if st.button("🏠 Home", use_container_width=True):
+            st.session_state.active_tab = "Home"
+            st.rerun()
+    with col_t2:
+        if st.button("⚙️ Go to Account", use_container_width=True):
+            st.session_state.active_tab = "Account"
+            st.rerun()
+    with col_t3:
+        if st.button("🚪 Logout", use_container_width=True):
+            st.session_state.logged_in = False
+            st.session_state.splash_shown = False
+            st.session_state.active_tab = "Home"
+            if "session_user" in st.query_params:
+                del st.query_params["session_user"]
             st.rerun()
 
-    if st.session_state.selected_service == "Dashboard":
-        st.markdown("<div style='font-size: 1.05rem; font-weight: 800; color: #38BDF8; margin-bottom: 12px;'>📱 Campus Services & Hub</div>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    if st.session_state.active_tab == "Home":
+        st.markdown("<div style='font-size: 0.9rem; font-weight: 700; color: #94A3B8; margin-bottom: 8px;'>QUICK SERVICES</div>", unsafe_allow_html=True)
+
+        if st.button("🚨  Emergency SOS & Security Hotline", use_container_width=True):
+            st.session_state.active_tab = "SOS"
+            st.rerun()
+
+        if st.button("👨‍🏫  Faculty Directory & Consultations", use_container_width=True):
+            st.session_state.active_tab = "Faculty"
+            st.rerun()
+
+        if st.button("🚌  Bus Schedule & Live Tracking", use_container_width=True):
+            st.session_state.active_tab = "Bus"
+            st.rerun()
+
+        if st.button("🎓  Alumni Network & Mentorship", use_container_width=True):
+            st.session_state.active_tab = "Alumni"
+            st.rerun()
+
+    elif st.session_state.active_tab == "Account":
+        st.markdown("### ⚙️ Account Management")
+        st.markdown("Update your student profile information anytime below:")
         
-        # --- Banking Style Grid Layout ---
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            if st.button("🚨\nEmergency", use_container_width=True):
-                st.session_state.selected_service = "Emergency"
-                st.rerun()
-            if st.button("🚌\nBus Tracking", use_container_width=True):
-                st.session_state.selected_service = "Bus"
-                st.rerun()
-        with col2:
-            if st.button("👨‍🏫\nFaculty", use_container_width=True):
-                st.session_state.selected_service = "Faculty"
-                st.rerun()
-            if st.button("🤝\nAlumni Hub", use_container_width=True):
-                st.session_state.selected_service = "Alumni"
-                st.rerun()
-        with col3:
-            if st.button("🗺️\nRoute Map", use_container_width=True):
-                st.session_state.selected_service = "Route"
-                st.rerun()
-            if st.button("🚪\nLogout", use_container_width=True):
-                st.session_state.logged_in = False
-                st.session_state.user_id = ""
-                st.query_params.clear()
+        with st.form("update_account_form"):
+            new_name = st.text_input("Full Name", value=st.session_state.user_name)
+            new_dept = st.text_input("Department", value=st.session_state.user_dept)
+            
+            if st.form_submit_button("Save Changes"):
+                st.session_state.user_name = new_name
+                st.session_state.user_dept = new_dept
+                st.success("✅ Account updated successfully!")
+                time.sleep(0.5)
                 st.rerun()
 
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 16px 0;'>", unsafe_allow_html=True)
-        st.markdown("<div style='font-size: 0.85rem; font-weight: 700; color: #F8FAFC; margin-bottom: 8px;'>⚡ Quick Live Shuttle Status</div>", unsafe_allow_html=True)
-        
-        st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
-        b_info = st.session_state.bus_db[0] if st.session_state.bus_db else default_buses[0]
-        st.markdown(f"""
-            <div class='sched-card'>
-                <b>{b_info['name']}</b><br>
-                <span class='badge-tag' style='background: #22C55E; color: white;'>{b_info['status']}</span><br>
-                📍 <b>Next Stop:</b> {b_info['next_stop']} (ETA: 10 mins)<br>
-                🕒 Departure: {b_info['departure']} | Arrival: {b_info['arrival']}
+    elif st.session_state.active_tab == "SOS":
+        st.markdown("### 🚨 Emergency SOS & Hotline")
+        st.markdown("If you are facing an emergency on campus or around Tongi/Uttara, reach out immediately:")
+        st.markdown("""
+            <div class='sched-card' style='border-left: 4px solid #EF4444;'>
+                <b>Campus Security Control Room</b><br>
+                📞 Hotline: +880 1713-393291<br>
+                <span style='font-size: 0.75rem; color: #94A3B8;'>Available 24/7 for urgent assistance.</span>
+            </div>
+            <div class='sched-card' style='border-left: 4px solid #F59E0B;'>
+                <b>Medical Center Emergency</b><br>
+                📞 Ambulance: +880 1819-000000<br>
+                <span style='font-size: 0.75rem; color: #94A3B8;'>First aid and emergency evacuation.</span>
             </div>
         """, unsafe_allow_html=True)
+        if st.button("🚨 Trigger Panic Alert (Test)", type="primary", use_container_width=True):
+            st.error("⚠️ Emergency alert sent to security desk with your GPS location!")
 
-    elif st.session_state.selected_service == "Emergency":
-        st.markdown("### 🚨 Emergency SOS and Hotline")
-        st.markdown("<div style='font-size: 0.76rem; color: #94A3B8; margin-bottom: 12px;'>One-tap instant emergency safety dispatcher</div>", unsafe_allow_html=True)
-        
-        if st.button("🚨 1) Tap to 999", use_container_width=True):
-            st.success("Calling 999 National Emergency Service...")
-        if st.button("👥 2) Tap to Close Friends", use_container_width=True):
-            st.success("Live safety broadcast sent to Close Friends!")
-        if st.button("👪 3) Tap to Family", use_container_width=True):
-            st.success("Emergency alert triggered to Family contacts!")
-        if st.button("🏛️ 4) Tap to University Authority", use_container_width=True):
-            st.success("Alert dispatched to University Security & Proctor Office!")
-
-    elif st.session_state.selected_service == "Bus":
-        st.markdown("### 🚌 Bus Schedule and Live Tracking")
-        st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
-        b_info = st.session_state.bus_db[0] if st.session_state.bus_db else default_buses[0]
-        
-        st.markdown(f"""
-            <div class='sched-card' style='border: 1px solid rgba(56,189,248,0.4);'>
-                <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;'>
-                    <span style='font-weight: 800; font-size: 0.95rem;'>{b_info['name']}</span>
-                    <span class='badge-tag' style='background: #22C55E; color: white;'>{b_info['status']}</span>
-                </div>
-                <div style='background: rgba(56, 189, 248, 0.1); padding: 8px 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.78rem;'>
-                    📍 <b>Current Next Stop ETA:</b> {b_info['next_stop']} (Arriving in 10 mins)
-                </div>
-                <div style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'>
-                    🕒 Departure: <b>{b_info['departure']}</b> | Arrival(ETA): <b>{b_info['arrival']}</b>
-                </div>
-                <div style='font-size: 0.78rem;'><b>Driver:</b> {b_info['driver']} ({b_info['driver_phone']})</div>
-                <div style='font-size: 0.78rem;'><b>Helper:</b> {b_info['helper']} ({b_info['helper_phone']})</div>
-            </div>
-        """, unsafe_allow_html=True)
-
-    elif st.session_state.selected_service == "Faculty":
-        st.markdown("### 👨‍🏫 Faculty Directory & Consultation")
-        st.markdown("<div style='font-size: 0.76rem; color: #94A3B8; margin-bottom: 8px;'>Active inside campus • Home when off-campus</div>", unsafe_allow_html=True)
-        
+    elif st.session_state.active_tab == "Faculty":
+        st.markdown("### 👨‍🏫 Faculty Directory")
+        st.text_input("Search Faculty", placeholder="Search by name or department...")
         st.markdown("""
             <div class='sched-card'>
                 <b>Prof. Dr. M. Ahmed</b><br>
-                <span class='badge-tag'>EEE Department</span> • Senior Professor<br>
-                🕒 Consultation: Sun-Tue (03:00 PM - 05:00 PM)<br>
-                <div style='margin-top: 6px;'><span style='background: rgba(34,197,94,0.15); color: #22C55E; padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;'>🟢 Active (Inside Campus)</span></div>
+                <span class='badge-tag'>EEE Department</span><br>
+                📧 Email: m.ahmed@iubat.edu<br>
+                🕒 Consultation: Sun-Tue (03:00 PM - 05:00 PM)
             </div>
             <div class='sched-card'>
                 <b>Dr. Selim Reza</b><br>
-                <span class='badge-tag'>ECE Department</span> • Associate Professor<br>
-                🕒 Consultation: Mon-Wed (11:00 AM - 01:00 PM)<br>
-                <div style='margin-top: 6px;'><span style='background: rgba(148,163,184,0.15); color: #94A3B8; padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;'>🏠 Home / Off-Campus</span></div>
+                <span class='badge-tag'>ECE Department</span><br>
+                📧 Email: selim.reza@iubat.edu<br>
+                🕒 Consultation: Mon-Wed (11:00 AM - 01:00 PM)
             </div>
         """, unsafe_allow_html=True)
 
-    elif st.session_state.selected_service == "Alumni":
-        st.markdown("### 🤝 Alumni Network & Mentor Hub")
-        with st.expander("📝 Register in Alumni Network"):
-            with st.form("alumni_reg_form"):
-                al_name = st.text_input("Full Name", placeholder="Your Name")
-                al_batch = st.text_input("Batch / Graduation Year", placeholder="e.g. Class of 2024")
-                al_role = st.text_input("Current Profession / Role", placeholder="e.g. Software Engineer")
-                al_contact = st.text_input("Contact Info (Email / Phone)", placeholder="email or phone number")
-                
-                if st.form_submit_button("Submit Alumni Registration"):
-                    if al_name and al_batch and al_role and al_contact:
-                        new_alumnus = {
-                            "name": al_name,
-                            "batch": al_batch,
-                            "role": al_role,
-                            "contact": al_contact
-                        }
-                        st.session_state.alumni_db.append(new_alumnus)
-                        save_json_db(ALUMNI_DB_FILE, st.session_state.alumni_db)
-                        st.success("✅ Successfully registered!")
-                        time.sleep(0.5)
-                        st.rerun()
-                    else:
-                        st.error("❌ Please fill in all details.")
-
-        st.markdown("<div style='font-size: 0.85rem; font-weight: 700; margin: 10px 0;'>🌟 Registered Alumni Directory</div>", unsafe_allow_html=True)
-        st.session_state.alumni_db = load_json_db(ALUMNI_DB_FILE, default_alumni)
-        for alumni in st.session_state.alumni_db:
-            st.markdown(f"""
-                <div class='sched-card'>
-                    <b>{alumni['name']}</b><br>
-                    <span class='badge-tag'>{alumni['batch']}</span><br>
-                    💼 {alumni['role']}<br>
-                    📞 <b>Contact:</b> {alumni['contact']}
+    elif st.session_state.active_tab == "Bus":
+        st.markdown("### 🚌 Bus Schedule & Live Tracking")
+        st.markdown("""
+            <div class='sched-card'>
+                <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;'>
+                    <span style='font-weight: 700;'>Bus 02: Campus to Tongi</span>
+                    <span class='badge-tag'>On Trip</span>
                 </div>
+                <div style='color: #94A3B8; font-size: 0.8rem; margin-bottom: 6px;'>
+                    🕒 Departure: <b>05:30 PM</b> | ETA: <b>07:30 PM</b>
+                </div>
+                <div style='font-size: 0.8rem;'><b>Driver:</b> Sobuj Hossain (01621796157)</div>
+                <div style='font-size: 0.8rem;'><b>Helper:</b> Ripon (01861455868)</div>
+            </div>
+        """, unsafe_allow_html=True)
+        with st.expander("🗺 Route Stoppages"):
+            st.markdown("""
+                <div class='route-stop'>📍 Campus (Uttara)</div>
+                <div class='route-stop'>📍 Tongi Station Road</div>
+                <div class='route-stop'>📍 Amtoly Mor</div>
+                <div class='route-stop'>📍 T & T Bazar</div>
+                <div class='route-stop'>📍 Shilmoon</div>
+                <div class='route-stop'>📍 Nimtoly Bridge</div>
             """, unsafe_allow_html=True)
 
-    elif st.session_state.selected_service == "Route":
-        st.markdown("### 🗺️ Detailed Shuttle Route Map")
+    elif st.session_state.active_tab == "Alumni":
+        st.markdown("### 🎓 Alumni Network & Mentorship")
+        st.markdown("Connect with senior graduates working in top engineering firms globally and locally.")
         st.markdown("""
-            <div class='route-stop'>📍 Campus (Departure Point)</div>
-            <div class='route-stop'>📍 Tongi Station Road</div>
-            <div class='route-stop'>📍 Amtoly Mor</div>
-            <div class='route-stop'>📍 T & T Bazar</div>
-            <div class='route-stop'>📍 Shilmoon</div>
-            <div class='route-stop'>📍 Nimtoly Bridge</div>
-            <div class='route-stop'>📍 Majukhan Bazar</div>
-            <div class='route-stop'>📍 Koromtola</div>
-            <div class='route-stop'>📍 Talotia Pump</div>
-            <div class='route-stop'>📍 Mirer Bazar</div>
-            <div class='route-stop'>📍 Basugaon (Terminal Arrival)</div>
+            <div class='sched-card'>
+                <b>Tanvir Ahmed, P.Eng</b><br>
+                <span class='badge-tag'>Class of 2021</span><br>
+                💼 Senior Electrical Engineer at Energypac<br>
+                🤝 Mentorship Focus: Power Systems & Substation Design
+            </div>
+            <div class='sched-card'>
+                <b>Nusrat Jahan</b><br>
+                <span class='badge-tag'>Class of 2023</span><br>
+                💻 Software Engineer at BJIT<br>
+                🤝 Mentorship Focus: Embedded C & Python
+            </div>
         """, unsafe_allow_html=True)

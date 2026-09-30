@@ -133,14 +133,15 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
 def handle_create_acc():
     st.session_state.is_registering = True
 
-# --- Global Styling & Universal Google Translate Engine ---
+# --- Bulletproof Google Translate Integration ---
 google_translate_engine = """
-    <div id="google_translate_element" style="display:none;"></div>
+    <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 999999; background: #0F172A; padding: 8px 12px; border-radius: 12px; border: 2px solid rgba(14, 165, 233, 0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.8);"></div>
+    
     <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
             pageLanguage: 'en',
-            includedLanguages: 'bn,en,ar,hi,ur,ne,zh-CN,es,fr,de,ja,ko,it,pt,ru,id,ms,tr,vi,th,fa,bn',
+            includedLanguages: 'bn,en,ar,hi,ur,ne,zh-CN,es,fr,de,ja,ko,it,pt,ru,id,ms,tr,vi,th,fa',
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false
         }, 'google_translate_element');
@@ -148,20 +149,38 @@ google_translate_engine = """
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
-    <script type="text/javascript">
-    function changeGlobalLanguage(selectObj) {
-        var langCode = selectObj.value;
-        var frame = document.querySelector('.goog-te-combo');
-        if (frame) {
-            frame.value = langCode;
-            frame.dispatchEvent(new Event('change'));
-        } else {
-            // Fallback cookie method
-            document.cookie = "googtrans=/en/" + langCode + "; path=/;";
-            location.reload();
-        }
+    <style>
+    /* Style Google Translate Widget nicely */
+    .goog-te-gadget {
+        font-family: system-ui, -apple-system, sans-serif !important;
+        font-size: 0px !important;
+        color: #38BDF8 !important;
     }
-    </script>
+    .goog-te-gadget span a {
+        display: none !important;
+    }
+    .goog-te-combo {
+        background-color: #0F172A !important;
+        color: #38BDF8 !important;
+        border: 1px solid rgba(14, 165, 233, 0.6) !important;
+        padding: 8px 12px !important;
+        border-radius: 8px !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        outline: none !important;
+        cursor: pointer !important;
+    }
+    .goog-te-combo option {
+        background-color: #0F172A !important;
+        color: #F1F5F9 !important;
+        padding: 8px !important;
+    }
+    /* Hide top Google banner frame */
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+    body { top: 0px !important; }
+    .goog-logo-link { display: none !important; }
+    .goog-te-gadget { color: transparent !important; }
+    </style>
 """
 
 if not st.session_state.logged_in:
@@ -221,24 +240,12 @@ if not st.session_state.logged_in:
         .create-btn-container div.stButton > button:hover {{
             background-color: #36A420 !important;
         }}
-
-        /* Universal Multi-Language Selector Box */
         .fb-footer-box {{
-            position: relative; margin-top: 80px; width: 100%; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 25px; padding-bottom: 40px; font-family: system-ui, -apple-system, sans-serif; z-index: 99999 !important;
+            position: relative; margin-top: 80px; width: 100%; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 25px; padding-bottom: 40px; font-family: system-ui, -apple-system, sans-serif; z-index: 20;
         }}
         .fb-copyright {{
             color: #737B83; font-size: 12px; margin-top: 15px;
         }}
-        .custom-lang-select {{
-            background-color: #0F172A !important; color: #38BDF8 !important; border: 2px solid rgba(14, 165, 233, 0.6) !important;
-            padding: 12px 18px !important; border-radius: 10px !important; font-size: 1rem !important; outline: none !important; cursor: pointer; width: 280px; font-weight: 700; box-shadow: 0 8px 25px rgba(0,0,0,0.8);
-        }}
-        .custom-lang-select option {{
-            background-color: #0F172A; color: #F1F5F9; padding: 12px; font-size: 1rem;
-        }}
-        /* Hide default google top banner */
-        .goog-te-banner-frame.skiptranslate {{ display: none !important; }}
-        body {{ top: 0px !important; }}
         </style>
         {google_translate_engine}
     """, unsafe_allow_html=True)
@@ -280,7 +287,7 @@ else:
             position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 650px;
             background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(20px);
             border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 24px;
-            display: flex; justify-content: space-around; align-items: center; padding: 8px 12px; z-index: 99999;
+            display: flex; justify-content: space-around; align-items: center; padding: 8px 12px; z-index: 999;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }}
         .bottom-nav-dock div.stButton > button {{
@@ -293,15 +300,6 @@ else:
         .bottom-nav-dock div.stButton > button:hover {{
             color: #38BDF8 !important; background: rgba(14, 165, 233, 0.12) !important; transform: translateY(-2px);
         }}
-        .custom-lang-select {{
-            background-color: #0F172A !important; color: #38BDF8 !important; border: 2px solid rgba(14, 165, 233, 0.6) !important;
-            padding: 10px 16px !important; border-radius: 10px !important; font-size: 0.95rem !important; outline: none !important; cursor: pointer; width: 100%; font-weight: 700;
-        }}
-        .custom-lang-select option {{
-            background-color: #0F172A; color: #F1F5F9; padding: 10px;
-        }}
-        .goog-te-banner-frame.skiptranslate {{ display: none !important; }}
-        body {{ top: 0px !important; }}
         </style>
         {google_translate_engine}
     """, unsafe_allow_html=True)
@@ -425,38 +423,13 @@ if not st.session_state.logged_in:
             st.markdown("</div>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
 
-    # All World Languages Selection Dropdown
     st.markdown("""
         <div class="fb-footer-box">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
-                <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 700;">
-                    🌐 Select Language / More Languages (ভাষা নির্বাচন করুন):
-                </div>
-                <div>
-                    <select class="custom-lang-select" onchange="changeGlobalLanguage(this)">
-                        <option value="en">English (Default)</option>
-                        <option value="bn">বাংলা (Bengali)</option>
-                        <option value="ar">العربية (Arabic)</option>
-                        <option value="hi">हिन्दी (Hindi)</option>
-                        <option value="ur">اردو (Urdu)</option>
-                        <option value="ne">नेपाली (Nepali)</option>
-                        <option value="zh-CN">中文 (Chinese - Simplified)</option>
-                        <option value="es">Español (Spanish)</option>
-                        <option value="fr">Français (French)</option>
-                        <option value="de">Deutsch (German)</option>
-                        <option value="ja">日本語 (Japanese)</option>
-                        <option value="ko">한국어 (Korean)</option>
-                        <option value="it">Italiano (Italian)</option>
-                        <option value="pt">Português (Portuguese)</option>
-                        <option value="ru">Русский (Russian)</option>
-                        <option value="id">Bahasa Indonesia (Indonesian)</option>
-                        <option value="ms">Bahasa Melayu (Malay)</option>
-                        <option value="tr">Türkçe (Turkish)</option>
-                        <option value="vi">Tiếng Việt (Vietnamese)</option>
-                        <option value="th">ไทย (Thai)</option>
-                        <option value="fa">فارسی (Persian)</option>
-                    </select>
-                </div>
+            <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;">
+                🌐 Select Language / ভাষা নির্বাচন করুন (Bottom Right Corner):
+            </div>
+            <div style="color: #94A3B8; font-size: 0.9rem;">
+                Screen-er dan pashe niche ekta <b>Select Language</b> dropdown dekhbe. Sekhan theke 'Bengali' ba onno jekono vasha select korlei pura website instant translate hoye jabe!
             </div>
             <div class="fb-copyright">
                 © 2026 IUBAT Nexus • Smart University Portal (Built for International Students)
@@ -580,36 +553,6 @@ else:
     elif st.session_state.dashboard_view == "Account":
         st.markdown("<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>Student Account & Settings</div>", unsafe_allow_html=True)
         
-        # In-dashboard Language Selector for logged-in users
-        st.markdown("""
-            <div class='sched-main-card-pro'>
-                <div style='font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; color: #F1F5F9;'>🌐 App Language / ভাষা পরিবর্তন করুন</div>
-                <select class="custom-lang-select" onchange="changeGlobalLanguage(this)">
-                    <option value="en">English (Default)</option>
-                    <option value="bn">বাংলা (Bengali)</option>
-                    <option value="ar">العربية (Arabic)</option>
-                    <option value="hi">हिन्दी (Hindi)</option>
-                    <option value="ur">اردو (Urdu)</option>
-                    <option value="ne">नेपाली (Nepali)</option>
-                    <option value="zh-CN">中文 (Chinese - Simplified)</option>
-                    <option value="es">Español (Spanish)</option>
-                    <option value="fr">Français (French)</option>
-                    <option value="de">Deutsch (German)</option>
-                    <option value="ja">日本語 (Japanese)</option>
-                    <option value="ko">한국어 (Korean)</option>
-                    <option value="it">Italiano (Italian)</option>
-                    <option value="pt">Português (Portuguese)</option>
-                    <option value="ru">Русский (Russian)</option>
-                    <option value="id">Bahasa Indonesia (Indonesian)</option>
-                    <option value="ms">Bahasa Melayu (Malay)</option>
-                    <option value="tr">Türkçe (Turkish)</option>
-                    <option value="vi">Tiếng Việt (Vietnamese)</option>
-                    <option value="th">ไทย (Thai)</option>
-                    <option value="fa">فارسی (Persian)</option>
-                </select>
-            </div>
-        """, unsafe_allow_html=True)
-
         with st.form("dash_acc_form"):
             up_name = st.text_input("Full Name", value=st.session_state.user_name)
             up_dept = st.text_input("Department", value=st.session_state.user_dept)
@@ -637,7 +580,7 @@ else:
             st.session_state.dashboard_view = "Shuttle"
             st.rerun()
     with c2:
-        if st.button("👨‍🏫 Faculty", key="nav_faculty"):
+        if st.button("👨‍‍🏫 Faculty", key="nav_faculty"):
             st.session_state.dashboard_view = "Faculty"
             st.rerun()
     with c3:

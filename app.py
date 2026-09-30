@@ -144,7 +144,7 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
         .stApp {{ background: #090D16; }}
         .stApp::before {{ content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('{bg_image_data}') no-repeat center center fixed; background-size: cover; z-index: 0; }}
         .stApp::after {{ content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.62); z-index: 0; }}
-        .block-container {{ position: relative; z-index: 1; padding-top: 40px !important; max-width: 480px !important; margin: auto !important; }}
+        .block-container {{ position: relative; z-index: 1; padding-top: 35px !important; max-width: 480px !important; margin: auto !important; }}
         #MainMenu, header, footer {{visibility: hidden;}}
         div[data-testid="stForm"] {{ background: rgba(11, 18, 33, 0.88) !important; backdrop-filter: blur(10px); border-radius: 14px !important; padding: 16px !important; border: 1px solid rgba(56, 189, 248, 0.2) !important; }}
         .stTextInput>div>div>input {{ background-color: rgba(15, 23, 42, 0.85) !important; color: #F8FAFC !important; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3); }}
@@ -169,15 +169,14 @@ logo_small = f"<img src='{logo_image_data}' style='width:34px; height:34px; bord
 # --- Authentication Screen ---
 if not st.session_state.logged_in and not st.session_state.is_admin:
     st.markdown(f"""
-        <div style='text-align: center; margin-bottom: 15px;'>
+        <div style='text-align: center; margin-bottom: 12px;'>
             <div style='font-size: 2.2rem; margin-bottom: 5px;'>{logo_small}</div>
             <h1 style='color: white; font-size: 1.3rem; font-weight: 800;'>IUBAT Campus Connect</h1>
             <p style='color: #94A3B8; font-size: 0.78rem;'>Sign in with your student ID & password</p>
         </div>
     """, unsafe_allow_html=True)
 
-    # Clean Sign In / Register Tabs (Admin button removed for regular users)
-    tab_signin, tab_register = st.tabs(["🔐 Sign In", "📝 Register"])
+    tab_signin, tab_register, tab_admin = st.tabs(["🔐 Sign In", "📝 Register", "🔒 Admin"])
 
     with tab_signin:
         with st.form("login_form"):
@@ -186,10 +185,7 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
             remember_me = st.checkbox("Remember me")
 
             if st.form_submit_button("Sign In"):
-                if user_id == "admin" and password == "admin123":
-                    st.session_state.is_admin = True
-                    st.rerun()
-                elif user_id and password:
+                if user_id and password:
                     st.session_state.users_db = load_json_db(DB_FILE, default_users)
                     if user_id in st.session_state.users_db:
                         stored_pass = st.session_state.users_db[user_id].get("password")
@@ -236,9 +232,8 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
                 else:
                     st.error("❌ Please fill in all required fields.")
 
-    # Hidden Admin trigger option at the very bottom or via secret method if needed by admin
-    with st.expander("🛠️ Admin Portal Login"):
-        with st.form("secret_admin_form"):
+    with tab_admin:
+        with st.form("admin_form"):
             adm_user = st.text_input("Admin Username", placeholder="admin")
             adm_pass = st.text_input("Admin Password", type="password")
             if st.form_submit_button("Login as Admin"):
@@ -363,7 +358,7 @@ else:
                 st.session_state.selected_service = "Bus"
                 st.rerun()
         with col2:
-            if st.button("👨‍🏫\nFaculty", use_container_width=True):
+            if st.button("👨‍‍🏫\nFaculty", use_container_width=True):
                 st.session_state.selected_service = "Faculty"
                 st.rerun()
             if st.button("🤝\nAlumni Hub", use_container_width=True):

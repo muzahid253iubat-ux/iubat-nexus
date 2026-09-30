@@ -165,7 +165,7 @@ t = {
         "sos_title": "জরুরী ইমার্জেন্সি ও হেল্পলাইন",
         "account_title": "স্টুডেন্ট একাউন্ট ও সেটিংস",
         "nav_shuttle": "🚌 শাটল",
-        "nav_faculty": "👨‍‍‍🏫 শিক্ষক",
+        "nav_faculty": "👨🏫 শিক্ষক",
         "nav_route": "🗺️ রুট",
         "nav_sos": "🚨 এসওএস",
         "nav_acc": "⚙ একাউন্ট",
@@ -406,61 +406,61 @@ else:
     # --- SPLIT SCREEN DASHBOARD (MATCHING SCREENSHOT LAYOUT) ---
     st.markdown("""
         <style>
-        .stApp { background: #070B14; color: #F1F5F9; font-family: system-ui, -apple-system, sans-serif; }
-        .block-container { max-width: 1300px !important; padding-top: 25px !important; padding-bottom: 140px !important; }
-        #MainMenu, header, footer {visibility: hidden;}
+        .stApp {{ background: #070B14; color: #F1F5F9; font-family: system-ui, -apple-system, sans-serif; }}
+        .block-container {{ max-width: 1300px !important; padding-top: 25px !important; padding-bottom: 140px !important; }}
+        #MainMenu, header, footer {{visibility: hidden;}}
 
-        .dash-top-header {
+        .dash-top-header {{
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px);
             border: 1px solid rgba(14, 165, 233, 0.25); border-radius: 16px;
             padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;
             margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .user-profile-box {
+        .user-profile-box {{
             display: flex; align-items: center; gap: 14px;
         }
-        .user-avatar-circle {
+        .user-avatar-circle {{
             width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
             border: 2px solid #0EA5E9; background: #1E293B; display: flex; align-items: center; justify-content: center;
             font-size: 1.2rem; overflow: hidden;
         }
         
         /* Left Hero Panel */
-        .left-hero-box {
+        .left-hero-box {{
             padding: 20px 10px;
-        }
+        }}
 
         /* Right Interactive Window Screen */
-        .right-preview-window {
+        .right-preview-window {{
             background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(16px);
             border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 16px;
             padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.7);
             min-height: 420px; position: relative;
         }
         
-        .badge-tag-pro {
+        .badge-tag-pro {{
             background: rgba(14, 165, 233, 0.15); color: #38BDF8; font-size: 0.78rem;
             font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(14, 165, 233, 0.3);
         }
-        .route-stop-pro {
+        .route-stop-pro {{
             padding: 10px 14px; background: rgba(30, 41, 59, 0.5); border-left: 3px solid #0EA5E9;
             margin-bottom: 8px; border-radius: 0 8px 8px 0; font-size: 0.92rem;
         }
 
         /* Bottom Carousel Dock matching screenshot style */
-        .bottom-carousel-dock {
+        .bottom-carousel-dock {{
             position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(11, 15, 25, 0.96);
             backdrop-filter: blur(20px); border-top: 1px solid rgba(14, 165, 233, 0.25);
             padding: 12px 20px; z-index: 999; display: flex; justify-content: center; gap: 12px;
         }
-        .bottom-carousel-dock div.stButton > button {
+        .bottom-carousel-dock div.stButton > button {{
             background: rgba(30, 41, 59, 0.8) !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; color: #F1F5F9 !important;
             font-size: 0.88rem !important; font-weight: 600 !important; border-radius: 12px !important;
             padding: 10px 16px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: all 0.2s;
-        }
-        .bottom-carousel-dock div.stButton > button:hover {
+        }}
+        .bottom-carousel-dock div.stButton > button:hover {{
             border-color: #0EA5E9 !important; background: rgba(14, 165, 233, 0.2) !important; color: #38BDF8 !important;
-        }
+        }}
         </style>
     """, unsafe_allow_html=True)
 

@@ -135,17 +135,15 @@ def handle_create_acc():
 
 # --- Global Styling ---
 if not st.session_state.logged_in:
-    translate_script = """
+    # Native Instant Google Translate JavaScript Engine
+    native_translate_script = """
         <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,bn,ar,hi,ne,id,zh-CN,fr',
-                autoDisplay: false
-            }, 'google_translate_element');
+        function triggerTranslate(langCode) {
+            if (!langCode) return;
+            document.cookie = "googtrans=/en/" + langCode + "; path=/;";
+            location.reload();
         }
         </script>
-        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     """
 
     st.markdown(f"""
@@ -160,7 +158,7 @@ if not st.session_state.logged_in:
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
         .block-container {{
-            position: relative; z-index: 1; padding-top: 40px !important; padding-bottom: 80px !important; max-width: 1200px !important; margin: auto !important;
+            position: relative; z-index: 10; padding-top: 40px !important; padding-bottom: 120px !important; max-width: 1200px !important; margin: auto !important;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
@@ -177,7 +175,7 @@ if not st.session_state.logged_in:
             background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
             border-radius: 14px !important; padding: 24px 24px 18px 24px !important;
             border: 1px solid rgba(14, 165, 233, 0.25) !important; box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-            width: 100%; max-width: 390px; margin-left: auto; margin-top: 15px;
+            width: 100%; max-width: 390px; margin-left: auto; margin-top: 15px; position: relative; z-index: 20;
         }}
         .fb-title {{
             font-size: 1.35rem; font-weight: 700; color: #FFFFFF; margin-bottom: 14px; font-family: system-ui, -apple-system, sans-serif;
@@ -205,24 +203,22 @@ if not st.session_state.logged_in:
             background-color: #36A420 !important;
         }}
 
-        /* Google Translate Footer Styling */
+        /* Enhanced High Z-Index Direct Language Selector Styling */
         .fb-footer-box {{
-            position: relative; margin-top: 70px; width: 100%; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; font-family: system-ui, -apple-system, sans-serif; z-index: 2;
+            position: relative; margin-top: 80px; width: 100%; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 25px; padding-bottom: 40px; font-family: system-ui, -apple-system, sans-serif; z-index: 99999 !important;
         }}
         .fb-copyright {{
-            color: #737B83; font-size: 11px; margin-top: 15px;
+            color: #737B83; font-size: 12px; margin-top: 15px;
         }}
-        .goog-te-combo {{
-            background-color: #1E293B !important; color: #38BDF8 !important; border: 1px solid rgba(14, 165, 233, 0.4) !important;
-            padding: 8px 14px !important; border-radius: 8px !important; font-size: 0.95rem !important; outline: none !important; cursor: pointer; width: 220px; display: inline-block !important;
+        .custom-lang-select {{
+            background-color: #0F172A !important; color: #38BDF8 !important; border: 2px solid rgba(14, 165, 233, 0.6) !important;
+            padding: 12px 18px !important; border-radius: 10px !important; font-size: 1rem !important; outline: none !important; cursor: pointer; width: 260px; font-weight: 700; box-shadow: 0 8px 25px rgba(0,0,0,0.8);
         }}
-        .goog-te-gadget {{ color: transparent !important; font-size: 0px; }}
-        .goog-te-gadget span {{ display: none !important; }}
-        .goog-logo-link {{ display: none !important; }}
-        #goog-gt-tt {{ display: none !important; }}
-        .skiptranslate {{ color: #8A939B; font-size: 13px; }}
+        .custom-lang-select option {{
+            background-color: #0F172A; color: #F1F5F9; padding: 12px; font-size: 1rem;
+        }}
         </style>
-        {translate_script}
+        {native_translate_script}
     """, unsafe_allow_html=True)
 else:
     st.markdown("""
@@ -400,10 +396,21 @@ if not st.session_state.logged_in:
     st.markdown("""
         <div class="fb-footer-box">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
-                <div style="color: #94A3B8; font-size: 0.95rem; font-weight: 600;">
+                <div style="color: #FFFFFF; font-size: 1.05rem; font-weight: 700;">
                     🌐 Select Language / ভাষা নির্বাচন করুন:
                 </div>
-                <div id="google_translate_element"></div>
+                <div>
+                    <select class="custom-lang-select" onchange="triggerTranslate(this.value)">
+                        <option value="en">English</option>
+                        <option value="bn">বাংলা (Bengali)</option>
+                        <option value="ar">العربية (Arabic)</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
+                        <option value="ne">नेपाली (Nepali)</option>
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="zh-CN">中文 (Chinese)</option>
+                        <option value="fr">Français (French)</option>
+                    </select>
+                </div>
             </div>
             <div class="fb-copyright">
                 © 2026 IUBAT Nexus • Smart University Portal (Built for International Students)

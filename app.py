@@ -165,7 +165,7 @@ t = {
         "sos_title": "জরুরী ইমার্জেন্সি ও হেল্পলাইন",
         "account_title": "স্টুডেন্ট একাউন্ট ও সেটিংস",
         "nav_shuttle": "🚌 শাটল",
-        "nav_faculty": "👨‍🏫 শিক্ষক",
+        "nav_faculty": "👨‍‍🏫 শিক্ষক",
         "nav_route": "🗺️ রুট",
         "nav_sos": "🚨 এসওএস",
         "nav_acc": "⚙ একাউন্ট",
@@ -299,12 +299,10 @@ if not st.session_state.logged_in:
         """, unsafe_allow_html=True)
 
     with col_right:
-        # Language Switch Button
         if st.button(btn_label_top, key="lang_toggle_btn", use_container_width=True):
             st.session_state.lang = new_lang_top
             st.rerun()
 
-        # Login Card Banner Header
         st.markdown(f"""
             <div class="top-banner-pill">
                 🔒 {t[lang_key]["card_header"]}
@@ -358,7 +356,6 @@ if not st.session_state.logged_in:
                 st.rerun()
 
         else:
-            # Clean Login Form container wrapped cleanly (no extra empty boxes)
             with st.form("login_form"):
                 user_id = st.text_input("ID Number", placeholder=t[lang_key]["id_placeholder"])
                 password = st.text_input("Password", type="password", placeholder=t[lang_key]["pass_placeholder"])
@@ -406,22 +403,75 @@ if not st.session_state.logged_in:
     """, unsafe_allow_html=True)
 
 else:
-    photo_render = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}'>" if st.session_state.user_photo else "🎓"
-    
-    top_c1, top_c2 = st.columns([5, 1.8])
+    # --- FIXED DASHBOARD STYLING & CLEAN AVATAR FIX ---
+    st.markdown("""
+        <style>
+        .stApp { background: #070B14; color: #F1F5F9; font-family: system-ui, -apple-system, sans-serif; }
+        .block-container { max-width: 900px !important; padding-top: 20px !important; padding-bottom: 100px !important; }
+        #MainMenu, header, footer {visibility: hidden;}
+
+        .dash-top-header {
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px);
+            border: 1px solid rgba(14, 165, 233, 0.25); border-radius: 16px;
+            padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .user-profile-box {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .user-avatar-circle {
+            width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
+            border: 2px solid #0EA5E9; background: #1E293B; display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; overflow: hidden;
+        }
+        .sched-main-card-pro {
+            background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(14px);
+            border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 16px;
+            padding: 22px; box-shadow: 0 12px 35px rgba(0,0,0,0.5); margin-bottom: 16px;
+        }
+        .badge-tag-pro {
+            background: rgba(14, 165, 233, 0.15); color: #38BDF8; font-size: 0.78rem;
+            font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(14, 165, 233, 0.3);
+        }
+        .route-stop-pro {
+            padding: 10px 14px; background: rgba(30, 41, 59, 0.5); border-left: 3px solid #0EA5E9;
+            margin-bottom: 8px; border-radius: 0 8px 8px 0; font-size: 0.92rem;
+        }
+        .bottom-nav-dock {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(16px); border-top: 1px solid rgba(14, 165, 233, 0.2);
+            padding: 8px 12px; z-index: 999; display: flex; justify-content: center;
+        }
+        .bottom-nav-dock div.stButton > button {
+            background: transparent !important; border: none !important; color: #94A3B8 !important;
+            font-size: 0.85rem !important; font-weight: 600 !important; width: 100% !important;
+            box-shadow: none !important; transition: color 0.2s;
+        }
+        .bottom-nav-dock div.stButton > button:hover {
+            color: #38BDF8 !important; background: rgba(14, 165, 233, 0.08) !important; border-radius: 8px !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    if st.session_state.user_photo:
+        avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width: 100%; height: 100%; object-fit: cover;'>"
+    else:
+        avatar_html = "🎓"
+
+    top_c1, top_c2 = st.columns([5, 1.5])
     with top_c1:
         st.markdown(f"""
-            <div class='top-dash-header'>
-                <div class='user-profile-pill'>
-                    <div class='user-avatar-frame'>
-                        {photo_render}
+            <div class='dash-top-header' style='margin-bottom: 0;'>
+                <div class='user-profile-box'>
+                    <div class='user-avatar-circle'>
+                        {avatar_html}
                     </div>
                     <div>
-                        <div style='font-size: 0.95rem; font-weight: 800; color: #F1F5F9;'>{st.session_state.user_name}</div>
-                        <div style='font-size: 0.72rem; color: #38BDF8;'>{st.session_state.user_dept}</div>
+                        <div style='font-size: 1.05rem; font-weight: 800; color: #F1F5F9;'>{st.session_state.user_name}</div>
+                        <div style='font-size: 0.78rem; color: #38BDF8; font-weight: 500;'>{st.session_state.user_dept}</div>
                     </div>
                 </div>
-                <div class='location-badge-pro'>📍 Tongi</div>
+                <div style='font-size: 0.82rem; font-weight: 700; color: #38BDF8; background: rgba(14, 165, 233, 0.1); padding: 5px 10px; border-radius: 8px;'>📍 Tongi</div>
             </div>
         """, unsafe_allow_html=True)
     with top_c2:
@@ -431,8 +481,10 @@ else:
             st.session_state.lang = new_lang
             st.rerun()
 
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
     if st.session_state.dashboard_view == "Shuttle":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0 6px 0; color: #F1F5F9;'>{t[lang_key]['shuttle_title']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 4px 0; color: #F1F5F9;'>{t[lang_key]['shuttle_title']}</div>", unsafe_allow_html=True)
         st.markdown("<div style='font-size: 0.85rem; color: #94A3B8; margin-bottom: 14px;'>📅 Today Schedule</div>", unsafe_allow_html=True)
 
         st.markdown("""
@@ -468,7 +520,7 @@ else:
             st.success("🟢 Bus 02 is currently active near Tongi Station Road. Speed: 32 km/h.")
 
     elif st.session_state.dashboard_view == "Faculty":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>{t[lang_key]['faculty_title']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 14px 0;'>{t[lang_key]['faculty_title']}</div>", unsafe_allow_html=True)
         st.markdown("""
             <div class='sched-main-card-pro'>
                 <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>Prof. Dr. M. Ahmed</div>
@@ -478,7 +530,7 @@ else:
         """, unsafe_allow_html=True)
 
     elif st.session_state.dashboard_view == "Route":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>{t[lang_key]['route_title']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 14px 0;'>{t[lang_key]['route_title']}</div>", unsafe_allow_html=True)
         st.markdown("""
             <div class='sched-main-card-pro'>
                 <div class='route-stop-pro'>📍 Campus (Uttara) - Starting Point</div>
@@ -490,7 +542,7 @@ else:
         """, unsafe_allow_html=True)
 
     elif st.session_state.dashboard_view == "SOS":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>{t[lang_key]['sos_title']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 14px 0;'>{t[lang_key]['sos_title']}</div>", unsafe_allow_html=True)
         st.markdown("""
             <div class='sched-main-card-pro' style='border-left: 5px solid #EF4444;'>
                 <div style='font-size: 1.1rem; font-weight: 800; color: #F1F5F9;'>Campus Security Control Room</div>
@@ -499,7 +551,7 @@ else:
         """, unsafe_allow_html=True)
 
     elif st.session_state.dashboard_view == "Account":
-        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 16px 0;'>{t[lang_key]['account_title']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 1.25rem; font-weight: 800; margin: 10px 0 14px 0;'>{t[lang_key]['account_title']}</div>", unsafe_allow_html=True)
         
         with st.form("dash_acc_form"):
             up_name = st.text_input("Full Name", value=st.session_state.user_name)

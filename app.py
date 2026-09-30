@@ -142,7 +142,7 @@ t = {
     },
     "BN": {
         "title": "আপনার সম্পূর্ণ আইউবাট,<br>সবসময় আপনার সাথে।",
-        "subtitle": "স্মার্ট শাটল শিডিউল, লাইভ জিপিএস ট্র্যাকিং, শিক্ষকগণের তালিকা এবং ক্যাম্পাস আপডেট পেতে আপনার স্টুডেন্ট আইডি ও পাসওয়ার্ড দিয়ে লগইন করুন।",
+        "subtitle": "স্মার্ট শাটল শিডিউল, লাইভ জিপিএস ট্র্যাকিং, শিক্ষকগণের তালিকা এবং ক্যাম্পাস আপডেট পেতে আপনার স্টুডেন্ট আইডি ও পাসওয়ার্ড দিয়ে লগইন করুন।",
         "card_header": "আইউবাট নেক্সাসে লগইন করুন",
         "id_placeholder": "স্টুডেন্ট আইডি নম্বর",
         "pass_placeholder": "পাসওয়ার্ড",
@@ -204,6 +204,12 @@ def handle_create_acc():
     st.session_state.is_registering = True
 
 if not st.session_state.logged_in:
+    
+    logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
+    
+    new_lang_top = "BN" if st.session_state.lang == "EN" else "EN"
+    btn_label_top = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
+    
     st.markdown(f"""
         <style>
         .stApp {{ background: #070B14; }}
@@ -268,69 +274,7 @@ if not st.session_state.logged_in:
         }}
         </style>
     """, unsafe_allow_html=True)
-else:
-    st.markdown(f"""
-        <style>
-        .stApp {{ background: #080C15 !important; color: #F1F5F9 !important; }}
-        .block-container {{ position: relative; z-index: 1; padding-top: 1.2rem !important; padding-bottom: 130px !important; max-width: 720px !important; margin: auto !important; }}
-        #MainMenu, header, footer {{visibility: hidden;}}
 
-        .top-dash-header {{
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(14, 165, 233, 0.2);
-            border-radius: 18px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }}
-        .user-profile-pill {{
-            display: flex; align-items: center; gap: 12px;
-        }}
-        .user-avatar-frame {{
-            width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid #0EA5E9; background: #1E293B;
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-        }}
-        .user-avatar-frame img {{ width: 100%; height: 100%; object-fit: cover; }}
-        .location-badge-pro {{
-            background: rgba(30, 41, 59, 0.9); border: 1px solid rgba(14, 165, 233, 0.3); padding: 6px 14px; border-radius: 30px; font-size: 0.85rem; color: #E2E8F0; display: flex; align-items: center; gap: 8px; font-weight: 500;
-        }}
-        .sched-main-card-pro {{
-            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(16px); border-radius: 20px; padding: 22px; color: #F1F5F9;
-            border: 1px solid rgba(14, 165, 233, 0.25); margin-bottom: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.4);
-        }}
-        .badge-tag-pro {{
-            background: rgba(14, 165, 233, 0.15); color: #38BDF8; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3px;
-        }}
-        .route-stop-pro {{
-            padding: 8px 0; border-left: 3px solid #0EA5E9; padding-left: 14px; margin-left: 8px; font-size: 0.88rem; color: #CBD5E1; font-weight: 500;
-        }}
-
-        .bottom-nav-dock {{
-            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 650px;
-            background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(20px);
-            border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 24px;
-            display: flex; justify-content: space-around; align-items: center; padding: 8px 12px; z-index: 999;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-        }}
-        .bottom-nav-dock div.stButton > button {{
-            background: transparent !important; border: none !important; color: #94A3B8 !important;
-            font-size: 0.85rem !important; font-weight: 600 !important; box-shadow: none !important;
-            display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important;
-            gap: 6px !important; padding: 6px 12px !important; min-height: 40px !important; border-radius: 12px !important;
-            transition: all 0.2s ease-in-out; white-space: nowrap !important;
-        }}
-        .bottom-nav-dock div.stButton > button:hover {{
-            color: #38BDF8 !important; background: rgba(14, 165, 233, 0.12) !important; transform: translateY(-2px);
-        }}
-        </style>
-    """, unsafe_allow_html=True)
-
-# --- Render Logic ---
-if not st.session_state.logged_in:
-    
-    logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
-    
-    # Top Header Bar: Logo on Left & Language Toggle on Right
-    new_lang_top = "BN" if st.session_state.lang == "EN" else "EN"
-    btn_label_top = "🇧🇩 বাংলা" if st.session_state.lang == "EN" else "🇬🇧 English"
-    
     st.markdown(f"""
         <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 25px;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
@@ -355,12 +299,12 @@ if not st.session_state.logged_in:
         """, unsafe_allow_html=True)
 
     with col_right:
-        # Language Switch Button right above the card (clean single column layout)
+        # Language Switch Button
         if st.button(btn_label_top, key="lang_toggle_btn", use_container_width=True):
             st.session_state.lang = new_lang_top
             st.rerun()
 
-        # Log in to IUBAT Nexus header banner inserted cleanly
+        # Login Card Banner Header
         st.markdown(f"""
             <div class="top-banner-pill">
                 🔒 {t[lang_key]["card_header"]}
@@ -414,8 +358,7 @@ if not st.session_state.logged_in:
                 st.rerun()
 
         else:
-            st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
-            
+            # Clean Login Form container wrapped cleanly (no extra empty boxes)
             with st.form("login_form"):
                 user_id = st.text_input("ID Number", placeholder=t[lang_key]["id_placeholder"])
                 password = st.text_input("Password", type="password", placeholder=t[lang_key]["pass_placeholder"])
@@ -449,7 +392,6 @@ if not st.session_state.logged_in:
             st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 18px 0;'>", unsafe_allow_html=True)
             st.markdown("<div class='create-btn-container'>", unsafe_allow_html=True)
             st.button(t[lang_key]["create_btn"], key="btn_create_acc", on_click=handle_create_acc)
-            st.markdown("</div>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown(f"""

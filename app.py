@@ -109,8 +109,6 @@ if "bus_db" not in st.session_state:
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-if "is_admin" not in st.session_state:
-    st.session_state.is_admin = False
 if "user_id" not in st.session_state:
     st.session_state.user_id = ""
 if "user_name" not in st.session_state:
@@ -125,7 +123,7 @@ if "selected_service" not in st.session_state:
     st.session_state.selected_service = "Dashboard"
 
 query_params = st.query_params
-if not st.session_state.logged_in and not st.session_state.is_admin and "session_user" in query_params:
+if not st.session_state.logged_in and "session_user" in query_params:
     uid = query_params["session_user"]
     if uid in st.session_state.users_db:
         st.session_state.logged_in = True
@@ -138,7 +136,7 @@ if not st.session_state.logged_in and not st.session_state.is_admin and "session
 st.session_state.users_db = load_json_db(DB_FILE, default_users)
 
 # --- Styling ---
-if not st.session_state.logged_in and not st.session_state.is_admin:
+if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
         .stApp {{ background: #090D16; }}
@@ -167,7 +165,7 @@ else:
 logo_small = f"<img src='{logo_image_data}' style='width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid #38BDF8;'>" if logo_image_data else "🎓"
 
 # --- Authentication Screen ---
-if not st.session_state.logged_in and not st.session_state.is_admin:
+if not st.session_state.logged_in:
     st.markdown(f"""
         <div style='text-align: center; margin-bottom: 12px;'>
             <div style='font-size: 2.2rem; margin-bottom: 5px;'>{logo_small}</div>
@@ -176,7 +174,8 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
         </div>
     """, unsafe_allow_html=True)
 
-    tab_signin, tab_register, tab_admin = st.tabs(["🔐 Sign In", "📝 Register", "🔒 Admin"])
+    # Shudhu Sign In ebong Register tab rakha holo
+    tab_signin, tab_register = st.tabs(["🔐 Sign In", "📝 Register"])
 
     with tab_signin:
         with st.form("login_form"):
@@ -232,75 +231,6 @@ if not st.session_state.logged_in and not st.session_state.is_admin:
                 else:
                     st.error("❌ Please fill in all required fields.")
 
-    with tab_admin:
-        with st.form("admin_form"):
-            adm_user = st.text_input("Admin Username", placeholder="admin")
-            adm_pass = st.text_input("Admin Password", type="password")
-            if st.form_submit_button("Login as Admin"):
-                if adm_user == "admin" and adm_pass == "admin123":
-                    st.session_state.is_admin = True
-                    st.rerun()
-                else:
-                    st.error("❌ Invalid Admin Credentials.")
-
-elif st.session_state.is_admin:
-    # --- ADMIN DASHBOARD PANEL ---
-    st.markdown("""
-        <div style='background: rgba(30, 41, 59, 0.9); padding: 14px; border-radius: 14px; color: white; margin-bottom: 12px; border: 1px solid rgba(239, 68, 68, 0.4);'>
-            <div style='display: flex; justify-content: space-between; align-items: center;'>
-                <div>
-                    <span style='background: rgba(239, 68, 68, 0.2); color: #EF4444; padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;'>🔒 ADMIN PANEL</span>
-                    <div style='font-size: 1.1rem; font-weight: 800; margin-top: 4px;'>System Control Hub</div>
-                </div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    if st.button("🚪 Logout from Admin"):
-        st.session_state.is_admin = False
-        st.rerun()
-
-    st.markdown("<div style='font-size: 0.95rem; font-weight: 700; margin: 10px 0; color: #38BDF8;'>👥 Registered Users Database</div>", unsafe_allow_html=True)
-    st.session_state.users_db = load_json_db(DB_FILE, default_users)
-    
-    for uid, uinfo in st.session_state.users_db.items():
-        st.markdown(f"""
-            <div class='sched-card'>
-                🆔 <b>ID:</b> {uid}<br>
-                👤 <b>Name:</b> {uinfo.get('name')}<br>
-                📚 <b>Dept:</b> {uinfo.get('dept')}<br>
-                🏛️ <b>Univ:</b> {uinfo.get('univ')}
-            </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("<div style='font-size: 0.95rem; font-weight: 700; margin: 15px 0 10px 0; color: #38BDF8;'>🚌 Live Bus Status Manager</div>", unsafe_allow_html=True)
-    with st.form("admin_bus_form"):
-        st.session_state.bus_db = load_json_db(BUS_DB_FILE, default_buses)
-        cur_bus = st.session_state.bus_db[0] if st.session_state.bus_db else default_buses[0]
-        
-        b_name = st.text_input("Bus Name", value=cur_bus['name'])
-        b_status = st.text_input("Trip Status", value=cur_bus['status'])
-        b_stop = st.text_input("Current Next Stop", value=cur_bus['next_stop'])
-        b_dep = st.text_input("Departure Time", value=cur_bus['departure'])
-        b_arr = st.text_input("Arrival Time", value=cur_bus['arrival'])
-        
-        if st.form_submit_button("Update Live Bus Info"):
-            st.session_state.bus_db[0] = {
-                "name": b_name,
-                "status": b_status,
-                "departure": b_dep,
-                "arrival": b_arr,
-                "next_stop": b_stop,
-                "driver": cur_bus['driver'],
-                "driver_phone": cur_bus['driver_phone'],
-                "helper": cur_bus['helper'],
-                "helper_phone": cur_bus['helper_phone']
-            }
-            save_json_db(BUS_DB_FILE, st.session_state.bus_db)
-            st.success("✅ Bus live schedule updated successfully!")
-            time.sleep(0.5)
-            st.rerun()
-
 else:
     # --- LOGGED IN REGULAR STUDENT DASHBOARD ---
     profile_avatar_html = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}' style='width:100%; height:100%; object-fit:cover;'>" if st.session_state.user_photo else logo_small
@@ -323,7 +253,6 @@ else:
     with col_h2:
         if st.button("🚪 Logout", use_container_width=True):
             st.session_state.logged_in = False
-            st.session_state.is_admin = False
             st.session_state.user_id = ""
             st.query_params.clear()
             st.rerun()
@@ -358,7 +287,7 @@ else:
                 st.session_state.selected_service = "Bus"
                 st.rerun()
         with col2:
-            if st.button("👨‍‍🏫\nFaculty", use_container_width=True):
+            if st.button("👨‍🏫\nFaculty", use_container_width=True):
                 st.session_state.selected_service = "Faculty"
                 st.rerun()
             if st.button("🤝\nAlumni Hub", use_container_width=True):
@@ -370,7 +299,6 @@ else:
                 st.rerun()
             if st.button("🚪\nLogout", use_container_width=True):
                 st.session_state.logged_in = False
-                st.session_state.is_admin = False
                 st.session_state.user_id = ""
                 st.query_params.clear()
                 st.rerun()

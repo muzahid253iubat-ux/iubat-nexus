@@ -92,7 +92,7 @@ if "splash_shown" not in st.session_state:
 if "dashboard_view" not in st.session_state:
     st.session_state.dashboard_view = "Shuttle"
 if "lang" not in st.session_state:
-    st.session_state.lang = "EN"  # EN or BN
+    st.session_state.lang = "EN"
 
 st.session_state.users_db = load_users_db()
 
@@ -112,6 +112,7 @@ t = {
     "EN": {
         "title": "All of IUBAT,<br>Working For You.",
         "subtitle": "Sign in with your student ID and password to access smart shuttle schedules, live GPS tracking, faculty directories, and campus updates instantly.",
+        "card_header": "Log in to IUBAT Nexus",
         "id_placeholder": "Student ID Number",
         "pass_placeholder": "Password",
         "remember": "Remember session",
@@ -137,11 +138,12 @@ t = {
         "nav_route": "🗺️ Route",
         "nav_sos": "🚨 SOS",
         "nav_acc": "⚙️ Account",
-        "footer": "© 2026 IUBAT Nexus • Smart University Portal (Built for International Students)"
+        "footer": "© 2026 IUBAT Nexus • Smart University Portal"
     },
     "BN": {
         "title": "আপনার সম্পূর্ণ আইউবাট,<br>সবসময় আপনার সাথে।",
         "subtitle": "স্মার্ট শাটল শিডিউল, লাইভ জিপিএস ট্র্যাকিং, শিক্ষকগণের তালিকা এবং ক্যাম্পাস আপডেট পেতে আপনার স্টুডেন্ট আইডি ও পাসওয়ার্ড দিয়ে লগইন করুন।",
+        "card_header": "আইউবাট নেক্সাসে লগইন করুন",
         "id_placeholder": "স্টুডেন্ট আইডি নম্বর",
         "pass_placeholder": "পাসওয়ার্ড",
         "remember": "লগইন মনে রাখুন",
@@ -191,7 +193,7 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
         </style>
         <div class="splash-container">
             <div class="spinner-ring"></div>
-            <h2 style='font-size: 1.25rem; font-weight: 600; color: #F1F5F9; letter-spacing: 0.5px;'>Loading IUBAT Nexus Portal...</h2>
+            <h2 style='font-size: 1.25rem; font-weight: 600; color: #F1F5F9;'>Loading IUBAT Nexus Portal...</h2>
         </div>
     """, unsafe_allow_html=True)
     time.sleep(0.8)
@@ -218,20 +220,20 @@ if not st.session_state.logged_in:
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
-        @keyframes float-slow {{
-            0% {{ transform: translateY(0px); }}
-            50% {{ transform: translateY(-7px); }}
-            100% {{ transform: translateY(0px); }}
-        }}
-        .floating-icon {{
-            animation: float-slow 3s ease-in-out infinite;
+        .top-banner-pill {{
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px);
+            border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 12px;
+            padding: 12px 18px; color: #FFFFFF; font-size: 0.98rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            margin-bottom: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            letter-spacing: -0.2px;
         }}
 
         .fb-card {{
             background: rgba(15, 23, 42, 0.94) !important; backdrop-filter: blur(18px);
-            border-radius: 14px !important; padding: 24px 24px 18px 24px !important;
+            border-radius: 14px !important; padding: 20px 24px 18px 24px !important;
             border: 1px solid rgba(14, 165, 233, 0.25) !important; box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-            width: 100%; max-width: 390px; margin-left: auto; margin-top: 10px; position: relative; z-index: 20;
+            width: 100%; max-width: 390px; margin-left: auto; position: relative; z-index: 20;
         }}
         .fb-title {{
             font-size: 1.35rem; font-weight: 700; color: #FFFFFF; margin-bottom: 14px; font-family: system-ui, -apple-system, sans-serif;
@@ -325,7 +327,7 @@ if not st.session_state.logged_in:
     
     logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
-    # Top Header Bar: Logo on Left, Language Toggle on Right
+    # Top Header Bar: Logo on Left
     st.markdown(f"""
         <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 25px;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
@@ -335,7 +337,6 @@ if not st.session_state.logged_in:
         </div>
     """, unsafe_allow_html=True)
 
-    # Place Language toggle cleanly right above the login card or alongside header columns
     col_left, col_right = st.columns([1.1, 0.9], gap="large")
 
     with col_left:
@@ -351,7 +352,7 @@ if not st.session_state.logged_in:
         """, unsafe_allow_html=True)
 
     with col_right:
-        # Language Switch Button inside a clean container above the login card
+        # Language Switch Button right above the card
         lc1, lc2 = st.columns([2.5, 1.3])
         with lc2:
             new_lang = "BN" if st.session_state.lang == "EN" else "EN"
@@ -359,6 +360,13 @@ if not st.session_state.logged_in:
             if st.button(btn_label, key="lang_toggle_btn", use_container_width=True):
                 st.session_state.lang = new_lang
                 st.rerun()
+
+        # Log in to IUBAT Nexus header banner inserted exactly in the target empty spot
+        st.markdown(f"""
+            <div class="top-banner-pill">
+                🔒 {t[lang_key]["card_header"]}
+            </div>
+        """, unsafe_allow_html=True)
 
         if st.session_state.is_registering:
             st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
@@ -448,7 +456,7 @@ if not st.session_state.logged_in:
     st.markdown(f"""
         <div class="fb-footer-box">
             <div style="color: #94A3B8; font-size: 0.95rem; margin-bottom: 6px;">
-                💡 <b>Tip:</b> Click the top button (<b>🇧🇩 বাংলা / 🇬🇧 English</b>) anytime to switch language instantly!
+                💡 <b>Tip:</b> Click the top-right button (<b>🇧🇩 বাংলা / 🇬🇧 English</b>) anytime to switch language instantly!
             </div>
             <div class="fb-copyright">
                 {t[lang_key]["footer"]}

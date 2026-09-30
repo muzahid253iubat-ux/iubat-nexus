@@ -135,6 +135,20 @@ def handle_create_acc():
 
 # --- Global Styling ---
 if not st.session_state.logged_in:
+    translate_script = """
+        <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,bn,ar,hi,ne,id,zh-CN,fr',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    """
+
     st.markdown(f"""
         <style>
         .stApp {{ background: #070B14; }}
@@ -199,7 +213,6 @@ if not st.session_state.logged_in:
         .fb-copyright {{
             color: #737B83; font-size: 11px; margin-top: 15px;
         }}
-        /* Google Translate Widget Customizer */
         .goog-te-combo {{
             background-color: #1E293B !important; color: #38BDF8 !important; border: 1px solid rgba(14, 165, 233, 0.4) !important;
             padding: 8px 12px !important; border-radius: 8px !important; font-size: 0.9rem !important; outline: none !important; cursor: pointer;
@@ -210,19 +223,7 @@ if not st.session_state.logged_in:
         #goog-gt-tt {{ display: none !important; }}
         .skiptranslate {{ color: #8A939B; font-size: 13px; }}
         </style>
-
-        <!-- Official Google Translate Element Script -->
-        <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,bn,ar,hi,ne,id,zh-CN,fr',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-        </script>
-        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        {translate_script}
     """, unsafe_allow_html=True)
 else:
     st.markdown("""
@@ -283,7 +284,6 @@ if not st.session_state.logged_in:
     
     logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
-    # Left Header Branding
     st.markdown(f"""
         <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 25px;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
@@ -298,7 +298,6 @@ if not st.session_state.logged_in:
         </div>
     """, unsafe_allow_html=True)
 
-    # Facebook-style Desktop 2-Column Split Layout
     col_left, col_right = st.columns([1.1, 0.9], gap="large")
 
     with col_left:
@@ -393,16 +392,12 @@ if not st.session_state.logged_in:
                         st.error("❌ Please enter both Student ID and Password.")
 
             st.markdown("<div style='text-align: center; margin: 14px 0 4px 0;'><a href='#' style='color: #38BDF8; font-size: 0.85rem; text-decoration: none;'>Forgotten password?</a></div>", unsafe_allow_html=True)
-            
             st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 18px 0;'>", unsafe_allow_html=True)
-            
             st.markdown("<div class='create-btn-container'>", unsafe_allow_html=True)
             st.button("Create new account", key="btn_create_acc", on_click=handle_create_acc)
             st.markdown("</div>", unsafe_allow_html=True)
-            
             st.markdown("</div>", unsafe_allow_html=True)
 
-    # Functional Google Translate Widget Footer
     st.markdown("""
         <div class="fb-footer-box">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">

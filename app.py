@@ -136,7 +136,7 @@ def handle_create_acc():
 def handle_goto_acc():
     st.session_state.is_registering = False
 
-# --- Global Styling (Full-Width Modern Design) ---
+# --- Global Styling ---
 if not st.session_state.logged_in:
     st.markdown(f"""
         <style>
@@ -208,7 +208,7 @@ else:
     st.markdown("""
         <style>
         .stApp { background: #080C15 !important; color: #F1F5F9 !important; }
-        .block-container { position: relative; z-index: 1; padding-top: 1.2rem !important; padding-bottom: 100px !important; max-width: 720px !important; margin: auto !important; }
+        .block-container { position: relative; z-index: 1; padding-top: 1.2rem !important; padding-bottom: 110px !important; max-width: 720px !important; margin: auto !important; }
         #MainMenu, header, footer {visibility: hidden;}
 
         .top-dash-header {
@@ -237,16 +237,25 @@ else:
         .route-stop-pro {
             padding: 8px 0; border-left: 3px solid #0EA5E9; padding-left: 14px; margin-left: 8px; font-size: 0.88rem; color: #CBD5E1; font-weight: 500;
         }
-        .bottom-nav-pro {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(14, 165, 233, 0.25); display: flex; justify-content: space-around; padding: 12px 0; z-index: 99999;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+
+        /* --- Unique Floating Bottom Navigation Dock --- */
+        .bottom-nav-dock {
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 600px;
+            background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(20px);
+            border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 24px;
+            display: flex; justify-content: space-around; align-items: center; padding: 10px 12px; z-index: 99999;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
-        .bottom-nav-pro div.stButton > button {
-            background: transparent !important; border: none !important; font-size: 1.5rem !important; color: #94A3B8 !important;
-            box-shadow: none !important; min-height: 44px !important; transition: transform 0.2s ease;
+        .bottom-nav-dock div.stButton > button {
+            background: transparent !important; border: none !important; color: #94A3B8 !important;
+            font-size: 0.8rem !important; font-weight: 600 !important; box-shadow: none !important;
+            display: flex !important; flex-direction: column !important; align-items: center !important;
+            padding: 4px 8px !important; min-height: 48px !important; border-radius: 12px !important;
+            transition: all 0.2s ease-in-out;
         }
-        .bottom-nav-pro div.stButton > button:hover { transform: scale(1.15); color: #38BDF8 !important; }
+        .bottom-nav-dock div.stButton > button:hover {
+            color: #38BDF8 !important; background: rgba(14, 165, 233, 0.1) !important; transform: translateY(-2px);
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -503,27 +512,27 @@ else:
                 del st.query_params["session_user"]
             st.rerun()
 
-    # --- Bottom Navigation Bar ---
-    st.markdown("<div class='bottom-nav-pro'>", unsafe_allow_html=True)
+    # --- Unique Floating Bottom Navigation Dock ---
+    st.markdown("<div class='bottom-nav-dock'>", unsafe_allow_html=True)
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
-        if st.button("🚌", key="nav_shuttle"):
+        if st.button("🚌\nShuttle", key="nav_shuttle"):
             st.session_state.dashboard_view = "Shuttle"
             st.rerun()
     with c2:
-        if st.button("👨‍🏫", key="nav_faculty"):
+        if st.button("👨‍🏫\nFaculty", key="nav_faculty"):
             st.session_state.dashboard_view = "Faculty"
             st.rerun()
     with c3:
-        if st.button("🗺️", key="nav_route"):
+        if st.button("🗺️\nRoute", key="nav_route"):
             st.session_state.dashboard_view = "Route"
             st.rerun()
     with c4:
-        if st.button("🚨", key="nav_sos"):
+        if st.button("🚨\nSOS", key="nav_sos"):
             st.session_state.dashboard_view = "SOS"
             st.rerun()
     with c5:
-        if st.button("⚙️", key="nav_acc"):
+        if st.button("⚙️\nAccount", key="nav_acc"):
             st.session_state.dashboard_view = "Account"
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)

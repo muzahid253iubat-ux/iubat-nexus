@@ -201,11 +201,6 @@ if not st.session_state.logged_in:
         }}
         .fb-lang-row a {{ color: #8A939B; text-decoration: none; }}
         .fb-lang-row a:hover {{ text-decoration: underline; }}
-        .fb-links-row {{
-            display: flex; flex-wrap: wrap; gap: 10px 16px; color: #737B83; font-size: 11.5px; margin-bottom: 12px;
-        }}
-        .fb-links-row a {{ color: #737B83; text-decoration: none; }}
-        .fb-links-row a:hover {{ text-decoration: underline; }}
         .fb-copyright {{
             color: #737B83; font-size: 11px; margin-top: 10px;
         }}
@@ -389,7 +384,7 @@ if not st.session_state.logged_in:
             
             st.markdown("</div>", unsafe_allow_html=True)
 
-    # Facebook Style Footer Added Exact Match Below
+    # Clean Language Footer Only
     st.markdown("""
         <div class="fb-footer-box">
             <div class="fb-lang-row">
@@ -401,34 +396,6 @@ if not st.session_state.logged_in:
                 <a href="#">Bahasa Indonesia</a>
                 <a href="#">العربية</a>
                 <a href="#">More languages...</a>
-            </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.05); margin: 10px 0;"></div>
-            <div class="fb-links-row">
-                <a href="#">Sign up</a>
-                <a href="#">Log in</a>
-                <a href="#">Messenger</a>
-                <a href="#">Facebook Lite</a>
-                <a href="#">Video</a>
-                <a href="#">Meta Pay</a>
-                <a href="#">Meta Store</a>
-                <a href="#">Meta Quest</a>
-                <a href="#">Ray-Ban Meta</a>
-                <a href="#">Meta AI</a>
-                <a href="#">Muse</a>
-                <a href="#">Instagram</a>
-                <a href="#">Threads</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Privacy Centre</a>
-                <a href="#">About</a>
-                <a href="#">Create ad</a>
-                <a href="#">Create Page</a>
-                <a href="#">Developers</a>
-                <a href="#">Careers</a>
-                <a href="#">Cookies</a>
-                <a href="#">AdChoices</a>
-                <a href="#">Terms</a>
-                <a href="#">Help</a>
-                <a href="#">Contact uploading and non-users</a>
             </div>
             <div class="fb-copyright">
                 © 2026 IUBAT Nexus • Smart University Portal
@@ -471,7 +438,7 @@ else:
                         <span style='font-weight: 800; font-size: 1.15rem;'>Bus 02</span>
                         <span class='badge-tag-pro' style='background: rgba(239, 68, 68, 0.2); color: #F87171;'>Down Time</span>
                     </div>
-                    <span style='font-size: 1.4rem;'>🗺️</span>
+                    <span style='font-size: 1.4rem;'>🗺️️</span>
                 </div>
                 <div style='font-size: 0.92rem; color: #94A3B8; margin-bottom: 16px; font-weight: 500;'>
                     🚏 Route: Campus to Narshingdi

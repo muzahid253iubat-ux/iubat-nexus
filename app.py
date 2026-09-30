@@ -133,9 +133,6 @@ if st.session_state.logged_in and not st.session_state.splash_shown:
 def handle_create_acc():
     st.session_state.is_registering = True
 
-def handle_goto_acc():
-    st.session_state.is_registering = False
-
 # --- Global Styling ---
 if not st.session_state.logged_in:
     st.markdown(f"""
@@ -149,15 +146,18 @@ if not st.session_state.logged_in:
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(7, 11, 20, 0.88); z-index: 0;
         }}
+        /* Make container full width for header pinning, but restrict login box width */
         .block-container {{
-            position: relative; z-index: 1; padding-top: 15px !important; max-width: 540px !important; margin: auto !important;
+            position: relative; z-index: 1; padding-top: 10px !important; max-width: 100% !important; padding-left: 20px !important; padding-right: 20px !important;
+        }}
+        .login-box-wrapper {{
+            max-width: 480px; margin: 20px auto 0 auto;
         }}
         #MainMenu, header, footer {{visibility: hidden;}}
         
-        /* Floating Animation for Header Icons */
         @keyframes float-slow {{
             0% {{ transform: translateY(0px); }}
-            50% {{ transform: translateY(-8px); }}
+            50% {{ transform: translateY(-7px); }}
             100% {{ transform: translateY(0px); }}
         }}
         .floating-icon {{
@@ -253,27 +253,28 @@ else:
 # --- Render Logic ---
 if not st.session_state.logged_in:
     
-    # Left aligned IUBAT Nexus branding with Logo and Floating Icons on the right
-    logo_html = f"<img src='{logo_image_data}' style='width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
+    logo_html = f"<img src='{logo_image_data}' style='width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #0EA5E9;'>" if logo_image_data else "<span style='font-size: 1.5rem;'>🎓</span>"
     
+    # Top absolute left-aligned header bar
     st.markdown(f"""
-        <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; padding: 0 2px; width: 100%;'>
+        <div style='display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 5px 10px; margin-bottom: 25px;'>
             <div style='display: flex; align-items: center; gap: 10px;'>
                 {logo_html}
                 <span style='color: #FFFFFF; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.3px;'>IUBAT Nexus</span>
             </div>
             <div style='display: flex; gap: 8px;'>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.85); border: 1px solid rgba(14,165,233,0.35); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);'>🚌</div>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.85); border: 1px solid rgba(14,165,233,0.35); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.5s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);'>👨‍🏫</div>
-                <div class='floating-icon' style='background: rgba(30,41,59,0.85); border: 1px solid rgba(14,165,233,0.35); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 1s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);'>📍</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>🚌</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.4s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>👨‍🏫</div>
+                <div class='floating-icon' style='background: rgba(30,41,59,0.9); border: 1px solid rgba(14,165,233,0.4); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1rem; animation-delay: 0.8s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>📍</div>
             </div>
         </div>
-        <div style='text-align: center; margin-bottom: 20px;'>
-            <h1 style='color: #FFFFFF; font-size: 1.9rem; font-weight: 800; margin: 0; letter-spacing: -0.5px;'>All of IUBAT, Working For You</h1>
+        <div style='text-align: center; margin-bottom: 24px;'>
+            <h1 style='color: #FFFFFF; font-size: 2rem; font-weight: 800; margin: 0; letter-spacing: -0.5px;'>All of IUBAT, Working For You</h1>
             <p style='color: #94A3B8; font-size: 0.88rem; margin-top: 6px;'>Sign in with your student ID and password to access smart shuttle schedules, faculty directories, and campus updates.</p>
         </div>
     """, unsafe_allow_html=True)
 
+    st.markdown("<div class='login-box-wrapper'>", unsafe_allow_html=True)
     if st.session_state.is_registering:
         st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
         st.markdown("<div class='fb-title'>Create a new account</div>", unsafe_allow_html=True)
@@ -316,11 +317,9 @@ if not st.session_state.logged_in:
         
         st.markdown("</div>", unsafe_allow_html=True)
         
-        col_back, _ = st.columns([1, 1])
-        with col_back:
-            if st.button("⬅ Already have an account?"):
-                st.session_state.is_registering = False
-                st.rerun()
+        if st.button("⬅ Already have an account?"):
+            st.session_state.is_registering = False
+            st.rerun()
 
     else:
         st.markdown("<div class='fb-card'>", unsafe_allow_html=True)
@@ -364,6 +363,7 @@ if not st.session_state.logged_in:
         
         st.markdown("</div>", unsafe_allow_html=True)
         st.markdown("<div style='text-align: center; color: #64748B; font-size: 12px; margin-top: 20px;'>© 2026 IUBAT Nexus • Smart University Portal</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 else:
     photo_render = f"<img src='data:image/jpeg;base64,{st.session_state.user_photo}'>" if st.session_state.user_photo else "🎓"
@@ -507,7 +507,7 @@ else:
             st.session_state.dashboard_view = "Shuttle"
             st.rerun()
     with c2:
-        if st.button("👨‍🏫 Faculty", key="nav_faculty"):
+        if st.button("👨‍‍🏫 Faculty", key="nav_faculty"):
             st.session_state.dashboard_view = "Faculty"
             st.rerun()
     with c3:

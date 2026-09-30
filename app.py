@@ -8,10 +8,9 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Responsive Design (Laptop vs Mobile view matching your requirement), Secure Locked First Page, & Custom Dashboard
+# Custom CSS for Responsive Design & Secure Login Page
 st.markdown("""
 <style>
-    /* Hide default Streamlit header and footer */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
@@ -22,7 +21,6 @@ st.markdown("""
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* LOCKED FIRST PAGE (LOGIN / AUTH CONTAINER) */
     .auth-card {
         background: #111827;
         padding: 40px;
@@ -34,8 +32,6 @@ st.markdown("""
         text-align: center;
     }
 
-    /* RESPONSIVE DASHBOARD STYLING */
-    /* Mobile View Optimization (iPhone Screen-like container when viewed on small screens) */
     @media (max-width: 768px) {
         .dashboard-container {
             max-width: 414px;
@@ -52,7 +48,6 @@ st.markdown("""
         }
     }
 
-    /* PC / Laptop View Optimization (Wide Screen 1st Image Layout) */
     @media (min-width: 769px) {
         .dashboard-container {
             max-width: 1200px;
@@ -64,19 +59,6 @@ st.markdown("""
         }
     }
 
-    /* Profile Header Box */
-    .profile-box {
-        background: #111827;
-        border: 1px solid #1f2937;
-        padding: 20px;
-        border-radius: 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-
-    /* Card Box */
     .custom-card {
         background: #111827;
         border: 1px solid #1f2937;
@@ -85,7 +67,6 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* Custom Buttons */
     .stButton>button {
         width: 100%;
         border-radius: 12px;
@@ -96,11 +77,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize Session State for Authentication (Locked First Page logic)
+# Initialize Session State
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
-if 'auth_mode' not in st.session_state:
-    st.session_state.auth_mode = "Login"
 
 # ==========================================
 # LOCKED FIRST PAGE (LOGIN / SIGNUP)
@@ -130,7 +109,7 @@ if not st.session_state.logged_in:
         new_id = st.text_input("Student ID", placeholder="e.g. 22103056")
         new_pass = st.text_input("New Password", type="password", placeholder="Create password")
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("Register Account", type="success"):
+        if st.button("Register Account"):
             if new_name and new_id and new_pass:
                 st.success("Account created successfully! Please log in.")
             else:
@@ -144,7 +123,6 @@ if not st.session_state.logged_in:
 else:
     st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)
     
-    # Top Profile & Logout Section
     col_p1, col_p2 = st.columns([4, 1])
     with col_p1:
         st.markdown("""
@@ -159,23 +137,21 @@ else:
         
     with col_p2:
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("🚪 Logout", type="secondary"):
+        if st.button("🚪 Logout"):
             st.session_state.logged_in = False
             st.rerun()
 
     st.markdown("---")
     
-    # Responsive Mode Indicator & Dashboard Content
     st.markdown("""
         <div class="desktop-only-banner" style="background: #1e293b; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; color: #38bdf8;">
-            💻 <b>Laptop/PC View Active:</b> Optimized with wide screen layout (matching your Laptop screenshot style).
+            💻 <b>Laptop/PC View Active:</b> Optimized with wide screen layout.
         </div>
         <div class="mobile-only-indicator" style="background: #1e293b; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; color: #34d399;">
-            📱 <b>Mobile View Active:</b> Optimized inside a mobile frame layout (matching your iPhone screenshot style).
+            📱 <b>Mobile View Active:</b> Optimized inside a mobile frame layout.
         </div>
     """, unsafe_allow_html=True)
 
-    # Main Dashboard Widgets (Shuttle Schedule & Quick Links)
     st.markdown("### 🚍 Shuttle Bus Schedule")
     
     col1, col2 = st.columns(2)
@@ -202,7 +178,6 @@ else:
     if st.button("📍 Launch Live GPS Tracking", type="primary"):
         st.info("Live tracking module initialized...")
 
-    # Bottom Navigation / Quick Action Bar
     st.markdown("<br>", unsafe_allow_html=True)
     nav_cols = st.columns(5)
     with nav_cols[0]:
